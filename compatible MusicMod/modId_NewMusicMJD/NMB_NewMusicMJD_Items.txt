@@ -1,0 +1,140 @@
+module NewMusicMJD
+{
+    imports
+    {
+        Base
+    }
+
+    item DangerousCassetteA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette_NewMusicMJD_Dangerous,
+        DisplayName = Dangerous (Cassette A-side),
+        WorldStaticModel = NewMusicMJD.DangerousCassette,
+        CanSpawn = true,
+    }
+
+    item DangerousCassetteB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette_NewMusicMJD_Dangerous,
+        DisplayName = Dangerous (Cassette B-side),
+        WorldStaticModel = NewMusicMJD.DangerousCassette,
+        CanSpawn = true,
+    }
+
+    item DangerousVinylA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl_NewMusicMJD_Dangerous,
+        DisplayName = Dangerous (Vinyl A-side),
+        WorldStaticModel = NewMusicMJD.DangerousVinyl,
+        CanSpawn = true,
+    }
+
+    item DangerousVinylB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl_NewMusicMJD_Dangerous,
+        DisplayName = Dangerous (Vinyl B-side),
+        WorldStaticModel = NewMusicMJD.DangerousVinyl,
+        CanSpawn = true,
+    }
+
+    item DangerousCDA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Dangerous (CD A-side),
+        WorldStaticModel = NewMusicMJD.DangerousCD,
+        CanSpawn = true,
+    }
+
+    item DangerousCDB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Dangerous (CD B-side),
+        WorldStaticModel = NewMusicMJD.DangerousCD,
+        CanSpawn = true,
+    }
+
+    item DangerousCassetteCaseEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case_NewMusicMJD_Dangerous,
+        DisplayName = Dangerous Cassette Case (Empty),
+        WorldStaticModel = NewMusicMJD.DangerousCassetteCaseEmpty,
+        CanSpawn = true,
+    }
+
+    item DangerousCassetteCaseFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case_NewMusicMJD_Dangerous,
+        DisplayName = Dangerous Cassette Case (Full),
+        WorldStaticModel = NewMusicMJD.DangerousCassetteCaseFull,
+        CanSpawn = true,
+    }
+
+    item DangerousJacketEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket_NewMusicMJD_Dangerous,
+        DisplayName = Dangerous Jacket (Empty),
+        WorldStaticModel = NewMusicMJD.DangerousJacketEmpty,
+        CanSpawn = true,
+    }
+
+    item DangerousJacketFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket_NewMusicMJD_Dangerous,
+        DisplayName = Dangerous Jacket (Full),
+        WorldStaticModel = NewMusicMJD.DangerousJacketFull,
+        CanSpawn = true,
+    }
+
+    item DangerousCDCoverEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover_NewMusicMJD_Dangerous,
+        DisplayName = Dangerous CD Cover (Empty),
+        WorldStaticModel = NewMusicMJD.DangerousCDCoverEmpty,
+        CanSpawn = true,
+    }
+
+    item DangerousCDCoverFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover_NewMusicMJD_Dangerous,
+        DisplayName = Dangerous CD Cover (Full),
+        WorldStaticModel = NewMusicMJD.DangerousCDCoverFull,
+        CanSpawn = true,
+    }
+
+}

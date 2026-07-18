@@ -1,0 +1,26 @@
+# GPTNote: Keep local development assets and generated clutter out of Git.
+
+# Local reference assets
+.resources/
+
+# Editor settings
+.vscode/
+.idea/
+
+# Backups and temporary files
+bak/
+*.bak
+*.tmp
+*.temp
+*.log
+*.swp
+*.swo
+*~
+
+# Large source-audio assets
+*.ogg
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini

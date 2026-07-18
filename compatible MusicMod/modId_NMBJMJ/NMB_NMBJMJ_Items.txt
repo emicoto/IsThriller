@@ -1,0 +1,668 @@
+module NMBJMJ
+{
+    imports
+    {
+        Base
+    }
+
+    item MichaelJacksonOffTheWall79CassetteA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette1,
+        DisplayName = Michael Jackson - Off The Wall '79 (Cassette A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonOffTheWall79Cassette,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonOffTheWall79CassetteB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette1,
+        DisplayName = Michael Jackson - Off The Wall '79 (Cassette B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonOffTheWall79Cassette,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonOffTheWall79VinylA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl1,
+        DisplayName = Michael Jackson - Off The Wall '79 (Vinyl A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonOffTheWall79Vinyl,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonOffTheWall79VinylB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl1,
+        DisplayName = Michael Jackson - Off The Wall '79 (Vinyl B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonOffTheWall79Vinyl,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonOffTheWall79CDA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Michael Jackson - Off The Wall '79 (CD A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonOffTheWall79CD,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonOffTheWall79CDB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Michael Jackson - Off The Wall '79 (CD B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonOffTheWall79CD,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonOffTheWall79CassetteCaseEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case1,
+        DisplayName = Michael Jackson - Off The Wall '79 Cassette Case (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonOffTheWall79CassetteCaseEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonOffTheWall79CassetteCaseFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case1,
+        DisplayName = Michael Jackson - Off The Wall '79 Cassette Case (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonOffTheWall79CassetteCaseFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonOffTheWall79JacketEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket1,
+        DisplayName = Michael Jackson - Off The Wall '79 Jacket (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonOffTheWall79JacketEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonOffTheWall79JacketFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket1,
+        DisplayName = Michael Jackson - Off The Wall '79 Jacket (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonOffTheWall79JacketFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonOffTheWall79CDCoverEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover1,
+        DisplayName = Michael Jackson - Off The Wall '79 CD Cover (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonOffTheWall79CDCoverEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonOffTheWall79CDCoverFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover1,
+        DisplayName = Michael Jackson - Off The Wall '79 CD Cover (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonOffTheWall79CDCoverFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonThriller82CassetteA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette1,
+        DisplayName = Michael Jackson - Thriller '82 (Cassette A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonThriller82Cassette,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonThriller82CassetteB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette1,
+        DisplayName = Michael Jackson - Thriller '82 (Cassette B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonThriller82Cassette,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonThriller82VinylA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl1,
+        DisplayName = Michael Jackson - Thriller '82 (Vinyl A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonThriller82Vinyl,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonThriller82VinylB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl1,
+        DisplayName = Michael Jackson - Thriller '82 (Vinyl B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonThriller82Vinyl,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonThriller82CDA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Michael Jackson - Thriller '82 (CD A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonThriller82CD,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonThriller82CDB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Michael Jackson - Thriller '82 (CD B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonThriller82CD,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonThriller82CassetteCaseEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case1,
+        DisplayName = Michael Jackson - Thriller '82 Cassette Case (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonThriller82CassetteCaseEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonThriller82CassetteCaseFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case1,
+        DisplayName = Michael Jackson - Thriller '82 Cassette Case (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonThriller82CassetteCaseFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonThriller82JacketEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket1,
+        DisplayName = Michael Jackson - Thriller '82 Jacket (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonThriller82JacketEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonThriller82JacketFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket1,
+        DisplayName = Michael Jackson - Thriller '82 Jacket (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonThriller82JacketFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonThriller82CDCoverEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover1,
+        DisplayName = Michael Jackson - Thriller '82 CD Cover (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonThriller82CDCoverEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonThriller82CDCoverFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover1,
+        DisplayName = Michael Jackson - Thriller '82 CD Cover (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonThriller82CDCoverFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonBad87CassetteA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette1,
+        DisplayName = Michael Jackson - Bad '87 (Cassette A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonBad87Cassette,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonBad87CassetteB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette1,
+        DisplayName = Michael Jackson - Bad '87 (Cassette B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonBad87Cassette,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonBad87VinylA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl1,
+        DisplayName = Michael Jackson - Bad '87 (Vinyl A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonBad87Vinyl,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonBad87VinylB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl1,
+        DisplayName = Michael Jackson - Bad '87 (Vinyl B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonBad87Vinyl,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonBad87CDA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Michael Jackson - Bad '87 (CD A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonBad87CD,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonBad87CDB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Michael Jackson - Bad '87 (CD B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonBad87CD,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonBad87CassetteCaseEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case1,
+        DisplayName = Michael Jackson - Bad '87 Cassette Case (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonBad87CassetteCaseEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonBad87CassetteCaseFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case1,
+        DisplayName = Michael Jackson - Bad '87 Cassette Case (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonBad87CassetteCaseFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonBad87JacketEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket1,
+        DisplayName = Michael Jackson - Bad '87 Jacket (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonBad87JacketEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonBad87JacketFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket1,
+        DisplayName = Michael Jackson - Bad '87 Jacket (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonBad87JacketFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonBad87CDCoverEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover1,
+        DisplayName = Michael Jackson - Bad '87 CD Cover (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonBad87CDCoverEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonBad87CDCoverFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover1,
+        DisplayName = Michael Jackson - Bad '87 CD Cover (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonBad87CDCoverFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonDangerous91CassetteA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette1,
+        DisplayName = Michael Jackson - Dangerous '91 (Cassette A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonDangerous91Cassette,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonDangerous91CassetteB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette1,
+        DisplayName = Michael Jackson - Dangerous '91 (Cassette B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonDangerous91Cassette,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonDangerous91VinylA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl1,
+        DisplayName = Michael Jackson - Dangerous '91 (Vinyl A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonDangerous91Vinyl,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonDangerous91VinylB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl1,
+        DisplayName = Michael Jackson - Dangerous '91 (Vinyl B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonDangerous91Vinyl,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonDangerous91CDA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Michael Jackson - Dangerous '91 (CD A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonDangerous91CD,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonDangerous91CDB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Michael Jackson - Dangerous '91 (CD B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonDangerous91CD,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonDangerous91CassetteCaseEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case1,
+        DisplayName = Michael Jackson - Dangerous '91 Cassette Case (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonDangerous91CassetteCaseEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonDangerous91CassetteCaseFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case1,
+        DisplayName = Michael Jackson - Dangerous '91 Cassette Case (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonDangerous91CassetteCaseFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonDangerous91JacketEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket1,
+        DisplayName = Michael Jackson - Dangerous '91 Jacket (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonDangerous91JacketEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonDangerous91JacketFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket1,
+        DisplayName = Michael Jackson - Dangerous '91 Jacket (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonDangerous91JacketFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonDangerous91CDCoverEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover1,
+        DisplayName = Michael Jackson - Dangerous '91 CD Cover (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonDangerous91CDCoverEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonDangerous91CDCoverFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover1,
+        DisplayName = Michael Jackson - Dangerous '91 CD Cover (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonDangerous91CDCoverFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonMotownMixCassetteA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette1,
+        DisplayName = Michael Jackson - Motown Mix (Cassette A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonMotownMixCassette,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonMotownMixCassetteB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette1,
+        DisplayName = Michael Jackson - Motown Mix (Cassette B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonMotownMixCassette,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonMotownMixVinylA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl1,
+        DisplayName = Michael Jackson - Motown Mix (Vinyl A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonMotownMixVinyl,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonMotownMixVinylB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl1,
+        DisplayName = Michael Jackson - Motown Mix (Vinyl B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonMotownMixVinyl,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonMotownMixCDA
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Michael Jackson - Motown Mix (CD A-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonMotownMixCD,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonMotownMixCDB
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Michael Jackson - Motown Mix (CD B-side),
+        WorldStaticModel = NMBJMJ.MichaelJacksonMotownMixCD,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonMotownMixCassetteCaseEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case1,
+        DisplayName = Michael Jackson - Motown Mix Cassette Case (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonMotownMixCassetteCaseEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonMotownMixCassetteCaseFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case1,
+        DisplayName = Michael Jackson - Motown Mix Cassette Case (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonMotownMixCassetteCaseFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonMotownMixJacketEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket1,
+        DisplayName = Michael Jackson - Motown Mix Jacket (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonMotownMixJacketEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonMotownMixJacketFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket1,
+        DisplayName = Michael Jackson - Motown Mix Jacket (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonMotownMixJacketFull,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonMotownMixCDCoverEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover1,
+        DisplayName = Michael Jackson - Motown Mix CD Cover (Empty),
+        WorldStaticModel = NMBJMJ.MichaelJacksonMotownMixCDCoverEmpty,
+        CanSpawn = true,
+    }
+
+    item MichaelJacksonMotownMixCDCoverFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover1,
+        DisplayName = Michael Jackson - Motown Mix CD Cover (Full),
+        WorldStaticModel = NMBJMJ.MichaelJacksonMotownMixCDCoverFull,
+        CanSpawn = true,
+    }
+
+}

@@ -1,0 +1,26 @@
+{
+    "Sandbox_IsThriller": "Is Thriller?",
+    "Sandbox_IsThriller_Range": "Auslöseradius (Felder)",
+    "Sandbox_IsThriller_Range_tooltip": "Sobald Zombies diese Entfernung erreichen, wird MJs Thriller ausgelöst: Musik wird abgespielt und ihre Bewegungsgeschwindigkeit neu ausgewürfelt.",
+    "Sandbox_IsThriller_SprintChance": "Sprinter-Chance (%)",
+    "Sandbox_IsThriller_SprintChance_tooltip": "Chance, dass ein Zombie beim Betreten des Radius zu einem Sprinter wird. Alle anderen werden zu schnellen Schlurfern.",
+    "Sandbox_IsThriller_MaxZombies": "Maximale Anzahl Tanzzombies",
+    "Sandbox_IsThriller_MaxZombies_tooltip": "Während der ersten 3 Minuten von MJs Auftritt erscheinen jede Minute zusätzliche Zombies außerhalb des Sichtfelds des Spielers. Die Anzahl wird zufällig zwischen 2 und diesem Höchstwert gewählt; sie kommen vom Rand des Sammelradius.",
+    "Sandbox_IsThriller_MaxDancer": "Anzahl der Tänzer-Zombies (0 = zufällig 2–5)",
+    "Sandbox_IsThriller_MaxDancer_tooltip": "Anzahl der Tänzer-Zombies, die zusammen mit MJ auftreten, sobald die Thriller-Bühne beginnt. Tänzer haben das 5-Fache der Gesundheit eines normalen Zombies und werden ebenfalls geheilt, während MJ sich regeneriert. Bei 0 wird ein Zufallswert zwischen 2 und 5 gewählt.",
+    "Sandbox_IsThriller_EventChance": "Ereignischance pro Minute (%)",
+    "Sandbox_IsThriller_EventChance_tooltip": "Chance pro Spielminute, das Thriller-Ereignis zu starten, wenn Zombies in der Nähe sind. Nachts verdoppelt. Der Wert 1 entspricht 0,1 %. Da jede Minute geprüft wird, sollte der Wert möglichst niedrig sein, wenn das Ereignis nicht zu häufig ausgelöst werden soll.",
+    "Sandbox_IsThriller_EventCooldown": "Ereignis-Abklingzeit (Spielstunden)",
+    "Sandbox_IsThriller_EventCooldown_tooltip": "Nachdem ein Thriller-Ereignis erfolgreich gespielt und beendet wurde, müssen so viele Spielstunden vergehen, bevor das nächste beginnen kann.",
+    "Sandbox_IsThriller_MusicOptionsDivider": "──────── Titelauswahl (Mehrfachauswahl möglich) ────────",
+    "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "Es können mehrere Titel ausgewählt werden. Beim Auslösen des Thriller-Ereignisses wird zufällig einer davon gewählt. Diese Option dient nur als Trennlinie und hat selbst keine Wirkung.",
+    "Sandbox_IsThriller_JustBeatIt": "Beat It abspielen",
+    "Sandbox_IsThriller_JustBeatIt_tooltip": "Bei MJs Auftritt Beat It statt Thriller abspielen.",
+    "Sandbox_IsThriller_JustSmoothCriminal": "Smooth Criminal abspielen",
+    "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "Bei MJs Auftritt Smooth Criminal statt Thriller abspielen.",
+    "Sandbox_IsThriller_JustThriller": "Thriller abspielen",
+    "Sandbox_IsThriller_JustThriller_tooltip": "Bei MJs Auftritt Thriller abspielen.",
+
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM": "Niemand kann mich besiegen, solange meine BGM läuft",
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip": "Schaltet die Mod in einen Modus, in dem beim Kampfbeginn nur ein zufälliger MJ-Titel abgespielt wird, ohne das Ereignis zur Ansammlung einer Zombiehorde auszulösen."
+}

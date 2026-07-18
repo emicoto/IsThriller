@@ -1,0 +1,5 @@
+name=Is Time To Thriller? - True Actions Dancing Addon
+id=IsThrillerTAD
+description=Addon: the DJ zombie stops and performs the actual Thriller dance (all 4 parts) when close to you. Requires both Is Time To Thriller? and True Actions Dancing.
+require=IsThrillerTime,TrueActionsDancing
+versionMin=42.0.0

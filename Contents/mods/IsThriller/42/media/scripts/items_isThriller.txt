@@ -1,0 +1,17 @@
+module IsThriller {
+    imports
+    {
+        Base
+    }
+
+    item HealTheWorld
+    {
+        DisplayName = Heal The World,
+
+        DisplayCategory = FirstAid,
+        ItemType = base:normal,
+        Weight = 0.1,
+        Icon = HealTheWorld,
+        Tags = base:consumable;
+    }
+}

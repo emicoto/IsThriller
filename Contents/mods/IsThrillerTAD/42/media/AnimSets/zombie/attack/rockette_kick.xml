@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>thrillerAttackRocketteKick</m_Name>
+	<m_AnimName>BobTA_Rockette_Kick</m_AnimName>
+	<m_Looped>true</m_Looped>
+	<m_BlendTime>0.15</m_BlendTime>
+	<m_Conditions>
+		<m_Name>bThrillerDance</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_Value>true</m_Value>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>ThrillerAttack</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_Value>BobTA_Rockette_Kick</m_Value>
+	</m_Conditions>
+</animNode>

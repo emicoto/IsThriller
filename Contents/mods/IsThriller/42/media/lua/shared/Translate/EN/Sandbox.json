@@ -1,0 +1,39 @@
+{
+    "Sandbox_IsThriller" : "Is Thriller?",
+
+    "Sandbox_IsThriller_Range" : "Trigger radius (tiles)",
+    "Sandbox_IsThriller_Range_tooltip" : "Zombies within this distance start the Thriller event: music plays and their speed gets rerolled.",
+
+    "Sandbox_IsThriller_SprintChance" : "Sprinter chance (%)",
+    "Sandbox_IsThriller_SprintChance_tooltip" : "Chance for a zombie entering the radius to become a sprinter. Everyone else becomes a fast shambler.",
+
+    "Sandbox_IsThriller_MaxZombies" : "Max backup dancers",
+    "Sandbox_IsThriller_MaxZombies_tooltip" : "During the first 3 minutes of MJ's appearance, additional zombies will spawn every minute outside the player's field of view. The spawn amount is randomized between 2 and this maximum cap, entering from the edge of the gathering radius.",
+
+    "Sandbox_IsThriller_MaxDancer" : "Number of dancer zombies (0 = random 2-5)",
+    "Sandbox_IsThriller_MaxDancer_tooltip" : "How many dancer zombies appear alongside MJ when the Thriller stage begins. Dancers have 5x the health of a normal zombie and are also healed while MJ regenerates. Set to 0 to pick a random value between 2 and 5.",
+
+    "Sandbox_IsThriller_EventChance" : "Event chance per minute (%)",
+    "Sandbox_IsThriller_EventChance_tooltip" : "Chance per game minute to start the Thriller event when zombies are nearby. Doubled at night. A value of 1 means a 0.1% chance. Because this chance is checked every minute, set it as low as possible if you do not want the event to trigger too often.",
+
+    "Sandbox_IsThriller_EventCooldown" : "Event cooldown (in-game hours)",
+    "Sandbox_IsThriller_EventCooldown_tooltip" : "After a Thriller event has played and ended successfully, wait this many in-game hours before the next one can start.",
+
+    "Sandbox_IsThriller_MaxWave" : "Max waves / songs per event",
+    "Sandbox_IsThriller_MaxWave_tooltip" : "How many songs play during one Thriller stage. Each song's intro also spawns one wave of extra crowd zombies every 2 seconds. When this many songs have finished, the stage fades out.",
+
+    "Sandbox_IsThriller_MusicOptionsDivider" : "──────── Track selection (multiple allowed) ────────",
+    "Sandbox_IsThriller_MusicOptionsDivider_tooltip" : "You may select multiple tracks. When the Thriller event triggers, one selected track is chosen at random. This option is only a divider and has no effect by itself.",
+
+    "Sandbox_IsThriller_JustBeatIt" : "Play Beat It",
+    "Sandbox_IsThriller_JustBeatIt_tooltip" : "Play Beat It instead of Thriller when MJ appears.",
+
+    "Sandbox_IsThriller_JustSmoothCriminal" : "Play Smooth Criminal",
+    "Sandbox_IsThriller_JustSmoothCriminal_tooltip" : "Play Smooth Criminal instead of Thriller when MJ appears.",
+
+    "Sandbox_IsThriller_JustThriller": "Play Thriller",
+    "Sandbox_IsThriller_JustThriller_tooltip": "Play Thriller when MJ appears.",
+
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM" : "Nobody can beat me in my BGM",
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip" : "Switch the mod to a mode where entering combat only plays a random MJ track, without triggering the zombie-horde gathering event."
+}

@@ -1,0 +1,107 @@
+module MichaelJackson3
+{
+    imports
+    {
+        Base
+    }
+
+    item InvicibleCassette
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette_MichaelJackson3_Invicible,
+        DisplayName = Invicible (Cassette),
+        WorldStaticModel = MichaelJackson3.InvicibleCassette,
+        CanSpawn = true,
+    }
+
+    item InvicibleVinyl
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl_MichaelJackson3_Invicible,
+        DisplayName = Invicible (Vinyl),
+        WorldStaticModel = MichaelJackson3.InvicibleVinyl,
+        CanSpawn = true,
+    }
+
+    item InvicibleCD
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Invicible (CD),
+        WorldStaticModel = MichaelJackson3.InvicibleCD,
+        CanSpawn = true,
+    }
+
+    item InvicibleCassetteCaseEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case_MichaelJackson3_Invicible,
+        DisplayName = Invicible Cassette Case (Empty),
+        WorldStaticModel = MichaelJackson3.InvicibleCassetteCaseEmpty,
+        CanSpawn = true,
+    }
+
+    item InvicibleCassetteCaseFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case_MichaelJackson3_Invicible,
+        DisplayName = Invicible Cassette Case (Full),
+        WorldStaticModel = MichaelJackson3.InvicibleCassetteCaseFull,
+        CanSpawn = true,
+    }
+
+    item InvicibleJacketEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket_MichaelJackson3_Invicible,
+        DisplayName = Invicible Jacket (Empty),
+        WorldStaticModel = MichaelJackson3.InvicibleJacketEmpty,
+        CanSpawn = true,
+    }
+
+    item InvicibleJacketFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket_MichaelJackson3_Invicible,
+        DisplayName = Invicible Jacket (Full),
+        WorldStaticModel = MichaelJackson3.InvicibleJacketFull,
+        CanSpawn = true,
+    }
+
+    item InvicibleCDCoverEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover_MichaelJackson3_Invicible,
+        DisplayName = Invicible CD Cover (Empty),
+        WorldStaticModel = MichaelJackson3.InvicibleCDCoverEmpty,
+        CanSpawn = true,
+    }
+
+    item InvicibleCDCoverFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover_MichaelJackson3_Invicible,
+        DisplayName = Invicible CD Cover (Full),
+        WorldStaticModel = MichaelJackson3.InvicibleCDCoverFull,
+        CanSpawn = true,
+    }
+
+}

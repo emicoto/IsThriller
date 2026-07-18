@@ -1,0 +1,6 @@
+name=Is Time To Thriller?
+id=IsThrillerTime
+incompatible=IsThrillerMP
+description=A mini horde event: when zombies close in, Michael Jackson's Thriller starts playing and a DJ zombie in the iconic red outfit leads the horde to you. Boosted DJ health with debut protection, night doubles the event chance. Sandbox-configurable. Optional True Actions Dancing addon makes the DJ actually perform the dance. Do not run alongside the IsThrillerMP (MP branch) mod at the same time.
+poster=poster.png
+versionMin=42.0.0

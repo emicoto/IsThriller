@@ -1,0 +1,107 @@
+module MichaelJackson1
+{
+    imports
+    {
+        Base
+    }
+
+    item XscapeCassette
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.02,
+        Icon = NM_Cassette_MichaelJackson1_Xscape,
+        DisplayName = Xscape (Cassette),
+        WorldStaticModel = MichaelJackson1.XscapeCassette,
+        CanSpawn = true,
+    }
+
+    item XscapeVinyl
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_Vinyl_MichaelJackson1_Xscape,
+        DisplayName = Xscape (Vinyl),
+        WorldStaticModel = MichaelJackson1.XscapeVinyl,
+        CanSpawn = true,
+    }
+
+    item XscapeCD
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.03,
+        Icon = NM_CD,
+        DisplayName = Xscape (CD),
+        WorldStaticModel = MichaelJackson1.XscapeCD,
+        CanSpawn = true,
+    }
+
+    item XscapeCassetteCaseEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case_MichaelJackson1_Xscape,
+        DisplayName = Xscape Cassette Case (Empty),
+        WorldStaticModel = MichaelJackson1.XscapeCassetteCaseEmpty,
+        CanSpawn = true,
+    }
+
+    item XscapeCassetteCaseFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_Case_MichaelJackson1_Xscape,
+        DisplayName = Xscape Cassette Case (Full),
+        WorldStaticModel = MichaelJackson1.XscapeCassetteCaseFull,
+        CanSpawn = true,
+    }
+
+    item XscapeJacketEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket_MichaelJackson1_Xscape,
+        DisplayName = Xscape Jacket (Empty),
+        WorldStaticModel = MichaelJackson1.XscapeJacketEmpty,
+        CanSpawn = true,
+    }
+
+    item XscapeJacketFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.12,
+        Icon = NM_Jacket_MichaelJackson1_Xscape,
+        DisplayName = Xscape Jacket (Full),
+        WorldStaticModel = MichaelJackson1.XscapeJacketFull,
+        CanSpawn = true,
+    }
+
+    item XscapeCDCoverEmpty
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover_MichaelJackson1_Xscape,
+        DisplayName = Xscape CD Cover (Empty),
+        WorldStaticModel = MichaelJackson1.XscapeCDCoverEmpty,
+        CanSpawn = true,
+    }
+
+    item XscapeCDCoverFull
+    {
+        ItemType = base:normal,
+        DisplayCategory = Entertainment,
+        Weight = 0.10,
+        Icon = NM_CDCover_MichaelJackson1_Xscape,
+        DisplayName = Xscape CD Cover (Full),
+        WorldStaticModel = MichaelJackson1.XscapeCDCoverFull,
+        CanSpawn = true,
+    }
+
+}

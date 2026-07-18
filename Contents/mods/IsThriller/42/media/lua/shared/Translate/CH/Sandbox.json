@@ -1,0 +1,26 @@
+{
+    "Sandbox_IsThriller": "Is Thriller?",
+    "Sandbox_IsThriller_Range": "觸發半徑（格）",
+    "Sandbox_IsThriller_Range_tooltip": "殭屍進入此距離即觸發MJ的Thriller：播放音樂並重新隨機決定其移動速度。",
+    "Sandbox_IsThriller_SprintChance": "變奔跑者機率（%）",
+    "Sandbox_IsThriller_SprintChance_tooltip": "殭屍進入範圍時變成奔跑者的機率，未中選者會變成快速蹣跚者。",
+    "Sandbox_IsThriller_MaxZombies": "伴舞殭屍數量上限",
+    "Sandbox_IsThriller_MaxZombies_tooltip": "MJ登場後的前三分鐘，每分鐘會在玩家視野之外追加殭屍。數量會在2至此上限之間隨機，並從聚怪半徑邊緣進場。",
+    "Sandbox_IsThriller_MaxDancer": "舞者殭屍數量（0＝隨機2~5）",
+    "Sandbox_IsThriller_MaxDancer_tooltip": "Thriller舞台開演時與MJ一同登場的舞者殭屍數量。舞者血量為一般殭屍的5倍，MJ回血期間也會為舞者恢復血量。填0則在2~5之間隨機。",
+    "Sandbox_IsThriller_EventChance": "事件觸發機率／分鐘（%）",
+    "Sandbox_IsThriller_EventChance_tooltip": "附近有殭屍時，每個遊戲分鐘觸發Thriller事件的機率。夜晚機率加倍。1代表0.1%機率。由於每分鐘都會判定，若不希望觸發過於頻繁，請盡量調低。",
+    "Sandbox_IsThriller_EventCooldown": "事件冷卻（遊戲內小時）",
+    "Sandbox_IsThriller_EventCooldown_tooltip": "Thriller事件開演並順利結束後，必須等待此遊戲內小時數才可能觸發下一場。",
+    "Sandbox_IsThriller_MusicOptionsDivider": "──────── 曲目選擇（可複選） ────────",
+    "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "可以同時選擇多首曲目；Thriller事件觸發時，會從已選曲目中隨機播放一首。全部取消勾选则取消BGM。此選項僅作為分隔線，本身沒有作用。",
+    "Sandbox_IsThriller_JustBeatIt": "播放Beat It",
+    "Sandbox_IsThriller_JustBeatIt_tooltip": "将Beat It加入歌单，或只播放这首（单选时）",
+    "Sandbox_IsThriller_JustSmoothCriminal": "播放Smooth Criminal",
+    "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "将Smooth Criminal加入歌单，或只播放这首（单选时）",
+    "Sandbox_IsThriller_JustThriller": "播放Thriller",
+    "Sandbox_IsThriller_JustThriller_tooltip": "MJ登場時播放Thriller。",
+
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM": "在我的BGM中沒有人能打敗我",
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip": "將模組切換為只在進入戰鬥時隨機播放一首MJ的BGM，而不觸發屍潮聚集事件。"
+}

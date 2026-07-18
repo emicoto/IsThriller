@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GPTNote: IsThriller base-game outfit sets, modeled after Authentic Z's outfitManager layout. -->
+<outfitManager>
+
+    <m_MaleOutfits>
+        <m_Name>IsThrillerThriller</m_Name>
+        <m_Guid>3648eb8e-099a-4037-b0b4-d33811c5419b</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Suit_JacketTINT -->
+            <itemGUID>e284f0ef-48aa-4357-982f-98bcf728a238</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_FormalTINT -->
+            <itemGUID>d556b848-5a37-400c-9322-2504bff33433</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_WhiteTINT -->
+            <itemGUID>4601d062-d9ad-49b4-828a-cd0661ead6b6</itemGUID>
+        </m_items>
+        <m_items><!-- Shoes_Black -->
+            <itemGUID>593bea3d-c127-4574-ac1e-2197dc56e486</itemGUID>
+        </m_items>
+    </m_MaleOutfits>
+
+    <m_FemaleOutfits>
+        <m_Name>IsThrillerThriller</m_Name>
+        <m_Guid>0c80ab7e-2916-4fbb-8829-3b3e2d1731f0</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Suit_JacketTINT -->
+            <itemGUID>e284f0ef-48aa-4357-982f-98bcf728a238</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_FormalTINT -->
+            <itemGUID>d556b848-5a37-400c-9322-2504bff33433</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_WhiteTINT -->
+            <itemGUID>4601d062-d9ad-49b4-828a-cd0661ead6b6</itemGUID>
+        </m_items>
+        <m_items><!-- Shoes_Black -->
+            <itemGUID>593bea3d-c127-4574-ac1e-2197dc56e486</itemGUID>
+        </m_items>
+    </m_FemaleOutfits>
+
+    <m_MaleOutfits>
+        <m_Name>IsThrillerSmoothCriminal</m_Name>
+        <m_Guid>088ace63-605e-4c8f-9be1-51a3538940d8</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- IsThriller_Hat_FedoraWhite -->
+            <itemGUID>ddb083c2-7ac1-43e9-8b01-27f359219da6</itemGUID>
+        </m_items>
+        <m_items><!-- Suit_JacketTINT -->
+            <itemGUID>e284f0ef-48aa-4357-982f-98bcf728a238</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_FormalTINT -->
+            <itemGUID>d556b848-5a37-400c-9322-2504bff33433</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_WhiteTINT -->
+            <itemGUID>4601d062-d9ad-49b4-828a-cd0661ead6b6</itemGUID>
+        </m_items>
+        <m_items><!-- Gloves_WhiteTINT -->
+            <itemGUID>477b9515-823a-47e8-98c9-9dc51717f398</itemGUID>
+        </m_items>
+        <m_items><!-- Tie_Full -->
+            <itemGUID>d53c3cb1-4c67-4627-b9d9-0da2cc024980</itemGUID>
+        </m_items>
+        <m_items><!-- NecklaceLong_Silver -->
+            <itemGUID>96f1486d-b177-47ff-a746-3ca9d4dd9fe9</itemGUID>
+        </m_items>
+        <m_items><!-- Bracelet_ChainRightSilver -->
+            <itemGUID>e28e4564-e853-4876-8ee9-63754e28808c</itemGUID>
+        </m_items>
+        <m_items><!-- Shoes_Black -->
+            <itemGUID>593bea3d-c127-4574-ac1e-2197dc56e486</itemGUID>
+        </m_items>
+    </m_MaleOutfits>
+
+    <m_FemaleOutfits>
+        <m_Name>IsThrillerSmoothCriminal</m_Name>
+        <m_Guid>e47aab33-3d15-483f-acc6-4f2318dfa3cb</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- IsThriller_Hat_FedoraWhite -->
+            <itemGUID>ddb083c2-7ac1-43e9-8b01-27f359219da6</itemGUID>
+        </m_items>
+        <m_items><!-- Suit_JacketTINT -->
+            <itemGUID>e284f0ef-48aa-4357-982f-98bcf728a238</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_FormalTINT -->
+            <itemGUID>d556b848-5a37-400c-9322-2504bff33433</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_WhiteTINT -->
+            <itemGUID>4601d062-d9ad-49b4-828a-cd0661ead6b6</itemGUID>
+        </m_items>
+        <m_items><!-- Gloves_WhiteTINT -->
+            <itemGUID>477b9515-823a-47e8-98c9-9dc51717f398</itemGUID>
+        </m_items>
+        <m_items><!-- Tie_Full -->
+            <itemGUID>d53c3cb1-4c67-4627-b9d9-0da2cc024980</itemGUID>
+        </m_items>
+        <m_items><!-- NecklaceLong_Silver -->
+            <itemGUID>96f1486d-b177-47ff-a746-3ca9d4dd9fe9</itemGUID>
+        </m_items>
+        <m_items><!-- Bracelet_ChainRightSilver -->
+            <itemGUID>e28e4564-e853-4876-8ee9-63754e28808c</itemGUID>
+        </m_items>
+        <m_items><!-- Shoes_Black -->
+            <itemGUID>593bea3d-c127-4574-ac1e-2197dc56e486</itemGUID>
+        </m_items>
+    </m_FemaleOutfits>
+
+    <m_MaleOutfits>
+        <m_Name>IsThrillerBeatIt</m_Name>
+        <m_Guid>06139e68-e5f5-4584-98d5-c45e3fe8870d</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Tshirt_IndieStoneDECAL -->
+            <itemGUID>6fea1039-7404-4044-8c5b-2fc686ec21e4</itemGUID>
+        </m_items>
+        <m_items><!-- Jacket_WhiteTINT -->
+            <itemGUID>d9d60d23-421e-4a97-8e74-9e7b3c35d620</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_JeanBaggy -->
+            <itemGUID>8973893f-f324-4cdb-a32b-43cd0378174f</itemGUID>
+        </m_items>
+        <m_items><!-- Shoes_Black -->
+            <itemGUID>593bea3d-c127-4574-ac1e-2197dc56e486</itemGUID>
+        </m_items>
+        <m_items><!-- Socks_Ankle_White -->
+            <itemGUID>d1b5a93b-4d33-411f-8afc-bb8766a91f66</itemGUID>
+        </m_items>
+    </m_MaleOutfits>
+
+    <m_FemaleOutfits>
+        <m_Name>IsThrillerBeatIt</m_Name>
+        <m_Guid>43838b2f-8b9b-468f-8222-5401addcb248</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Tshirt_IndieStoneDECAL -->
+            <itemGUID>6fea1039-7404-4044-8c5b-2fc686ec21e4</itemGUID>
+        </m_items>
+        <m_items><!-- Jacket_WhiteTINT -->
+            <itemGUID>d9d60d23-421e-4a97-8e74-9e7b3c35d620</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_JeanBaggy -->
+            <itemGUID>8973893f-f324-4cdb-a32b-43cd0378174f</itemGUID>
+        </m_items>
+        <m_items><!-- Shoes_Black -->
+            <itemGUID>593bea3d-c127-4574-ac1e-2197dc56e486</itemGUID>
+        </m_items>
+        <m_items><!-- Socks_Ankle_White -->
+            <itemGUID>d1b5a93b-4d33-411f-8afc-bb8766a91f66</itemGUID>
+        </m_items>
+    </m_FemaleOutfits>
+
+    <m_MaleOutfits>
+        <m_Name>IsThrillerHalloweenDevil</m_Name>
+        <m_Guid>fa2119c9-7185-46e8-8b2c-9e109feacec3</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Hat_HalloweenMaskDevil -->
+            <itemGUID>f07c1207-8a0b-4be1-9b9f-7aea1b73b598</itemGUID>
+        </m_items>
+        <m_items><!-- Vest_Leather -->
+            <itemGUID>20af1150-f497-47df-893b-263f6bc4bcf6</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_Crafted_Cotton -->
+            <itemGUID>86104baa-4069-4677-8c40-b7643a6b7ed7</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Denim_Punk -->
+            <itemGUID>a53aa26e-0a08-463f-ae0f-b14514469a35</itemGUID>
+        </m_items>
+    </m_MaleOutfits>
+
+    <m_FemaleOutfits>
+        <m_Name>IsThrillerHalloweenDevil</m_Name>
+        <m_Guid>21238127-2abf-488c-ae3d-7dbf2ca7a720</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Hat_HalloweenMaskDevil -->
+            <itemGUID>f07c1207-8a0b-4be1-9b9f-7aea1b73b598</itemGUID>
+        </m_items>
+        <m_items><!-- Vest_Leather -->
+            <itemGUID>20af1150-f497-47df-893b-263f6bc4bcf6</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_Crafted_Cotton -->
+            <itemGUID>86104baa-4069-4677-8c40-b7643a6b7ed7</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Denim_Punk -->
+            <itemGUID>a53aa26e-0a08-463f-ae0f-b14514469a35</itemGUID>
+        </m_items>
+    </m_FemaleOutfits>
+
+    <m_MaleOutfits>
+        <m_Name>IsThrillerHalloweenMonster</m_Name>
+        <m_Guid>23ee763a-dba2-4433-939d-8523d98f0495</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Hat_HalloweenMaskMonster -->
+            <itemGUID>c8406192-a64d-40b7-a9b7-4589fd315375</itemGUID>
+        </m_items>
+        <m_items><!-- Vest_Leather -->
+            <itemGUID>20af1150-f497-47df-893b-263f6bc4bcf6</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_Crafted_Cotton -->
+            <itemGUID>86104baa-4069-4677-8c40-b7643a6b7ed7</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Denim_Punk -->
+            <itemGUID>a53aa26e-0a08-463f-ae0f-b14514469a35</itemGUID>
+        </m_items>
+    </m_MaleOutfits>
+
+    <m_FemaleOutfits>
+        <m_Name>IsThrillerHalloweenMonster</m_Name>
+        <m_Guid>19cc31e3-6f1a-49c1-8353-334e0755bafa</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Hat_HalloweenMaskMonster -->
+            <itemGUID>c8406192-a64d-40b7-a9b7-4589fd315375</itemGUID>
+        </m_items>
+        <m_items><!-- Vest_Leather -->
+            <itemGUID>20af1150-f497-47df-893b-263f6bc4bcf6</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_Crafted_Cotton -->
+            <itemGUID>86104baa-4069-4677-8c40-b7643a6b7ed7</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Denim_Punk -->
+            <itemGUID>a53aa26e-0a08-463f-ae0f-b14514469a35</itemGUID>
+        </m_items>
+    </m_FemaleOutfits>
+
+    <m_MaleOutfits>
+        <m_Name>IsThrillerHalloweenPumpkin</m_Name>
+        <m_Guid>e74a9567-6786-4ff4-81cd-187b2ba7e41d</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Hat_HalloweenMaskPumpkin -->
+            <itemGUID>2745ac18-1e07-4fba-96d0-9e9c6c15a58d</itemGUID>
+        </m_items>
+        <m_items><!-- Vest_Leather -->
+            <itemGUID>20af1150-f497-47df-893b-263f6bc4bcf6</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_Crafted_Cotton -->
+            <itemGUID>86104baa-4069-4677-8c40-b7643a6b7ed7</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Denim_Punk -->
+            <itemGUID>a53aa26e-0a08-463f-ae0f-b14514469a35</itemGUID>
+        </m_items>
+    </m_MaleOutfits>
+
+    <m_FemaleOutfits>
+        <m_Name>IsThrillerHalloweenPumpkin</m_Name>
+        <m_Guid>04621500-5565-43aa-8a6d-cdd2a37183aa</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Hat_HalloweenMaskPumpkin -->
+            <itemGUID>2745ac18-1e07-4fba-96d0-9e9c6c15a58d</itemGUID>
+        </m_items>
+        <m_items><!-- Vest_Leather -->
+            <itemGUID>20af1150-f497-47df-893b-263f6bc4bcf6</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_Crafted_Cotton -->
+            <itemGUID>86104baa-4069-4677-8c40-b7643a6b7ed7</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Denim_Punk -->
+            <itemGUID>a53aa26e-0a08-463f-ae0f-b14514469a35</itemGUID>
+        </m_items>
+    </m_FemaleOutfits>
+
+    <m_MaleOutfits>
+        <m_Name>IsThrillerHalloweenSkeleton</m_Name>
+        <m_Guid>b76923ec-7f9d-4034-962e-0452211feb38</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Hat_HalloweenMaskSkeleton -->
+            <itemGUID>daba5d60-4610-4b5e-aab9-06437e308adb</itemGUID>
+        </m_items>
+        <m_items><!-- Vest_Leather -->
+            <itemGUID>20af1150-f497-47df-893b-263f6bc4bcf6</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_Crafted_Cotton -->
+            <itemGUID>86104baa-4069-4677-8c40-b7643a6b7ed7</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Denim_Punk -->
+            <itemGUID>a53aa26e-0a08-463f-ae0f-b14514469a35</itemGUID>
+        </m_items>
+    </m_MaleOutfits>
+
+    <m_FemaleOutfits>
+        <m_Name>IsThrillerHalloweenSkeleton</m_Name>
+        <m_Guid>229d01c4-3c42-4a6e-932e-639ce4657668</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Hat_HalloweenMaskSkeleton -->
+            <itemGUID>daba5d60-4610-4b5e-aab9-06437e308adb</itemGUID>
+        </m_items>
+        <m_items><!-- Vest_Leather -->
+            <itemGUID>20af1150-f497-47df-893b-263f6bc4bcf6</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_Crafted_Cotton -->
+            <itemGUID>86104baa-4069-4677-8c40-b7643a6b7ed7</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Denim_Punk -->
+            <itemGUID>a53aa26e-0a08-463f-ae0f-b14514469a35</itemGUID>
+        </m_items>
+    </m_FemaleOutfits>
+
+    <m_MaleOutfits>
+        <m_Name>IsThrillerHalloweenVampire</m_Name>
+        <m_Guid>18c2743a-c558-41ff-9076-cae1909060b1</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Hat_HalloweenMaskVampire -->
+            <itemGUID>605cd8cd-6d88-417e-be23-f7649f7579b7</itemGUID>
+        </m_items>
+        <m_items><!-- Vest_Leather -->
+            <itemGUID>20af1150-f497-47df-893b-263f6bc4bcf6</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_Crafted_Cotton -->
+            <itemGUID>86104baa-4069-4677-8c40-b7643a6b7ed7</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Denim_Punk -->
+            <itemGUID>a53aa26e-0a08-463f-ae0f-b14514469a35</itemGUID>
+        </m_items>
+    </m_MaleOutfits>
+
+    <m_FemaleOutfits>
+        <m_Name>IsThrillerHalloweenVampire</m_Name>
+        <m_Guid>b38cfce9-c359-4279-9948-a12b905f728d</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Hat_HalloweenMaskVampire -->
+            <itemGUID>605cd8cd-6d88-417e-be23-f7649f7579b7</itemGUID>
+        </m_items>
+        <m_items><!-- Vest_Leather -->
+            <itemGUID>20af1150-f497-47df-893b-263f6bc4bcf6</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_Crafted_Cotton -->
+            <itemGUID>86104baa-4069-4677-8c40-b7643a6b7ed7</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Denim_Punk -->
+            <itemGUID>a53aa26e-0a08-463f-ae0f-b14514469a35</itemGUID>
+        </m_items>
+    </m_FemaleOutfits>
+
+    <m_MaleOutfits>
+        <m_Name>IsThrillerHalloweenWitch</m_Name>
+        <m_Guid>f9c1b785-c0dc-4911-9c3a-32cc3970294e</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Hat_HalloweenMaskWitch -->
+            <itemGUID>aaee3713-b828-4c7b-a2ef-b8072e578dc0</itemGUID>
+        </m_items>
+        <m_items><!-- Vest_Leather -->
+            <itemGUID>20af1150-f497-47df-893b-263f6bc4bcf6</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_Crafted_Cotton -->
+            <itemGUID>86104baa-4069-4677-8c40-b7643a6b7ed7</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Denim_Punk -->
+            <itemGUID>a53aa26e-0a08-463f-ae0f-b14514469a35</itemGUID>
+        </m_items>
+    </m_MaleOutfits>
+
+    <m_FemaleOutfits>
+        <m_Name>IsThrillerHalloweenWitch</m_Name>
+        <m_Guid>72c9e89c-af5e-4fa5-b9cf-1d14b68eaf80</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Hat_HalloweenMaskWitch -->
+            <itemGUID>aaee3713-b828-4c7b-a2ef-b8072e578dc0</itemGUID>
+        </m_items>
+        <m_items><!-- Vest_Leather -->
+            <itemGUID>20af1150-f497-47df-893b-263f6bc4bcf6</itemGUID>
+        </m_items>
+        <m_items><!-- Shirt_Crafted_Cotton -->
+            <itemGUID>86104baa-4069-4677-8c40-b7643a6b7ed7</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Denim_Punk -->
+            <itemGUID>a53aa26e-0a08-463f-ae0f-b14514469a35</itemGUID>
+        </m_items>
+    </m_FemaleOutfits>
+
+</outfitManager>

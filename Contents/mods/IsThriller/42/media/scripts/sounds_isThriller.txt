@@ -1,0 +1,36 @@
+module Base
+{
+    sound ThrillerSong
+    {
+        category = Item,
+        is3D = false,
+        loop = false,
+        clip
+        {
+            file = media/sound/IsThriller/thriller.ogg,
+            volume = 1.0,
+        }
+    }
+    sound BeatItSong
+    {
+        category = Item,
+        is3D = false,
+        loop = false,
+        clip
+        {
+            file = media/sound/IsThriller/beatIt.ogg,
+            volume = 1.0,
+        }
+    }
+    sound SmoothCriminalSong
+    {
+        category = Item,
+        is3D = false,
+        loop = false,
+        clip
+        {
+            file = media/sound/IsThriller/smoothCriminal.ogg,
+            volume = 1.0,
+        }
+    }
+}

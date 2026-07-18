@@ -1,0 +1,61 @@
+module IsThriller {
+    imports {
+        Base
+    }
+	item Hat_FedoraWhite
+	{
+	    DisplayCategory = Accessory,
+        ItemType = base:clothing,
+		Icon = HatFedoraWhite,
+		ClothingItem = IsThriller_Hat_FedoraWhite,
+
+		BodyLocation = base:hat,
+		ChanceToFall = 25,
+
+        BloodLocation = Head,
+        Insulation = 0.15,
+        WindResistance = 0.2,
+        BiteDefense = 5,
+        Weight = 0.5,
+
+        CanHaveHoles = FALSE,
+        Tags = base:caneat,
+	}
+
+    item battleAura
+    {
+	    DisplayCategory = Aura,
+        DisplayName = Battle Aura,
+		Icon = RabbitearsBlack,
+
+        ItemType = base:clothing,
+		Icon = battle_aura,
+		ClothingItem = battleAura,
+
+		BodyLocation = mybgm:aura,
+		CanBeEquipped = mybgm:aura,
+        CanHaveHoles = false,
+		RemoveOnBroken = false,
+
+        BloodLocation = Shoes;Trousers;Jacket;Hands;Head,
+
+        Tooltip = UI_item_battleAuraTooltip,
+
+		BulletDefense = 30,
+        BiteDefense = 30,
+		ScratchDefense = 30,
+
+		Insulation = 0,
+		WaterResistance = 0,
+		Weight = 0,
+		WindResistance = 0,
+
+        RunSpeedModifier = 1.5,
+        CombatSpeedModifier = 1.5,
+        
+        ConditionLowerChanceOneIn = 99999999,
+        ConditionMax = 9999,
+
+        Tags = base:caneat,
+    }
+}

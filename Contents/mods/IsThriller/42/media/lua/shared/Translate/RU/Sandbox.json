@@ -1,0 +1,26 @@
+{
+    "Sandbox_IsThriller": "Is Thriller?",
+    "Sandbox_IsThriller_Range": "Радиус срабатывания (клетки)",
+    "Sandbox_IsThriller_Range_tooltip": "Когда зомби входят в этот радиус, запускается Thriller Майкла Джексона: начинает играть музыка, а скорость их передвижения определяется заново.",
+    "Sandbox_IsThriller_SprintChance": "Шанс стать бегуном (%)",
+    "Sandbox_IsThriller_SprintChance_tooltip": "Шанс того, что зомби, вошедший в радиус, станет бегуном. Остальные станут быстрыми шаркунами.",
+    "Sandbox_IsThriller_MaxZombies": "Максимум танцующих зомби",
+    "Sandbox_IsThriller_MaxZombies_tooltip": "В первые 3 минуты после появления Майкла Джексона каждую минуту вне поля зрения игрока появляются дополнительные зомби. Их количество случайно выбирается от 2 до этого максимума, и они входят с края радиуса сбора.",
+    "Sandbox_IsThriller_MaxDancer": "Количество зомби-танцоров (0 = случайно от 2 до 5)",
+    "Sandbox_IsThriller_MaxDancer_tooltip": "Сколько зомби-танцоров появляется вместе с Майклом Джексоном в начале сцены Thriller. У танцоров в 5 раз больше здоровья, чем у обычного зомби, и они тоже лечатся, пока восстанавливается MJ. При значении 0 количество выбирается случайно от 2 до 5.",
+    "Sandbox_IsThriller_EventChance": "Шанс события в минуту (%)",
+    "Sandbox_IsThriller_EventChance_tooltip": "Шанс за каждую игровую минуту запустить событие Thriller, если рядом есть зомби. Ночью шанс удваивается. Значение 1 означает шанс 0,1%. Поскольку проверка выполняется каждую минуту, установите как можно меньшее значение, если не хотите слишком частых срабатываний.",
+    "Sandbox_IsThriller_EventCooldown": "Перезарядка события (игровые часы)",
+    "Sandbox_IsThriller_EventCooldown_tooltip": "После успешного запуска и завершения события Thriller должно пройти указанное количество игровых часов, прежде чем сможет начаться следующее.",
+    "Sandbox_IsThriller_MusicOptionsDivider": "──────── Выбор композиций (можно несколько) ────────",
+    "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "Можно выбрать несколько композиций. При запуске события Thriller случайным образом будет выбрана одна из них. Этот параметр служит только разделителем и сам по себе ни на что не влияет.",
+    "Sandbox_IsThriller_JustBeatIt": "Воспроизводить Beat It",
+    "Sandbox_IsThriller_JustBeatIt_tooltip": "При появлении Майкла Джексона воспроизводить Beat It вместо Thriller.",
+    "Sandbox_IsThriller_JustSmoothCriminal": "Воспроизводить Smooth Criminal",
+    "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "При появлении Майкла Джексона воспроизводить Smooth Criminal вместо Thriller.",
+    "Sandbox_IsThriller_JustThriller": "Воспроизводить Thriller",
+    "Sandbox_IsThriller_JustThriller_tooltip": "При появлении Майкла Джексона воспроизводить Thriller.",
+
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM": "Никто не победит меня, пока играет моя музыка",
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip": "Переключает мод в режим, при котором начало боя лишь запускает случайную композицию Майкла Джексона, не вызывая событие сбора орды зомби."
+}

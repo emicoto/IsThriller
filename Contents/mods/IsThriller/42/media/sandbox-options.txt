@@ -1,0 +1,109 @@
+VERSION = 1,
+
+option IsThriller.Range
+{
+    type = integer,
+    min = 6,
+    max = 60,
+    default = 20,
+    page = IsThriller,
+    translation = IsThriller_Range,
+}
+
+option IsThriller.SprintChance
+{
+    type = integer,
+    min = 0,
+    max = 100,
+    default = 10,
+    page = IsThriller,
+    translation = IsThriller_SprintChance,
+}
+
+option IsThriller.MaxZombies
+{
+    type = integer,
+    min = 1,
+    max = 30,
+    default = 6,
+    page = IsThriller,
+    translation = IsThriller_MaxZombies,
+}
+
+option IsThriller.EventChance
+{
+    type = integer,
+    min = 0,
+    max = 1000,
+    default = 15,
+    page = IsThriller,
+    translation = IsThriller_EventChance,
+}
+
+option IsThriller.EventCooldown
+{
+    type = integer,
+    min = 1,
+    max = 120,
+    default = 2,
+    page = IsThriller,
+    translation = IsThriller_EventCooldown,
+}
+
+option IsThriller.MaxDancer
+{
+    type = integer,
+    min = 0,
+    max = 6,
+    default = 2,
+    page = IsThriller,
+    translation = IsThriller_MaxDancer,
+}
+
+option IsThriller.MaxWave
+{
+    type = integer,
+    min = 1,
+    max = 10,
+    default = 5,
+    page = IsThriller,
+    translation = IsThriller_MaxWave,
+}
+
+option IsThriller.MusicOptionsDivider
+{
+    type = boolean,
+    default = false,
+    page = IsThriller,
+    translation = IsThriller_MusicOptionsDivider,
+}
+
+option IsThriller.JustBeatIt
+{
+    type = boolean,
+    default = true,
+    page = IsThriller,
+    translation = IsThriller_JustBeatIt,
+}
+option IsThriller.JustSmoothCriminal
+{
+    type = boolean,
+    default = true,
+    page = IsThriller,
+    translation = IsThriller_JustSmoothCriminal,
+}
+option IsThriller.JustThriller
+{
+    type = boolean,
+    default = true,
+    page = IsThriller,
+    translation = IsThriller_JustThriller,
+}
+
+option IsThriller.NoBodyCanBeatMeInBGM
+{
+    type = boolean,
+    default = false,
+    page = IsThriller,
+    translation = IsThriller_NoBodyCanBeatMeInBGM,
+}

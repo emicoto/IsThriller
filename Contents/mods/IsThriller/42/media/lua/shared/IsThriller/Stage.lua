@@ -1,0 +1,337 @@
+if not IsThriller then return end
+local util, music, actor, pbuff, conf = IsThriller.util, IsThriller.music, IsThriller.actor, IsThriller.pbuff, IsThriller.config
+
+
+local Stage = {
+    dancerReady = -1,       -- 本场每个玩家对应的dancer是否已经被确认生成
+}
+
+local function releaseTAD(mt)
+    if not mt.hasTAD or not IsThrillerTAD or not IsThrillerTAD.release then return end
+
+    local ok, err = pcall(IsThrillerTAD.release, mt)
+    if not ok then
+        util.debugMsg("TAD release failed", "err=", tostring(err))
+    end
+end
+
+-- OnTick约60次/秒，舞步轮换只跟主舞台节拍走。
+local function runTADBeat(mt, player)
+    if not mt.hasTAD or not IsThrillerTAD or not IsThrillerTAD.onBeat then return end
+
+    mt.tadTick = (mt.tadTick or 0) + 1
+    if mt.tadTick < 60 then return end
+
+    mt.tadTick = 0
+    mt.beat = (mt.beat or 0) + 1
+
+    local ok, err = pcall(IsThrillerTAD.onBeat, mt, player)
+    if not ok then
+        util.debugMsg("TAD onBeat failed", "err=", tostring(err))
+    end
+end
+
+local function cleanStat(mt, player)
+    if player then
+        local md = util.getData(player)
+        md.lastHit = -1
+        md.lastTarget = nil
+        md.showMin = nil    -- ClaudeNote: 和平观演考勤清账(补回)
+        md.attendMin = nil
+    end
+    mt.endReason = nil
+
+    releaseTAD(mt)
+
+    mt:cleanState()
+    actor.dismiss()
+end
+
+local function isZombieSurround(report)
+    -- ClaudeNote: B1修复, rangeCount是数字不是函数, 原写法一调用即崩
+    return report and (report.nearCount >= conf.get("minNearZombie") or report.rangeCount >= conf.get("minRangeZombie"))
+end
+
+---@param mt table theIsThriller main object
+---@param player IsoPlayer
+function Stage.hardStop(mt, player)
+    -- 强制结束， 不做事件冷却处理
+    util.debugMsg("hardStop", "state=", mt.state, "mode=", mt.mode)
+    cleanStat(mt, player)
+    music.stop(player)
+end
+
+-- ClaudeNote: Phase2新增 — 预演取消(luring超时/包围解除): 演员撤场, 不掉奖励, 不记冷却
+function Stage.cancel(mt, player)
+    util.debugMsg("stage cancel", "lure failed")
+    actor.strike(player, true)
+    actor.dismiss()
+    cleanStat(mt, player)
+    music.stop(player)
+end
+
+
+function Stage.onFire(mt, player, zombie)
+    if not player then return end
+
+    if not mt:isIdle() then return end
+    if not Stage.checkStart(mt, player) then return end
+
+    if mt:isMJtime() then
+        Stage.doStart(mt, player)
+    else
+        -- bgmTime start is handlered by pbuff
+        pbuff.doStart(mt, player)
+    end
+end
+
+-- when entered final stage successfully
+---@param mt table IsThriller main object
+---@param player IsoPlayer
+---@param reason string|nil "complete"=播满歌数的完整落幕; 其余(nil/"early")=提前结束
+function Stage.doFinal(mt, player, reason)
+    local md = util.getModData()
+
+    if mt:isMJtime() then
+        releaseTAD(mt)
+        -- ClaudeNote: 和平观演(补回) — 记录结束原因, strike据此判定告别礼资格
+        mt.endReason = reason or "early"
+        -- fading是舞台级的60游戏分钟尾声周期, 与音乐淡出解耦
+        music.beginFade()
+
+        mt.state = "fading"
+        md.state = "fading"
+        md.lastStage = util.getMin()
+        md.fadeStart = util.getMin()
+        md.cooldown = util.getHour() + util.getSV("EventCooldown")
+        md.song = nil
+        util.debugMsg("doFinal -> fading", "fadeStart=", md.fadeStart, "cooldownUntil=", md.cooldown)
+    else
+        return Stage.finishBgm(mt, player)
+    end
+end
+
+-- 播满MaxWave首歌不立刻散场, 先看存活状态: 全员活蹦乱跳时encoreChance概率加演recall
+function Stage.onSongLimit(mt, player)
+    if not music.encored
+        and mt:mjAlive()
+        and mt:dancerCount() == IsThriller.actor.dancerTotal -- ClaudeNote: 死亡会移出名单, 比对编制总数才是"全员存活"
+        and ZombRand(100) < conf.get("encoreChance") then
+
+        music.encored = true
+        music.pick()    -- ClaudeNote: Phase2修正 — 加演前重新选曲, 否则会复读上一首
+        music.start(player)
+        util.debugMsg("onSongLimit: encore! recall stage", "played=", music.played)
+        return
+    end
+
+    -- 播满歌数的自然落幕 = 完整演出(和平观演资格路径)
+    Stage.doFinal(mt, player, "complete")
+end
+
+-- fading期的每分钟检查: finalCountDown(60)游戏分钟尾声走完后正式散场
+function Stage.checkFade(mt, player)
+    local md = util.getModData()
+    local elapsed = util.countMin(md.fadeStart or 0)
+    if elapsed < conf.get("finalCountDown") then
+        return
+    end
+    Stage.finish(mt, player)
+end
+
+-- myBgm单曲自然播完的收场
+function Stage.finishBgm(mt, player)
+    local md = util.getModData()
+    md.cooldown = util.getHour() + util.getSV("EventCooldown")
+    md.state = "idle"
+    md.lastStage = util.getMin()
+    md.song = nil
+
+    pbuff.doEnd(mt, player)
+    cleanStat(mt, player)
+    music.stop(player)
+    util.debugMsg("finishBgm", "cooldownUntil=", md.cooldown)
+end
+
+
+---@param mt table  IsThriller main object
+---@param player IsoPlayer
+function Stage.checkStart(mt, player)
+
+    local md = util.getModData()
+    local pid = util.getPID(player)
+
+    -- if still in cooldown
+    if (md.cooldown or -1) > 0 and util.getHour() < md.cooldown then
+        return false
+    end
+
+    -- 两种模式都要求被包围; myBgm不掷骰, 只有thriller走EventChance概率
+    local report = mt.report[pid]
+    if not isZombieSurround(report) then return false end
+
+    if not mt:isMJtime() then
+        util.debugMsg("checkStart pass (myBgm)", "pid=", pid)
+        return true
+    end
+
+    local chance = util.getSV('EventChance')
+    if util.isNight() then
+        chance = chance * 2
+    end
+
+    if ZombRand(1000) >= chance then return false end
+
+    util.debugMsg("checkStart pass (thriller)", "pid=", pid, "chance=", chance)
+    return true
+end
+
+
+-- 尾声周期走完后的正式散场 (由checkFade调用; 冷却已在doFinal进入fading时记录)
+function Stage.finish(mt, player)
+    util.debugMsg("finish", "mode=", mt.mode)
+    actor.strike(player)
+    cleanStat(mt, player)
+    music.stop(player)
+end
+
+-- ClaudeNote: Phase2实装 — luring/playing阶段的每分钟检查
+-- 返回: "ready"=可开演(StageMin转doStage) / "cancel"=预演失败 / "final"=进入尾声 / nil=维持现状
+function Stage.checkStage(mt, player)
+    local pid = util.getPID(player)
+    local pd = util.getData(player)
+    local rp = mt.report[pid]
+
+    -- 有人被盯上就刷新"最后被注意"时间戳(安全脱离判定的基准)
+    if rp and rp.targeting > 0 then
+        pd.lastTarget = util.getMin()
+    end
+
+    if mt:isLuring() then
+        -- MJ生成失败时每分钟重试(找落点可能因地形失败)
+        if not actor.mj then
+            actor.mjStandby(player)
+        end
+        -- 本场 dancer 还没生成时
+        if #actor.dancers == 0 then
+            actor.dancerStandby(player)
+        end
+
+        local elapsed = util.countMin(mt.lureStart or util.getMin())
+        local timeout = elapsed >= util.toGameTime(conf.get("maxLureSec"))
+
+        -- 包围解除且没有演员在场: 预演失败
+        if timeout and not actor.mj then
+            return "cancel"
+        end
+
+        -- 开演条件: MJ到位(danceRange+1滞回) 且 有丧尸盯上玩家; 或超时但MJ已在场附近
+        if actor.mj and not actor.mj:isDead() then
+            local dist = actor.mj:DistTo(player)
+            local onStage = dist <= conf.get("danceRange") + 1
+
+            if onStage or player:CanSee(actor.mj) then
+                return "ready"
+            end
+            if timeout then
+                -- 超时: MJ已接近(7格内)也强行开演, 否则取消
+                if dist <= 7 then return "ready" end
+                return "cancel"
+            end
+        end
+        return nil
+    end
+
+    if mt:isPlaying() then
+        -- ClaudeNote: 和平观演考勤(合并时丢失, 补回) — playing每分钟记账
+        pd.showMin = (pd.showMin or 0) + 1
+        if actor.mj and not actor.mj:isDead()
+            and actor.mj:DistTo(player) <= (conf.get("attendRange") or 10) then
+            pd.attendMin = (pd.attendMin or 0) + 1
+        end
+
+        -- 尾声条件a: 可感知范围(safeRange=30)内已无任何丧尸
+        if rp and rp.safeCount == 0 then
+            util.debugMsg("checkStage: area clear -> final")
+            return "final"
+        end
+
+        -- 尾声条件b: 主演+伴舞全灭, 且[真实5分钟折算]内无人被丧尸盯上
+        local wiped = (not actor.mj or actor.mj:isDead()) and mt:dancerCount() == 0
+        if wiped then
+            local idleMin = util.countMin(pd.lastTarget or util.getMin())
+            if idleMin >= util.toGameTime(5 * 60) then
+                util.debugMsg("checkStage: wiped + no attention -> final")
+                return "final"
+            end
+        end
+
+        -- 尾声条件c(SP): 安全状态持续[safeMinSP真实分钟折算]
+        if rp and rp.targeting == 0 then
+            local idleMin = util.countMin(pd.lastTarget or util.getMin())
+            if idleMin >= util.toGameTime(conf.get("safeMinSP") * 60) then
+                util.debugMsg("checkStage: safe timeout -> final")
+                return "final"
+            end
+        end
+        return nil
+    end
+
+    return nil
+end
+
+-- ClaudeNote: Phase2实装 — 开演: 切playing, 起歌(doStart已预选首曲), 圈内观众就位, 音爆引怪
+function Stage.doStage(mt, player)
+    mt.state = "playing"
+    mt.beat = 0
+    mt.tadTick = 0
+    local md = util.getModData()
+    md.state = "playing"
+
+    music.start(player)
+    md.song = music.current
+
+    local pd = util.getData(player)
+    pd.lastTarget = util.getMin()   -- 安全脱离计时从开演起算
+
+    actor.crowdStandby(player)
+
+    -- 音爆: 短暂大声引怪, 包围圈内丧尸把注意力对准玩家(README音乐机制)
+    pcall(function()
+        getWorldSoundManager():addSound(player, player:getX(), player:getY(), 0, conf.get("radius"), 100)
+    end)
+
+    util.debugMsg("doStage -> playing", "song=", tostring(music.current))
+end
+
+-- 演出期间的tick循环
+function Stage.onTick(mt, player)
+    if mt:isLuring() then
+        actor.mjCtrl(player)
+        actor.dancerCtrl(player)
+
+    elseif mt:isPlaying() then
+        -- ClaudeNote: Phase2实装 — playing期: 位置维持/激励回血/前奏波次
+        actor.mjCtrl(player)
+        actor.dancerCtrl(player)
+        actor.heal(player)
+        actor.waves(mt, player)
+        runTADBeat(mt, player)
+
+    else
+        -- fading 期间如果还存活的后续处理
+    end
+end
+
+-- 条件确立，进入预演状态
+function Stage.doStart(mt, player)
+    mt.state = "luring"
+    mt.lureStart = util.getMin()    -- ClaudeNote: Phase2 — lure超时计时起点(游戏分钟)
+    music.pick()                    -- ClaudeNote: Phase2 — 预选首曲, MJ套装跟曲目走
+    util.debugMsg("doStart -> luring", "pid=", util.getPID(player), "song=", tostring(music.current))
+
+    actor.mjStandby(player)
+    actor.dancerStandby(player)
+end
+
+return Stage
