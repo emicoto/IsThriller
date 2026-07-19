@@ -14,10 +14,15 @@ end
 
 
 function Util.debugMsg(...)
-    -- ClaudeNote: 原来的门闩是 IsThriller.enabled, 主表里只有 debug 字段, enabled永远nil
     if IsThriller.debug then
         print("[LuneModDebug] <isThriler> |  ", ...)
     end
+end
+
+function Util.countDist(zombie, player)
+    if not player or not zombie then return 0 end
+    
+    return math.ceil(zombie:DistTo(player) / 2)
 end
 
 -- 游戏分钟 -> 正常速度下的真实秒数
@@ -65,11 +70,11 @@ function Util.countMin(lastStamp)
 end
 
 -- temporary change sandbox var to effect zombies
-function Util.doZombieStats(zombie, typeName)
+function Util.doZombieStats(zombie, typeName, value)
     local stats = getSandboxOptions():getOptionByName("ZombieLore."..typeName)
     local temp = stats:getValue()
 
-    stats:setValue(1)
+    stats:setValue(value or 1)
     zombie:DoZombieStats()
     stats:setValue(temp)
 end
@@ -118,14 +123,22 @@ function Util.getPlayer(num)
     return num and getSpecificPlayer(num) or getPlayer()
 end
 
-function Util.getData(player)
+function Util.getData(chara)
     local mid = IsThriller.config.modId
-    if not player then return end
+    if not chara or not chara.getModData then return {} end
 
-    if not player:getModData()[mid] then
-        player:getModData()[mid] = {}
+    if not chara:getModData()[mid] then
+        chara:getModData()[mid] = {}
     end
-    return player:getModData()[mid]
+    return chara:getModData()[mid]
+end
+
+function Util.setData(chara, data)
+    local mid = IsThriller.config.modId
+    local md = chara:getModData()
+    md[mid] = data
+    
+    chara:setModData(md)
 end
 
 function Util.getModData()
@@ -140,7 +153,7 @@ function Util.isNight()
     return not (hour >= 6 and hour <= 17)
 end
 
-function Util.isValidLot(sq) -- ClaudeNote: B4修复, 原形参square与函数体sq不一致, 永远返回false
+function Util.isValidLot(sq)
     if not sq then return false end
     local ok, valid = pcall(function()
         return sq:isOutside()
@@ -176,8 +189,8 @@ function Util.dump()
     local ac = st.actor
     if ac then
         local mjState = ac.mj and (ac.mj:isDead() and "dead" or "alive") or "nil"
-        print(("actor  | mj=%s mjHP=%s dancers=%s(alive=%s) buffTick=%s costume=%s")
-            :format(mjState, s(ac.mjHP), s(ac.dancers and #ac.dancers), s(st.dancerCount and st:dancerCount()), s(ac.buffTick), s(ac.costume)))
+        print(("actor  | mj=%s mjHP=%s dancers=%s(alive=%s) allDancer=%s buffTick=%s costume=%s")
+            :format(mjState, s(ac.mjHP), s(ac.dancerTotal), s(ac.dancerCount and ac:dancerCount()), s(ac.allDancerNum and ac:allDancerNum()), s(ac.buffTick), s(ac.costume)))
     end
 
     for pid, rp in pairs(st.report or {}) do

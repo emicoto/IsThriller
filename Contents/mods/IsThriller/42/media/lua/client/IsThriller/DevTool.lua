@@ -192,7 +192,7 @@ local function buildLines()
     -- 演员
     -- ClaudeNote: 对象池修复 — 显示读死亡账本(mjDead/dancerTotal), 不再信旧引用的isDead
     local mjState = ac.mjDead and "DEAD" or (ac.mj and "alive" or "-")
-    add(("MJ=%s hit=%s  hp=%s  dancers=%s/%s  grudge=%s"):format(mjState, tostring(ac.mjEverHit), fmt(ac.mjHP), fmt(st:dancerCount()), fmt(ac.dancerTotal or 0), fmt(ac.grudge or -1)))
+    add(("MJ=%s hit=%s  hp=%s  dancers=%s/%s  all=%s  grudge=%s"):format(mjState, tostring(ac.mjEverHit), fmt(ac.mjHP), fmt(ac:dancerCount()), fmt(ac.dancerTotal or 0), fmt(ac:allDancerNum()), fmt(ac.grudge or -1)))
 
     -- 扫描报告
     local player = getPlayer()

@@ -20,14 +20,22 @@ local function runTADBeat(mt, player)
     if not mt.hasTAD or not IsThrillerTAD or not IsThrillerTAD.onBeat then return end
 
     mt.tadTick = (mt.tadTick or 0) + 1
-    if mt.tadTick < 60 then return end
+
+    if mt.tadTick <= 30 then return end
 
     mt.tadTick = 0
-    mt.beat = (mt.beat or 0) + 1
 
     local ok, err = pcall(IsThrillerTAD.onBeat, mt, player)
     if not ok then
         util.debugMsg("TAD onBeat failed", "err=", tostring(err))
+    end
+
+    -- 主MOD侧每拍舞蹈状态机(冷却递减/起舞收舞/归队复舞), TAD只轮换舞步
+    if actor.onBeat then
+        local ok2, err2 = pcall(actor.onBeat, mt, player)
+        if not ok2 then
+            util.debugMsg("actor.onBeat failed", "err=", tostring(err2))
+        end
     end
 end
 
@@ -115,7 +123,7 @@ end
 function Stage.onSongLimit(mt, player)
     if not music.encored
         and mt:mjAlive()
-        and mt:dancerCount() == IsThriller.actor.dancerTotal -- ClaudeNote: 死亡会移出名单, 比对编制总数才是"全员存活"
+        and actor:dancerCount() == actor.dancerTotal -- 固定伴舞死亡会移出名册, 比对编制总数才是"全员存活"
         and ZombRand(100) < conf.get("encoreChance") then
 
         music.encored = true
@@ -213,7 +221,7 @@ function Stage.checkStage(mt, player)
             actor.mjStandby(player)
         end
         -- 本场 dancer 还没生成时
-        if #actor.dancers == 0 then
+        if actor:dancerCount() == 0 then
             actor.dancerStandby(player)
         end
 
@@ -257,7 +265,7 @@ function Stage.checkStage(mt, player)
         end
 
         -- 尾声条件b: 主演+伴舞全灭, 且[真实5分钟折算]内无人被丧尸盯上
-        local wiped = (not actor.mj or actor.mj:isDead()) and mt:dancerCount() == 0
+        local wiped = (not actor.mj or actor.mj:isDead()) and actor:dancerCount() == 0
         if wiped then
             local idleMin = util.countMin(pd.lastTarget or util.getMin())
             if idleMin >= util.toGameTime(5 * 60) then
@@ -283,7 +291,6 @@ end
 -- ClaudeNote: Phase2实装 — 开演: 切playing, 起歌(doStart已预选首曲), 圈内观众就位, 音爆引怪
 function Stage.doStage(mt, player)
     mt.state = "playing"
-    mt.beat = 0
     mt.tadTick = 0
     local md = util.getModData()
     md.state = "playing"
@@ -307,13 +314,12 @@ end
 -- 演出期间的tick循环
 function Stage.onTick(mt, player)
     if mt:isLuring() then
-        actor.mjCtrl(player)
-        actor.dancerCtrl(player)
+        -- 编队总控(rally汇合→march同行)
+        actor.groupCtrl(player)
 
     elseif mt:isPlaying() then
-        -- ClaudeNote: Phase2实装 — playing期: 位置维持/激励回血/前奏波次
-        actor.mjCtrl(player)
-        actor.dancerCtrl(player)
+        -- 起舞/收舞在runTADBeat→actor.onBeat按拍处理
+        actor.groupCtrl(player)
         actor.heal(player)
         actor.waves(mt, player)
         runTADBeat(mt, player)

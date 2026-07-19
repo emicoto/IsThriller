@@ -7,7 +7,7 @@ local Config = {
 
     -- raw sandbox var
     sv = {
-        Range           = 20,   -- default range to lure zombies
+        Range           = 15,   -- default range to lure zombies
         SprintChance    = 10,   -- 10% chance to sprint
         MaxZombies      = 6,    -- maximum additional zombies per phase
         MaxDancer       = 2,    -- max mini boss will spawn with MJ
@@ -23,27 +23,33 @@ local Config = {
 
     --== triggers ==--
     flag = {
-        safeRange       = 30,       -- no zombie in this range consider as safe
+        safeRange       = 20,       -- no zombie in this range consider as safe
+        nearRange       = 7,        -- how much distance consider as near by player
         safeMinSP       = 10,       -- how much time didn't get attention by zombies consider as safe
         safeMinMP       = 20,
         maxPhase        = 5,        -- max waves count of thriller stage (fallback, 沙盒MaxWave优先)
         escapeDistance  = 300,      -- how much distance if stay in 30 min consider as transported then consider safe
-        minNearZombie   = 6,
+        minNearZombie   = 5,
         minRangeZombie  = 12
     },
 
 
     --== stage controll ==--
     stage = {
-        nearRange = 8,     -- how much distance consider as near by player
         radius = 40,        -- world sound radius
         maxLureSec = 25,    -- ClaudeNote: 拍板30→20。lure超时(真实秒), 判定时经toGameTime换算游戏分钟
         spawnDist = 14,     -- how faraway from player when actor try to spawn
         danceRange = 4,     -- the range consider player can see the dance show
         slotArriveDist = 2, -- the range between actors
-        grudgeBeats = 20,   -- cooldown when get hit
+        grudgeBeats = 30,   -- cooldown when get hit
 
-        spinBeats = 5,      -- spin animation beats(~0.5s/per beat)
+        -- 舞蹈判定权收归主MOD
+        danceExitRange = 15,  -- MJ跳舞中玩家超过此距离则收舞追场(与danceRange构成滞回)
+        dancerRange = 8,     -- 伴舞锚定MJ的编队/起舞半径
+        rallyDist = 3,       -- 伴舞距MJ小于此视为汇合到位
+        rallySec = 20,       -- rally超时(真实秒), 到点没齐也强制开拔march
+
+        spinBeats = 5,       -- spin animation beats(~0.5s/per beat)
         moonwalkBeats = 6,
         retreatDistance = 4, -- retreat when get hit
 
@@ -57,6 +63,9 @@ local Config = {
 
     wipeBonus = 3 ,
     rewardBox = "Base.Present_ExtraLarge",
+
+    -- FanTicket兑换HealTheWorld所需张数
+    fanTicketExchange = 5,
 
     --== zombies setting ==--
     actor = {

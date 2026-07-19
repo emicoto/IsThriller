@@ -3,9 +3,9 @@ VERSION = 1,
 option IsThriller.Range
 {
     type = integer,
-    min = 6,
-    max = 60,
-    default = 20,
+    min = 10,
+    max = 100,
+    default = 15,
     page = IsThriller,
     translation = IsThriller_Range,
 }

@@ -12,8 +12,8 @@ local Music = {
     tick = -1,                  -- music manage tick
     played = 0,                 -- played song counter
 
-    gapStart = -1,              -- ClaudeNote: Phase1.1 幕间休息起点(游戏分钟戳), -1=不在幕间
-    encored = false,            -- ClaudeNote: Phase1.1 本场是否已加演过recall
+    gapStart = -1,              -- 幕间休息起点(游戏分钟戳), -1=不在幕间
+    encored = false,            -- 本场是否已加演过recall
 }
 
 -- simulate (()=>{})() js auto invoked function expression
@@ -38,9 +38,6 @@ local function lfuncMusic()
         -- if has extra songs from other mod then put then all in song list
         songs = Music.loadSong(songs)
 
-        -- ClaudeNote: Phase1新增(审查#5) — 三个曲目开关全关且没有外部BGM时,
-        -- 回退到完整默认歌单, 避免空歌单导致事件静默哑掉。
-        -- 顺序符合README: 全留空时优先播其他MOD追加的战斗BGM, 连追加都没有才兜底
         if #songs == 0 then
             for _, song in ipairs(conf.music.songs) do
                 table.insert(songs, song)
@@ -105,14 +102,11 @@ local function lfuncMusic()
         local emitter = player and player:getEmitter()
         if not emitter or not Music.current then return false end
 
-        -- ClaudeNote: 类型护栏, 防止非字符串混进歌单再引发Java层异常
         if type(Music.current) ~= "string" then
             util.debugMsg("music.play: invalid song id", tostring(Music.current))
             return false
         end
 
-        -- ClaudeNote: playSound改单参 — Refers全库均为playSound(name)形态,
-        -- (name, false)重载在CharacterSoundEmitter上不存在, 会抛No implementation found
         Music.handle = emitter:playSound(Music.current)
         if not Music.handle then return false end
 
@@ -122,8 +116,7 @@ local function lfuncMusic()
         Music.tick = 0
         Music.played = Music.played + 1
 
-        -- ClaudeNote: Phase1 — 每首歌开播即进入新一轮前奏phase, 重置波次计数供Stage/Actor刷群演
-        -- (波次生成本体在Phase2实装; 这里只负责点火)
+        -- 每首歌开播即进入新一轮前奏phase, 重置波次计数供Stage/Actor刷群演
         IsThriller.phase = 0
 
         util.debugMsg("music.play", "song=", tostring(Music.current), "played=", Music.played)
@@ -131,7 +124,6 @@ local function lfuncMusic()
     end
 
     function Music.start(player)
-        -- ClaudeNote: Phase2合并补漏 — doStart预选过的曲目(与MJ套装绑定)直接沿用, 没有才现选
         if not Music.current then
             if not Music.pick() then return false end
         end
@@ -153,8 +145,8 @@ local function lfuncMusic()
         Music.current = nil
         Music.fade = 0
         Music.played = 0
-        Music.gapStart = -1     -- ClaudeNote: Phase1.1
-        Music.encored = false   -- ClaudeNote: Phase1.1
+        Music.gapStart = -1 
+        Music.encored = false 
     end
 
     function Music.stop(player)
@@ -176,7 +168,7 @@ local function lfuncMusic()
 
         -- if fading
         if st:isFading() then
-            -- ClaudeNote: Phase1.1修订 — 歌已播完/已停时无声可淡, 返回false即可;
+            -- ClaudeNote: 修订 — 歌已播完/已停时无声可淡, 返回false即可;
             -- 舞台层面的60游戏分钟尾声由Stage.checkFade负责, 不能再hardstop把舞台掐掉
             if not Music.handle then return false end
 
@@ -212,7 +204,7 @@ local function lfuncMusic()
 
         if not emitter then return false end
 
-        -- ClaudeNote: Phase1.1新增 — 幕间休息中: 歌与歌之间隔gapRealSec(60真实秒)对应的游戏时间。
+        -- 幕间休息中: 歌与歌之间隔gapRealSec(60真实秒)对应的游戏时间。
         -- 全部按游戏时间计算(countMin/toGameTime), 单机加速时不会错拍
         if Music.gapStart >= 0 then
             local elapsed = util.countMin(Music.gapStart)
@@ -233,12 +225,12 @@ local function lfuncMusic()
         -- 一首播完了
         Music.handle = nil
 
-        -- ClaudeNote: Phase1新增(审查#6) — myBgm单曲播完即自然结束, 不续播不淡出
+        -- myBgm单曲播完即自然结束, 不续播不淡出
         if st:isMyBgm() then
             return "bgmdone"
         end
 
-        -- ClaudeNote: Phase1.1修订(审查#4) — 播满MaxWave(沙盒)首歌交给Stage.onSongLimit
+        -- 播满MaxWave(沙盒)首歌交给Stage.onSongLimit
         -- 决定加演recall还是进入尾声, 不再由Music直接判死
         if Music.played >= util.getSV("MaxWave") then
             return "songlimit"

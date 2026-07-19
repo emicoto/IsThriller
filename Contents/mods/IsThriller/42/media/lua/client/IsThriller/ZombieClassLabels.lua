@@ -12,30 +12,18 @@ local classColors = {
     shambler = { 0.30, 0.90, 1.00 },
 }
 
-local function getAudienceClass(zombie)
-    local speedType
-    local ok = pcall(function()
-        speedType = zombie:getSpeedType()
-    end)
-
-    if ok and speedType == 1 then
-        return "sprinter"
-    end
-    return "shambler"
-end
-
 local function getClassName(zombie)
     local modData = zombie:getModData()
     if not modData then return nil end
 
-    if modData.IsThrillerMJ then
+    if modData.isThrillerMJ then
         return "mj"
     end
-    if modData.IsThrillerDancer then
+    if modData.isThrillerDancer then
         return "dancer"
     end
-    if modData.IsThrillerAudience then
-        return getAudienceClass(zombie)
+    if modData.isThrillerAudience then
+        return "audience"
     end
     return nil
 end

@@ -6,7 +6,7 @@ IsThriller = IsThriller or {
 
     phase = -1,         -- for wave spawn check
     beat  = 0,          -- current running beat
-    tadTick = 0,        -- OnTick累计约30次后向TAD发送一拍
+    tadTick = 0,        -- OnTick累计约60次后向TAD发送一拍
 
     hasTAD = false,     -- has TAD mod
     hasAuthZ = false,   -- has AuthZ mod
@@ -35,6 +35,10 @@ local function lfunthr()
         return self.state == "playing"
     end
 
+    function IsThriller:isMJPlaying()
+        return self.mode == "thriller" and self.state == "playing"
+    end
+
     function IsThriller:isFading()
         return self.state == "fading"
     end
@@ -57,23 +61,11 @@ local function lfunthr()
         return self.mode == "myBgm"
     end
 
-    function IsThriller:dancerCount()
-        if not self.actor or not self.actor.dancers then return 0 end
-        local count = 0
-        for _, dancer in ipairs(self.actor.dancers) do
-            if not dancer:isDead() then
-                count = count + 1
-            end
-        end
-        return count
-    end
-
     -- clean all stage variable
     function IsThriller:cleanState()
         
         self.state = "idle"
         self.phase = -1
-        self.beat  = 0
         self.tadTick = 0
 
         local md = IsThriller.util.getModData()
@@ -158,10 +150,13 @@ local function StageMin()
         local res = stage.checkStage(st, player)
         if res == "ready" then
             stage.doStage(st, player)
+
         elseif res == "cancel" then
             stage.cancel(st, player)
+
         elseif res == "final" then
             stage.doFinal(st, player, "early")
+
         end
     elseif st:isBGMTime() then
         -- while playing state on bgm time
@@ -209,7 +204,7 @@ local function StageTick()
         return stage.finishBgm(st, player)
     end
 
-    if st:dancerCount() > 0 or st:mjAlive() then
+    if actor:dancerCount() > 0 or st:mjAlive() or (actor:allDancerNum() > 0 and IsThriller:isPlaying() ) then
         return stage.onTick(st, player)
     end
 

@@ -1,10 +1,10 @@
--- GPTNote: 在现有尸体与演员流程上追加圆满落幕的兼容完整专辑礼物。
 local Actor = {
     mj = nil,               -- main actor
     mjHP = nil,             -- HP since spawn, will regen to this baseHP while dancers still alive
     dcHP = nil,             -- 伴舞登场血量基准(激励回血上限)
     buffTick = -1,          -- tick count of mj's buff duration
-    dancers = {},           -- dancers
+    dancers = {},           -- 固定特殊伴舞: [absoluteID] = IsoZombie
+    allDancer = {},         -- 全体舞者(主演+固定伴舞+临时群演): [absoluteID] = IsoZombie，统一打包到TAD调度
     costume = "DJ",
 
     grudge = -1,            -- MJ最近一次挨打的游戏分钟戳
@@ -16,40 +16,138 @@ local Actor = {
     ctrlTick = 0,           -- 控制节流
     healTick = 0,           -- 回血节流
 
+    -- nil=未组队 / "rally"=伴舞向MJ汇合 / "march"=编队走向玩家
+    groupState = nil,
+    rallyStart = -1,        -- rally起点(真实秒戳), 超时强制march
+    marchTick = 0,          -- 慢速子周期计数: 每4次控制检查(~2秒)才重下寻路令, 防止每次调用重启寻路
+
     stageLocation = nil,    -- the IsoPlayer which triggered event
+
+    maxActiveDancer = 30,
 }
 
 local st, util, conf = IsThriller, IsThriller.util, IsThriller.config
 local outfit = require("IsThriller/Outfit")
 
+-- 联机用onlineID，单机用moving object ID；无效onlineID会回退到getID。
+function Actor.getDancerID(zombie)
+    if not zombie then return nil end
+
+    local md
+    pcall(function() md = zombie:getModData() end)
+    if md and md.thrillerDancerID ~= nil then
+        return md.thrillerDancerID
+    end
+
+    local id
+    if (isClient and isClient()) or (isServer and isServer()) then
+        pcall(function() id = zombie:getOnlineID() end)
+    end
+    if id == nil or id < 0 then
+        pcall(function() id = zombie:getID() end)
+    end
+    return id
+end
+
+local function registerDancer(zombie, fixed)
+    local id = Actor.getDancerID(zombie)
+    if id == nil then
+        util.debugMsg("registerDancer: zombie has no absolute ID", tostring(zombie))
+        return nil
+    end
+
+    Actor.allDancer[id] = zombie
+    local md = zombie:getModData()
+    md.thrillerDancerID = id
+
+    if fixed then
+        Actor.dancers[id] = zombie
+    end
+    return id
+end
+
+function Actor:dancerCount()
+    if not self.dancers then return 0 end
+    local count = 0
+    for _, dancer in pairs(self.dancers) do
+        if dancer and not dancer:isDead() then
+            count = count + 1
+        end
+    end
+    return count
+end
+
+function Actor:allDancerNum()
+    if not self.allDancer then return 0 end
+    local count = 0
+    for id, dancer in pairs(self.allDancer) do
+        if dancer and not dancer:isDead() then
+            count = count + 1
+        elseif dancer then
+            self.allDancer[id] = nil
+        end
+    end
+    return count
+end
+
+-- TAD执行器唯一调用通道, TAD不在时静默跳过
+local function tadDance(zombie, on, move)
+    if not st.hasTAD or not IsThrillerTAD or not IsThrillerTAD.setDance then return end
+    pcall(IsThrillerTAD.setDance, zombie, on, move)
+end
+
+-- 该丧尸当前是否在跳(以TAD active名单为准)
+local function isDancing(zombie)
+    return IsThrillerTAD and IsThrillerTAD.active and IsThrillerTAD.active[zombie] == true
+end
+
 function Actor.class(zombie, type)
+    local md = zombie:getModData()
+
     if type == "sprinter" then
         util.setZombieSpeed(zombie, "sprinter")
         util.doZombieStats(zombie, "Sight")
+        md.isThrillerAudience = true
 
     elseif type == "shambler" then
         util.setZombieSpeed(zombie, "shambler")
         util.doZombieStats(zombie, "Strength")
+        md.isThrillerAudience = true
+
+        if Actor:allDancerNum() < Actor.maxActiveDancer and ZombRand(100) < 20 then
+            registerDancer(zombie)
+        end
 
     elseif type == "mj" then
         util.setZombieSpeed(zombie, "shambler")
         util.doZombieStats(zombie, "Sight")
+        util.doZombieStats(zombie, "Memory")
         util.doZombieStats(zombie, "Strength")
+        util.doZombieStats(zombie, "Cognition")
+        md.isThrillerMJ = true
+        registerDancer(zombie)
 
     elseif type == "dancer" then
         util.setZombieSpeed(zombie, "shambler")
         util.doZombieStats(zombie, "Sight")
         util.doZombieStats(zombie, "Memory")
         util.doZombieStats(zombie, "Strength")
+        util.doZombieStats(zombie, "Cognition")
+        md.isThrillerDancer = true
+        registerDancer(zombie)
 
     else
-        util.setZombieSpeed(zombie, "shambler")
+        util.setZombieSpeed(zombie)
+        if Actor:allDancerNum() < Actor.maxActiveDancer and ZombRand(100) < 20 then
+            registerDancer(zombie)
+        end
     end
+    
 end
 
 -- addZombiesInOutfit will return java array list, turn into lua table
 ---@return IsoZombie[] lua数组(可能为空)
-function Actor.spawn(size, x, y, outfitID, femaleChance, extra)
+function Actor.spawn(size, x, y, outfitID, femaleChance)
     local ok, arr = pcall(function()
         return addZombiesInOutfit(x, y, 0, size or 1, outfitID, femaleChance or 50)
     end)
@@ -63,25 +161,22 @@ function Actor.spawn(size, x, y, outfitID, femaleChance, extra)
     pcall(function()
         for i = 0, arr:size() - 1 do
             local zb = arr:get(i)
-            -- 如果装了AuthZ就往inventory里塞荧光棒
-            if extra and st.hasAuthZ and zb.getInventory and zb:getInventory() then
-            end
             table.insert(list, zb)
         end
     end)
     return list
 end
 
--- 在player周围找可靠的室外落点
-local function findSpawnSquare(player, dist)
+-- 伴舞以MJ为中心生成, 任何带坐标对象均可
+local function findSpawnSquare(center, dist)
     local cell = getCell()
-    if not cell or not player then return nil end
+    if not cell or not center then return nil end
 
     for _ = 1, 20 do
         local ang = ZombRand(360) * math.pi / 180
         local d = dist + ZombRand(-2, 3)
-        local x = math.floor(player:getX() + math.cos(ang) * d)
-        local y = math.floor(player:getY() + math.sin(ang) * d)
+        local x = math.floor(center:getX() + math.cos(ang) * d)
+        local y = math.floor(center:getY() + math.sin(ang) * d)
         local sq = cell:getGridSquare(x, y, 0)
         if sq and util.isValidLot(sq) then
             return sq
@@ -119,22 +214,29 @@ function Actor.mjStandby(player)
     Actor.mjHP = zb:getHealth()
 
     Actor.class(zb, "mj")
-    zb:getModData().IsThrillerMJ = true
     Actor.mj = zb
 
-    pcall(function() zb:setTarget(player) end)
     util.debugMsg("mjStandby: MJ spawned", "hp=", zb:getHealth(), "song=", tostring(st.music.current))
 end
 
 -- — 伴舞生成: 每个玩家对应MaxDancer只(0=随机2~5)
 function Actor.dancerStandby(player)
-    if #Actor.dancers > 0 then return end
+    if Actor:dancerCount() > 0 then return end
     if not player then return end
+
+    -- MJ还没落地时本分钟先不生成伴舞
+    if not Actor.mj then
+        return util.debugMsg("dancerStandby: waiting for MJ, retry next minute")
+    end
 
     local count = util.getSV("MaxDancer")
     if count == 0 then count = ZombRand(2, 6) end
 
-    local sq = findSpawnSquare(player, conf.get("spawnDist"))
+    -- 落点在MJ附近,缩短汇合路程
+    local sq = findSpawnSquare(Actor.mj, conf.get("rallyDist") + 1)
+    if not sq then
+        sq = findSpawnSquare(player, conf.get("spawnDist"))
+    end
     if not sq then return end
 
     local outfitID = outfit.dancer[ZombRand(1, #outfit.dancer + 1)]
@@ -148,12 +250,13 @@ function Actor.dancerStandby(player)
         Actor.dcHP = zb:getHealth()
 
         Actor.class(zb, "dancer")
-        zb:getModData().IsThrillerDancer = true
-        pcall(function() zb:setTarget(player) end)
-        table.insert(Actor.dancers, zb)
     end
-    Actor.dancerTotal = #Actor.dancers
-    util.debugMsg("dancerStandby:", #Actor.dancers, "dancers spawned, outfit=", tostring(outfitID))
+    Actor.dancerTotal = Actor:dancerCount()
+
+    -- ClaudeNote: P5a新增 — 伴舞就位即进入rally阶段, 记超时起点
+    Actor.groupState = "rally"
+    Actor.rallyStart = util.now()
+    util.debugMsg("dancerStandby:", Actor.dancerTotal, "dancers spawned near MJ, rally begins")
 end
 
 -- 一波群演: 视野边缘随机方位生成
@@ -173,7 +276,10 @@ function Actor.addCrowd(player)
         local t = "shambler"
         if ZombRand(100) < chance then t = "sprinter" end
         Actor.class(zb, t)
-        zb:getModData().IsThrillerAudience = true
+
+        -- 如果装了AuthZ就往inventory里塞荧光棒
+        if st.hasAuthZ and zb.getInventory and zb:getInventory() then
+        end
         pcall(function() zb:pathToLocation(endPoint:getX(), endPoint:getY(), endPoint:getZ()) end)
     end
     return list
@@ -200,12 +306,16 @@ function Actor.dismiss()
     Actor.dcHP = nil
     Actor.buffTick = -1
     Actor.dancers = {}
+    Actor.allDancer = {}
     Actor.grudge = -1
     Actor.mjDead = false
     Actor.mjEverHit = false
     Actor.dancerTotal = 0
     Actor.mjDeathPos = nil
     Actor.waveStamp = 0
+    Actor.groupState = nil
+    Actor.rallyStart = -1
+    Actor.marchTick = 0
 end
 
 -- — MJ挨打寻找安全方位瞬移
@@ -243,9 +353,14 @@ function Actor.onHit(zombie, player)
     if zombie == Actor.mj then
         Actor.grudge = util.getMin()
         Actor.mjEverHit = true
+        
+        -- 个体退舞: MJ挨打瞬移脱离不停舞蹈，但其他的会停下去反击
         Actor.retreat(zombie)   -- 主演瞬移脱离
-        for _, dancer in ipairs(Actor.dancers) do
+        
+        for _, dancer in pairs(Actor.dancers) do
             if not dancer:isDead() then
+                tadDance(dancer, false)
+                dancer:getModData().itGrudge = conf.get("grudgeBeats")
                 pcall(function() dancer:setTarget(player) end)
             end
         end
@@ -253,12 +368,14 @@ function Actor.onHit(zombie, player)
         return
     end
 
-    for _, dancer in ipairs(Actor.dancers) do
-        if zombie == dancer then
-            pcall(function() zombie:setTarget(player) end)
-            util.debugMsg("Actor.onHit: dancer hit, retaliate")
-            return
-        end
+    local id = Actor.getDancerID(zombie)
+    if id ~= nil and Actor.allDancer[id] then
+        -- 个体退舞反击谁挨打谁停舞去反击, 其余继续跳
+        tadDance(zombie, false)
+        zombie:getModData().itGrudge = conf.get("grudgeBeats")
+        pcall(function() zombie:setTarget(player) end)
+        util.debugMsg("Actor.onHit: dancer hit, stop dance + retaliate", "id=", id)
+        return
     end
 end
 
@@ -268,21 +385,27 @@ function Actor.onDead(zombie)
     if not zombie then return end
     local md= zombie:getModData()
 
-    if md and md.IsThrillerMJ then
+    if md and md.isThrillerMJ then
         Actor.mjDead = true
         Actor.mjDeathPos = { x = zombie:getX(), y = zombie:getY(), z = zombie:getZ() }
         Actor.mj = nil
         util.debugMsg("MJ died at", Actor.mjDeathPos.x, Actor.mjDeathPos.y)
+
+        -- 剩下的舞团成员全员升级并播放一次特殊动画
+        for _, dancer in pairs(Actor.allDancer) do
+            if not dancer:isDead() then
+                Actor.class(dancer, "sprinter")
+            end
+        end
         return
     end
 
-    if md and md.IsThrillerDancer then
-        for i = #Actor.dancers, 1, -1 do
-            if zombie == Actor.dancers[i]  then
-                table.remove(Actor.dancers, i)
-            end
-        end
-        util.debugMsg("dancer died (ref swapped),", #Actor.dancers, "left")
+    local id = (md and md.thrillerDancerID) or Actor.getDancerID(zombie)
+    if id ~= nil and Actor.allDancer[id] then
+        Actor.allDancer[id] = nil
+        Actor.dancers[id] = nil
+        tadDance(zombie, false)
+        util.debugMsg("dancer died,", Actor:dancerCount(), "fixed left,", Actor:allDancerNum(), "all left")
     end
 end
 
@@ -312,7 +435,7 @@ local function dropReward()
     if not sq then return end
 
     local drop = require("IsThriller/DropList")
-    local worldItem sq:AddWorldInventoryItem(conf.get("rewardBox"), 0.5, 0.5, 0)
+    local worldItem = sq:AddWorldInventoryItem(conf.get("rewardBox"), 0.5, 0.5, 0)
 
     local item = worldItem.getItem and worldItem:getItem()
     local inv = item and item.getInventory and item:getInventory()
@@ -322,7 +445,7 @@ local function dropReward()
     end
 
     local total = drop.totalRewardItems
-    if st:dancerCount() == 0 then
+    if Actor:dancerCount() == 0 then
         total = total + conf.get("wipeBonus")    -- 全灭加料
     end
 
@@ -358,7 +481,7 @@ local function removeMJCorpse()
                     for i = bodies:size() - 1, 0, -1 do
                         local body = bodies:get(i)
                         local md = body and body:getModData()
-                        if md and md.IsThrillerMJ then
+                        if md and md.isThrillerMJ then
                             local bodySq = body:getSquare() or sq
                             bodySq:removeCorpse(body, false)
                             util.debugMsg("MJ corpse removed", "offset=", dx, dy)
@@ -392,6 +515,7 @@ local function attendanceOk(player)
     return (pd.attendMin or 0) >= show * (conf.get("attendRate") or 0.6)
 end
 
+
 local function dropPacifist(mj)
     local sq = mj and mj:getSquare()
     if not sq then return end
@@ -421,32 +545,11 @@ local function dropPacifist(mj)
     util.debugMsg("pacifist reward dropped.")
 end
 
-local function curtainSquare(mj, player)
-    if mj then
-        local sq
-        pcall(function() sq = mj:getSquare() end)
-        if sq then return sq end
-    end
-
-    local pos = Actor.mjDeathPos
-    local cell = getCell()
-    if pos and cell then
-        local sq = cell:getGridSquare(math.floor(pos.x), math.floor(pos.y), math.floor(pos.z))
-        if sq then return sq end
-    end
-
-    return player and player:getSquare() or nil
-end
 
 function Actor.strike(player, canceled)
     local mj = Actor.mj
 
-    -- 圆满落幕固定赠送一张已安装兼容包中的JacketFull完整专辑。
-    if not canceled and IsThriller.endReason == "complete" then
-        dropAlbumGift(curtainSquare(mj, player))
-    end
-
-    for _, zb in ipairs(Actor.dancers) do
+    for _, zb in pairs(Actor.dancers) do
         if zb and not zb:isDead() then
             pcall(function()
                 zb:removeFromWorld()
@@ -456,7 +559,7 @@ function Actor.strike(player, canceled)
     end
 
     if mj and not mj:isDead() then
-        -- ClaudeNote: 和平观演(补回) — 完整演出+考勤达标+全程未挨打: 告别礼
+        -- 完整演出+考勤达标+全程未挨打: 告别礼
         if not canceled
             and IsThriller.endReason == "complete"
             and not Actor.mjEverHit
@@ -469,7 +572,6 @@ function Actor.strike(player, canceled)
             mj:removeFromSquare()
         end)
     elseif Actor.mjDead then
-        -- ClaudeNote: 对象池修复 — 死亡后引用已断开(mj=nil), 用账本判断删尸
         removeMJCorpse()
     end
 
@@ -480,6 +582,22 @@ function Actor.strike(player, canceled)
     util.debugMsg("Actor.strike done", "canceled=", tostring(canceled), "everHit=", tostring(Actor.mjEverHit))
 end
 
+local function signClass(zombie)
+    local chance = util.getSV("SprintChance")
+    local md = zombie:getModData()
+    -- already signed
+    if md.isThrillerMJ or md.isThrillerDancer or md.isThrillerAudience then
+        return
+    end
+
+    local type = "shambler"
+
+    if ZombRand(100) < chance then
+        type = "sprinter"
+    end
+
+    Actor.class(zombie, type)
+end
 
 function Actor.auction(player)
     if not player or not player.getCell then return end
@@ -510,7 +628,7 @@ function Actor.auction(player)
         local zb = zbList:get(i)
         if zb and not zb:isDead() then
             res.total = res.total + 1
-            local dist = zb:DistTo(player)
+            local dist = util.countDist(zb, player)
 
             if dist <= conf.get("safeRange") then
                 res.safeCount = res.safeCount + 1
@@ -527,6 +645,11 @@ function Actor.auction(player)
 
             if dist <= range then
                 res.rangeCount = res.rangeCount + 1
+            end
+
+            -- if stage play time then sign class
+            if IsThriller:isMJPlaying() and dist <= range then
+                signClass(zb)
             end
         end
     end
@@ -547,66 +670,153 @@ function Actor.crowdStandby(player)
     end
 
     local range = util.getSV("Range")
-    local chance = util.getSV("SprintChance")
 
     for i = 0, zbList:size() - 1 do
         local zb = zbList:get(i)
-        if zb and not zb:isDead() and not zb:getModData().IsThrillerMJ and not zb:getModData().IsThrillerDancer then
-            local dist = zb:DistTo(player)
+        if zb and not zb:isDead() then
+            local dist = util.countDist(zb, player)
             if dist <= range then
                 -- rollspeed
-                local type = "shambler"
-                if ZombRand(100) < chance then
-                    type = "sprinter"
-                end
-
-                Actor.class(zb, type)
+                signClass(zb)
             end
         end
     end
 end
 
--- MJ入场控制: 3格内停控(演出位), 7格外重新指路
--- 节流~0.5秒一次; 顺带在MJ身上挂声引怪
-function Actor.mjCtrl(player)
-    local zb = Actor.mj
-    if not zb or zb:isDead() or not player then return end
+-- 编队总控
+-- 节流~0.5秒判定一次; 寻路令走marchTick慢速子周期(~2秒)重下, 防止pathToLocationF每次调用重启寻路
+function Actor.groupCtrl(player)
+    if not player then return end
 
     Actor.ctrlTick = Actor.ctrlTick + 1
     if Actor.ctrlTick < 30 then return end
     Actor.ctrlTick = 0
 
-    local dist = zb:DistTo(player)
+    Actor.marchTick = (Actor.marchTick + 1) % 4
+    local issueOrder = (Actor.marchTick == 0)   -- 本轮是否允许重下寻路令
 
-    -- 挨打硬直期不控场(onHit已瞬移, 让它自然站位)
-    local grudging = Actor.grudge >= 0 and util.countMin(Actor.grudge) < 1
+    local mj = Actor.mj
 
-    if dist > 7 and not grudging then
-        pcall(function()
-            zb:setTarget(player)
-            zb:pathToCharacter(player)
-        end)
-    elseif dist <= conf.get("danceRange") then
-        -- 到达演出位: 停止强制控制(跳舞动画交给TAD联动, Phase5)
+    -- rally阶段: 伴舞向MJ汇合, MJ原地等
+    if Actor.groupState == "rally" and mj and not mj:isDead() then
+        local assembled = true
+        for _, zb in pairs(Actor.dancers) do
+            if zb and not zb:isDead() then
+                local d = zb:DistTo(mj)
+                if d > conf.get("rallyDist") then
+                    assembled = false
+                    if issueOrder then
+                        local ox = (ZombRand(5) - 2) * 0.6  -- 小数偏移防叠格(反编译报告: float精确落点)
+                        local oy = (ZombRand(5) - 2) * 0.6
+                        pcall(function() zb:pathToLocationF(mj:getX() + ox, mj:getY() + oy, mj:getZ()) end)
+                    end
+                end
+            end
+        end
+
+        local timeout = (util.now() - (Actor.rallyStart or 0)) >= conf.get("rallySec")
+        if assembled or timeout then
+            Actor.groupState = "march"
+            util.debugMsg("group rally done ->march", "assembled=", tostring(assembled), "timeout=", tostring(timeout))
+        else
+            -- 汇合期MJ只挂光环引怪, 不移动
+            Actor.mjHalo(mj)
+            return
+        end
     end
 
-    -- MJ光环: 声音吸引周围丧尸聚过来当观众
+    -- march/无伴舞: MJ带队走向玩家, 伴舞跟MJ(编队同行, 不再各自直奔玩家)
+    Actor.mjCtrl(player)
+    Actor.dancerCtrl(player)
+end
+
+-- ClaudeNote: P5a抽出 — MJ光环: 声音吸引周围丧尸聚过来当观众(rally/march通用)
+function Actor.mjHalo(zb)
+    if not zb then return end
     pcall(function()
         getWorldSoundManager():addSound(zb, zb:getX(), zb:getY(), 0, conf.get("radius"), 80)
     end)
 end
 
--- 伴舞控制: 跟到玩家附近(slotArriveDist内停), 挨打反击交给onHit
-function Actor.dancerCtrl(player)
-    if not player or #Actor.dancers == 0 then return end
-    -- 与mjCtrl共用节流周期(ctrlTick刚归零时执行)
-    if Actor.ctrlTick ~= 0 then return end
+-- MJ入场控制: 3格内停控(演出位), 7格外重新指路
+-- ClaudeNote: P5a修改 — 节流移交groupCtrl(原ctrlTick判断删除); 跳舞中(useless)不下移动令
+function Actor.mjCtrl(player)
+    local zb = Actor.mj
+    if not zb or zb:isDead() or not player then return end
 
-    for _, zb in ipairs(Actor.dancers) do
+    local dist = zb:DistTo(player)
+
+    if not isDancing(zb) and dist > 7 then
+        pcall(function()
+            zb:setTarget(player)
+            zb:pathToCharacter(player)
+        end)
+    end
+
+    Actor.mjHalo(zb)
+end
+
+-- 伴舞跟随锚点为MJ(编队核心); MJ不在(死亡)才退回跟玩家。
+-- 跳舞中(useless)的个体不下移动令
+function Actor.dancerCtrl(player)
+    if not player or Actor:dancerCount() == 0 then return end
+
+    local mj = Actor.mj
+    local anchor = (mj and not mj:isDead()) and mj or player
+    local keepDist = conf.get("dancerRange")
+
+    for _, zb in pairs(Actor.dancers) do
+        if zb and not zb:isDead() and not isDancing(zb) then
+            local d = zb:DistTo(anchor)
+            if d > keepDist then
+                local ox = (ZombRand(5) - 2) * 0.6
+                local oy = (ZombRand(5) - 2) * 0.6
+                pcall(function() zb:pathToLocationF(anchor:getX() + ox, anchor:getY() + oy, anchor:getZ()) end)
+            end
+        end
+    end
+end
+
+-- 每拍舞蹈状态机(Stage.runTADBeat驱动, playing期专用):
+-- 冷却递减→距离判定→该跳的起舞/跑远的收舞。个体退舞反击的"归队复舞"也在这里完成
+function Actor.onBeat(mt, player)
+    if not player then return end
+    if not st.hasTAD or not IsThrillerTAD then return end
+
+    local mj = Actor.mj
+
+    -- MJ: danceRange内起舞, danceExitRange外收舞追场(滞回防抖)
+    if mj and not mj:isDead() then
+        local dist = mj:DistTo(player)
+        if isDancing(mj) then
+            if dist > conf.get("danceExitRange") then
+                tadDance(mj, false)
+            end
+        elseif dist <= conf.get("danceRange") + 1 then
+            tadDance(mj, true)
+        end
+    end
+
+    -- 伴舞: 锚定MJ(MJ不在则锚玩家), dancerRange内起舞
+    local anchor = (mj and not mj:isDead()) and mj or player
+    for _, zb in pairs(Actor.allDancer) do
         if zb and not zb:isDead() then
-            local dist = zb:DistTo(player)
-            if dist > conf.get("danceRange") + conf.get("slotArriveDist") then
-                pcall(function() zb:pathToCharacter(player) end)
+            local md = zb:getModData()
+            if (md.itGrudge or 0) > 0 then
+                md.itGrudge = md.itGrudge - 1
+                -- 冷却结束瞬间脱战归队: 清追击目标, 下一拍距离达标自然复舞
+                if md.itGrudge == 0 then
+                    pcall(function() zb:setTarget(nil) end)
+                end
+            else
+                local d = zb:DistTo(anchor)
+                if isDancing(zb) then
+                    if d > conf.get("dancerRange") + 2 then
+                        tadDance(zb, false)
+                    end
+                elseif d <= conf.get("dancerRange") then
+                    tadDance(zb, true)
+                end
             end
         end
     end
@@ -622,7 +832,7 @@ function Actor.heal(player)
     local mj = Actor.mj
     local alive = 0
 
-    for _, d in ipairs(Actor.dancers) do
+    for _, d in pairs(Actor.dancers) do
         if d and not d:isDead() then
             alive = alive + 1
             if mj and not mj:isDead() and Actor.dcHP then

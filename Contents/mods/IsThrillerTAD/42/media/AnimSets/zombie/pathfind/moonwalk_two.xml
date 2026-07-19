@@ -9,4 +9,9 @@
 		<m_Type>BOOL</m_Type>
 		<m_Value>true</m_Value>
 	</m_Conditions>
+	<m_Conditions>
+		<m_Name>ThrillerMove</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_Value>BobTA_Moonwalk_Two</m_Value>
+	</m_Conditions>
 </animNode>
