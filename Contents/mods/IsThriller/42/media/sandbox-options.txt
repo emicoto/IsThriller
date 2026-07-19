@@ -23,7 +23,7 @@ option IsThriller.SprintChance
 option IsThriller.MaxZombies
 {
     type = integer,
-    min = 1,
+    min = 2,
     max = 30,
     default = 6,
     page = IsThriller,

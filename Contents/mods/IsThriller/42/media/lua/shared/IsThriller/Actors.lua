@@ -286,9 +286,9 @@ function Actor.addCrowd(player)
 end
 
 -- 每首歌前奏期的波次调度
--- 每waveSec(2真实秒)一波, 直到本歌phase刷满MaxWave; 每首歌开播时Music.play会把phase归零
+-- 每waveSec(2真实秒)一波, 直到本歌phase刷满MaxWave * 2; 每首歌开播时Music.play会把phase归零
 function Actor.waves(mt, player)
-    local maxWave = util.getSV("MaxWave") or 5
+    local maxWave = (util.getSV("MaxWave") or 5) * 2
     if mt.phase < 0 or mt.phase >= maxWave then return end
 
     local now = util.now()
