@@ -1,5 +1,11 @@
 local Util = {}
 
+function Util.debugMsg(...)
+    if IsThriller.debug then
+        print("[LuneModDebug] <isThriler> |  ", ...)
+    end
+end
+
 function Util.getSV(varName)
     local sv = SandboxVars.IsThriller
     if sv and sv[varName] ~= nil then return sv[varName] end
@@ -12,17 +18,19 @@ function Util.hasItem(fullType)
     return true
 end
 
-
-function Util.debugMsg(...)
-    if IsThriller.debug then
-        print("[LuneModDebug] <isThriler> |  ", ...)
-    end
+---@param zombie IsoZombie
+---@param x number int
+---@param y number int
+function Util.moveTo(zombie, x, y, z)
+    if not zombie then return end
+    zombie:setUseless(true)
+    zombie:pathToLocation(x, y, z or zombie:getZ())
 end
 
 function Util.countDist(zombie, player)
     if not player or not zombie then return 0 end
     
-    return math.ceil(zombie:DistTo(player) / 2)
+    return math.ceil(zombie:DistTo(player) / 1.25)
 end
 
 -- 游戏分钟 -> 正常速度下的真实秒数
@@ -30,7 +38,9 @@ end
 ---@return number realSec
 function Util.toRealTime(min)
     local realMinPerDay = getGameTime():getMinutesPerDay()
-    return min * realMinPerDay / 24
+    -- 现实一天的总秒数 / 游戏一天的总分钟数 (1440)
+    local secPerGameMinute = (realMinPerDay * 60) / 1440
+    return min * secPerGameMinute
 end
 
 -- 真实秒数 -> 游戏分钟
@@ -38,7 +48,9 @@ end
 ---@return number gameMin
 function Util.toGameTime(sec)
     local realMinPerDay = getGameTime():getMinutesPerDay()
-    return sec * 24 / realMinPerDay
+    -- 计算每 1 秒真实时间，等于多少游戏分钟
+    local gameMinutesPerSec = 1440 / (realMinPerDay * 60)
+    return sec * gameMinutesPerSec
 end
 
 ---@return number gameMinStamp get in game minutes time stamp

@@ -2,9 +2,9 @@
 
 local outfit = {
     base = {
-        Thriller = "IsThrillerThriller",
-        Criminal = "IsThrillerSmoothCriminal",
-        BeatIt = "IsThrillerBeatIt",
+        Thriller = "ThrillerStageSet",
+        Criminal = "SmoothCriminalStageSet",
+        BeatIt = "BeatItStageSet",
     },
 
     authZ = {

@@ -1,4 +1,4 @@
--- ClaudeNote: 和平观演奖励道具《Heal The World》使用逻辑 (Phase2追加)
+-- 和平观演奖励道具《Heal The World》使用逻辑 (Phase2追加)
 -- 放置: Contents/mods/IsThriller/42/media/lua/client/IsThriller/HealTheWorld.lua
 -- 效果: 全部伤口转为"高质量护理"状态(止血/缝合/清创/夹板, 不是彻底痊愈),
 --       清除原版不良状态(疼痛/食物中毒/感冒/恐慌/压力/不开心/疲劳)。丧尸病毒不解。

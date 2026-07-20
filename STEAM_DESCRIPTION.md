@@ -68,8 +68,11 @@
 
 [hr][/hr]
 
-主架构与编程: Lunefox  
-辅助：Claude
+主程序与架构设计: Lunefox 
+分析与注释: Claude-sonnet-5
+语法检查与修正: Gemini-3.1 flash lite
+热修复: GPT-sol-5.6
+
 封面绘制: Lunefox
 Github: https://github.com/emicoto/IsThriller
 

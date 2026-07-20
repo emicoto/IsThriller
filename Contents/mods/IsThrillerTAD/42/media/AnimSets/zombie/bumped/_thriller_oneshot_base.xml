@@ -1,0 +1,22 @@
+<!-- GPTNote: DanceFix一次性动作基类；END事件同时通知Lua并放行原版bumped状态。 -->
+<animNode>
+	<m_Name>thrillerOneShotBase</m_Name>
+	<m_ConditionPriority>5</m_ConditionPriority>
+	<m_Looped>false</m_Looped>
+	<m_BlendTime>0.10</m_BlendTime>
+	<m_BlendOutTime>0.10</m_BlendOutTime>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_useDeferredMovement>false</m_useDeferredMovement>
+	<m_useDeferedRotation>false</m_useDeferedRotation>
+	<m_Events>
+		<m_EventName>SetVariable</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue>ThrillerDone=true</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>SetVariable</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue>BumpAnimFinished=true</m_ParameterValue>
+	</m_Events>
+</animNode>

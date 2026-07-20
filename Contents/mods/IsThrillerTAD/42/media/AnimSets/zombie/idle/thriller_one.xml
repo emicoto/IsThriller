@@ -1,17 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<animNode>
-	<m_Name>thrillerIdleOne</m_Name>
+<!-- GPTNote: DanceFix原地编舞节点；由Choreo模式和统一ThrillerAnim变量独占选择。 -->
+<animNode x_extends="_thriller_choreo_base.xml">
+	<m_Name>thrillerChoreoOne</m_Name>
 	<m_AnimName>BobTA_Thriller_One</m_AnimName>
-	<m_Looped>true</m_Looped>
-	<m_BlendTime>0.25</m_BlendTime>
 	<m_Conditions>
 		<m_Name>bThrillerDance</m_Name>
 		<m_Type>BOOL</m_Type>
-		<m_Value>true</m_Value>
+		<m_BoolValue>true</m_BoolValue>
 	</m_Conditions>
 	<m_Conditions>
-		<m_Name>ThrillerMove</m_Name>
+		<m_Name>ThrillerAnim</m_Name>
 		<m_Type>STRING</m_Type>
-		<m_Value>BobTA_Thriller_One</m_Value>
+		<m_StringValue>Thriller_1</m_StringValue>
 	</m_Conditions>
 </animNode>

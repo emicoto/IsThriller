@@ -1,7 +1,7 @@
 <!-- GPTNote: DanceFix直线移动舞步。 -->
 <animNode x_extends="_thriller_march_base.xml">
-	<m_Name>thrillerWalkMoonwalkOne</m_Name>
-	<m_AnimName>BobTA_MoonWalk_One</m_AnimName>
+	<m_Name>thrillerWalkRunningManOne</m_Name>
+	<m_AnimName>BobTA_Running_Man_One</m_AnimName>
 	<m_Conditions>
 		<m_Name>bThrillerDance</m_Name>
 		<m_Type>BOOL</m_Type>
@@ -10,7 +10,7 @@
 	<m_Conditions>
 		<m_Name>ThrillerAnim</m_Name>
 		<m_Type>STRING</m_Type>
-		<m_StringValue>MoonWalk_1</m_StringValue>
+		<m_StringValue>RunningMan</m_StringValue>
 	</m_Conditions>
 	<m_Events>
 		<m_EventName>Footstep</m_EventName>

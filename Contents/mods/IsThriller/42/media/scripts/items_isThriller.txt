@@ -12,6 +12,17 @@ module IsThriller {
         ItemType = base:normal,
         Weight = 0.1,
         Icon = HealTheWorld,
-        Tags = base:consumable;
+        Tags = base:consumable,
+    }
+
+    item FanTicket
+    {
+        DisplayName = Fan Ticket,
+
+        DisplayCategory = Memento,
+        ItemType = base:normal,
+        Weight = 0.01,
+        Icon = FanTicket,
+        Tags = base:ismemento,
     }
 }

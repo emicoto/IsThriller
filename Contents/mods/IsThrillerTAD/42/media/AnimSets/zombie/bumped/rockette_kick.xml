@@ -1,0 +1,20 @@
+<!-- GPTNote: DanceFix可复用的踢腿one-shot。 -->
+<animNode x_extends="_thriller_oneshot_base.xml">
+	<m_Name>thrillerOneShotRocketteKick</m_Name>
+	<m_AnimName>BobTA_Rockette_Kick</m_AnimName>
+	<m_Conditions>
+		<m_Name>bThrillerDance</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>BumpType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>ThrillerOneShot</m_StringValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>ThrillerAnim</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>BobTA_Rockette_Kick</m_StringValue>
+	</m_Conditions>
+</animNode>

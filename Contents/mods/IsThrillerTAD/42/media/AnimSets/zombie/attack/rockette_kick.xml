@@ -2,16 +2,20 @@
 <animNode>
 	<m_Name>thrillerAttackRocketteKick</m_Name>
 	<m_AnimName>BobTA_Rockette_Kick</m_AnimName>
-	<m_Looped>true</m_Looped>
+	<m_Looped>false</m_Looped>
 	<m_BlendTime>0.15</m_BlendTime>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_useDeferredMovement>true</m_useDeferredMovement>
+	<m_useDeferedRotation>false</m_useDeferedRotation>
 	<m_Conditions>
 		<m_Name>bThrillerDance</m_Name>
 		<m_Type>BOOL</m_Type>
 		<m_Value>true</m_Value>
 	</m_Conditions>
-	<m_Conditions>
-		<m_Name>ThrillerAttack</m_Name>
-		<m_Type>STRING</m_Type>
-		<m_Value>BobTA_Rockette_Kick</m_Value>
-	</m_Conditions>
+	<m_Events>
+		<m_EventName>SetVariable</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue>ThrillerKickDone=true</m_ParameterValue>
+	</m_Events>
 </animNode>

@@ -204,9 +204,12 @@ local function StageTick()
         return stage.finishBgm(st, player)
     end
 
-    if actor:dancerCount() > 0 or st:mjAlive() or (actor:allDancerNum() > 0 and IsThriller:isPlaying() ) then
-        return stage.onTick(st, player)
+    if st:isStageTime() then
+        if actor:dancerCount() > 0 or st:mjAlive() or actor:allDancerNum() > 0  then
+            return stage.onTick(st, player)
+        end
     end
+
 
     if st:isBGMTime() then
         return pbuff.handle(st, player)
@@ -249,7 +252,7 @@ end
 
 Events.OnZombieDead.Add(zombieDead)
 Events.OnGameStart.Add(initMod)
-Events.OnTick.Add(StageTick)
 Events.OnHitZombie.Add(playerFire)
 Events.EveryOneMinute.Add(StageMin)
 Events.OnWeaponHitCharacter.Add(firedSignal)
+Events.OnTick.Add(StageTick)

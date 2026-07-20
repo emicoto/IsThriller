@@ -6,37 +6,9 @@ local Stage = {
     dancerReady = -1,       -- 本场每个玩家对应的dancer是否已经被确认生成
 }
 
-local function releaseTAD(mt)
-    if not mt.hasTAD or not IsThrillerTAD or not IsThrillerTAD.release then return end
-
-    local ok, err = pcall(IsThrillerTAD.release, mt)
-    if not ok then
-        util.debugMsg("TAD release failed", "err=", tostring(err))
-    end
-end
-
--- OnTick约60次/秒，舞步轮换只跟主舞台节拍走。
-local function runTADBeat(mt, player)
-    if not mt.hasTAD or not IsThrillerTAD or not IsThrillerTAD.onBeat then return end
-
-    mt.tadTick = (mt.tadTick or 0) + 1
-
-    if mt.tadTick <= 30 then return end
-
-    mt.tadTick = 0
-
-    local ok, err = pcall(IsThrillerTAD.onBeat, mt, player)
-    if not ok then
-        util.debugMsg("TAD onBeat failed", "err=", tostring(err))
-    end
-
-    -- 主MOD侧每拍舞蹈状态机(冷却递减/起舞收舞/归队复舞), TAD只轮换舞步
-    if actor.onBeat then
-        local ok2, err2 = pcall(actor.onBeat, mt, player)
-        if not ok2 then
-            util.debugMsg("actor.onBeat failed", "err=", tostring(err2))
-        end
-    end
+local function releaseTAD()
+    if not IsThriller.hasTAD or not IsThrillerTAD then return end
+    IsThrillerTAD.release()
 end
 
 local function cleanStat(mt, player)
@@ -44,19 +16,18 @@ local function cleanStat(mt, player)
         local md = util.getData(player)
         md.lastHit = -1
         md.lastTarget = nil
-        md.showMin = nil    -- ClaudeNote: 和平观演考勤清账(补回)
+        md.showMin = nil
         md.attendMin = nil
     end
     mt.endReason = nil
 
-    releaseTAD(mt)
+    releaseTAD()
 
     mt:cleanState()
     actor.dismiss()
 end
 
 local function isZombieSurround(report)
-    -- ClaudeNote: B1修复, rangeCount是数字不是函数, 原写法一调用即崩
     return report and (report.nearCount >= conf.get("minNearZombie") or report.rangeCount >= conf.get("minRangeZombie"))
 end
 
@@ -69,7 +40,7 @@ function Stage.hardStop(mt, player)
     music.stop(player)
 end
 
--- ClaudeNote: Phase2新增 — 预演取消(luring超时/包围解除): 演员撤场, 不掉奖励, 不记冷却
+-- 预演取消(luring超时/包围解除): 演员撤场, 不掉奖励, 不记冷却
 function Stage.cancel(mt, player)
     util.debugMsg("stage cancel", "lure failed")
     actor.strike(player, true)
@@ -101,8 +72,8 @@ function Stage.doFinal(mt, player, reason)
     local md = util.getModData()
 
     if mt:isMJtime() then
-        releaseTAD(mt)
-        -- ClaudeNote: 和平观演(补回) — 记录结束原因, strike据此判定告别礼资格
+        releaseTAD()
+        -- 记录结束原因, strike据此判定告别礼资格
         mt.endReason = reason or "early"
         -- fading是舞台级的60游戏分钟尾声周期, 与音乐淡出解耦
         music.beginFade()
@@ -203,7 +174,7 @@ function Stage.finish(mt, player)
     music.stop(player)
 end
 
--- ClaudeNote: Phase2实装 — luring/playing阶段的每分钟检查
+-- luring/playing阶段的每分钟检查
 -- 返回: "ready"=可开演(StageMin转doStage) / "cancel"=预演失败 / "final"=进入尾声 / nil=维持现状
 function Stage.checkStage(mt, player)
     local pid = util.getPID(player)
@@ -251,7 +222,7 @@ function Stage.checkStage(mt, player)
     end
 
     if mt:isPlaying() then
-        -- ClaudeNote: 和平观演考勤(合并时丢失, 补回) — playing每分钟记账
+        --— playing每分钟记账
         pd.showMin = (pd.showMin or 0) + 1
         if actor.mj and not actor.mj:isDead()
             and actor.mj:DistTo(player) <= (conf.get("attendRange") or 10) then
@@ -288,7 +259,7 @@ function Stage.checkStage(mt, player)
     return nil
 end
 
--- ClaudeNote: Phase2实装 — 开演: 切playing, 起歌(doStart已预选首曲), 圈内观众就位, 音爆引怪
+-- 开演: 切playing, 起歌(doStart已预选首曲), 圈内观众就位, 音爆引怪
 function Stage.doStage(mt, player)
     mt.state = "playing"
     mt.tadTick = 0
@@ -311,6 +282,35 @@ function Stage.doStage(mt, player)
     util.debugMsg("doStage -> playing", "song=", tostring(music.current))
 end
 
+-- 条件确立，进入预演状态
+function Stage.doStart(mt, player)
+    mt.state = "luring"
+    mt.lureStart = util.getMin()    -- lure超时计时起点(游戏分钟)
+    music.pick()                    -- 预选首曲, MJ套装跟曲目走
+    util.debugMsg("doStart -> luring", "pid=", util.getPID(player), "song=", tostring(music.current))
+
+    actor.mjStandby(player)
+    actor.dancerStandby(player)
+end
+
+--=============                ===============
+--=============  ON TICK EVENT ===============
+--=============                ===============
+
+-- OnTick约60次/秒，舞步轮换只跟主舞台节拍走。
+function Stage.doBeat(mt, player)
+    if not mt.hasTAD or not IsThrillerTAD then return end
+
+    mt.tadTick = (mt.tadTick or 0) + 1
+
+    if mt.tadTick <= 30 then return end
+    mt.tadTick = 0
+
+    -- 主MOD侧每拍舞蹈状态机(冷却递减/起舞收舞/归队复舞), TAD只轮换舞步
+    actor.onBeat(mt, player)
+    IsThrillerTAD.onBeat(mt, player)
+end
+
 -- 演出期间的tick循环
 function Stage.onTick(mt, player)
     if mt:isLuring() then
@@ -318,26 +318,20 @@ function Stage.onTick(mt, player)
         actor.groupCtrl(player)
 
     elseif mt:isPlaying() then
-        -- 起舞/收舞在runTADBeat→actor.onBeat按拍处理
+
+        if mt.hasTAD then
+            Stage.doBeat(mt, player)
+        end
+
+        -- 起舞/收舞在doBeat→actor.onBeat按拍处理
         actor.groupCtrl(player)
-        actor.heal(player)
+        actor.heal()
         actor.waves(mt, player)
-        runTADBeat(mt, player)
 
     else
         -- fading 期间如果还存活的后续处理
     end
 end
 
--- 条件确立，进入预演状态
-function Stage.doStart(mt, player)
-    mt.state = "luring"
-    mt.lureStart = util.getMin()    -- ClaudeNote: Phase2 — lure超时计时起点(游戏分钟)
-    music.pick()                    -- ClaudeNote: Phase2 — 预选首曲, MJ套装跟曲目走
-    util.debugMsg("doStart -> luring", "pid=", util.getPID(player), "song=", tostring(music.current))
-
-    actor.mjStandby(player)
-    actor.dancerStandby(player)
-end
 
 return Stage

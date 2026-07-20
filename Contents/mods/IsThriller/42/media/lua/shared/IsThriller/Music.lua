@@ -168,7 +168,6 @@ local function lfuncMusic()
 
         -- if fading
         if st:isFading() then
-            -- ClaudeNote: 修订 — 歌已播完/已停时无声可淡, 返回false即可;
             -- 舞台层面的60游戏分钟尾声由Stage.checkFade负责, 不能再hardstop把舞台掐掉
             if not Music.handle then return false end
 
@@ -236,7 +235,7 @@ local function lfuncMusic()
             return "songlimit"
         end
 
-        -- ClaudeNote: Phase1.1 — 进入幕间: 先恢复原版BGM氛围, 下一首开播时再压
+        -- 进入幕间: 先恢复原版BGM氛围, 下一首开播时再压
         Music.gapStart = util.getMin()
         Music.resBGM()
         util.debugMsg("music gap start", "gapStart=", Music.gapStart)

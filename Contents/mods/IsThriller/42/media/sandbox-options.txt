@@ -3,7 +3,7 @@ VERSION = 1,
 option IsThriller.Range
 {
     type = integer,
-    min = 10,
+    min = 15,
     max = 100,
     default = 15,
     page = IsThriller,

@@ -3,7 +3,7 @@
 <outfitManager>
 
     <m_MaleOutfits>
-        <m_Name>IsThrillerThriller</m_Name>
+        <m_Name>ThrillerStageSet</m_Name>
         <m_Guid>3648eb8e-099a-4037-b0b4-d33811c5419b</m_Guid>
         <m_Top>false</m_Top>
         <m_Pants>false</m_Pants>
@@ -25,7 +25,7 @@
     </m_MaleOutfits>
 
     <m_FemaleOutfits>
-        <m_Name>IsThrillerThriller</m_Name>
+        <m_Name>ThrillerStageSet</m_Name>
         <m_Guid>0c80ab7e-2916-4fbb-8829-3b3e2d1731f0</m_Guid>
         <m_Top>false</m_Top>
         <m_Pants>false</m_Pants>
@@ -47,7 +47,7 @@
     </m_FemaleOutfits>
 
     <m_MaleOutfits>
-        <m_Name>IsThrillerSmoothCriminal</m_Name>
+        <m_Name>SmoothCriminalStageSet</m_Name>
         <m_Guid>088ace63-605e-4c8f-9be1-51a3538940d8</m_Guid>
         <m_Top>false</m_Top>
         <m_Pants>false</m_Pants>
@@ -84,7 +84,7 @@
     </m_MaleOutfits>
 
     <m_FemaleOutfits>
-        <m_Name>IsThrillerSmoothCriminal</m_Name>
+        <m_Name>SmoothCriminalStageSet</m_Name>
         <m_Guid>e47aab33-3d15-483f-acc6-4f2318dfa3cb</m_Guid>
         <m_Top>false</m_Top>
         <m_Pants>false</m_Pants>
@@ -121,7 +121,7 @@
     </m_FemaleOutfits>
 
     <m_MaleOutfits>
-        <m_Name>IsThrillerBeatIt</m_Name>
+        <m_Name>BeatItStageSet</m_Name>
         <m_Guid>06139e68-e5f5-4584-98d5-c45e3fe8870d</m_Guid>
         <m_Top>false</m_Top>
         <m_Pants>false</m_Pants>
@@ -146,7 +146,7 @@
     </m_MaleOutfits>
 
     <m_FemaleOutfits>
-        <m_Name>IsThrillerBeatIt</m_Name>
+        <m_Name>BeatItStageSet</m_Name>
         <m_Guid>43838b2f-8b9b-468f-8222-5401addcb248</m_Guid>
         <m_Top>false</m_Top>
         <m_Pants>false</m_Pants>

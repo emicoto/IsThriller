@@ -1,0 +1,25 @@
+<!-- GPTNote: DanceFix舞台启动转圈one-shot。 -->
+<animNode x_extends="_thriller_oneshot_base.xml">
+	<m_Name>thrillerOneShotSpin</m_Name>
+	<m_AnimName>BobTA_Northern_Soul_Spin</m_AnimName>
+	<m_Conditions>
+		<m_Name>bThrillerDance</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>BumpType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>ThrillerOneShot</m_StringValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>ThrillerAnim</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>Soul_Spin</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>SetVariable</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue>ThrillerAnim=None</m_ParameterValue>
+	</m_Events>
+</animNode>

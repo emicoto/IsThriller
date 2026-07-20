@@ -1,0 +1,12 @@
+<!-- GPTNote: DanceFix原地编舞基类；抽象节点只提供一致的轨道参数。 -->
+<animNode>
+	<m_Name>thrillerChoreoBase</m_Name>
+	<m_ConditionPriority>5</m_ConditionPriority>
+	<m_Looped>true</m_Looped>
+	<m_BlendTime>0.10</m_BlendTime>
+	<m_BlendOutTime>0.10</m_BlendOutTime>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_useDeferredMovement>false</m_useDeferredMovement>
+	<m_useDeferedRotation>false</m_useDeferedRotation>
+</animNode>

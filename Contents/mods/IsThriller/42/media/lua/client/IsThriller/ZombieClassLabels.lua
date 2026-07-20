@@ -8,8 +8,7 @@ local drawObjects = setmetatable({}, { __mode = "k" })
 local classColors = {
     mj       = { 1.00, 0.25, 0.25 },
     dancer   = { 1.00, 0.45, 0.90 },
-    sprinter = { 1.00, 0.70, 0.20 },
-    shambler = { 0.30, 0.90, 1.00 },
+    audience = { 0.30, 0.90, 1.00 },
 }
 
 local function getClassName(zombie)
@@ -40,7 +39,7 @@ local function getScreenPosition(zombie)
 end
 
 local function drawLabel(zombie, className, player)
-    if not player:CanSee(zombie) then return end
+    if not zombie or not player:CanSee(zombie) then return end
 
     local text = drawObjects[zombie]
     if not text then
