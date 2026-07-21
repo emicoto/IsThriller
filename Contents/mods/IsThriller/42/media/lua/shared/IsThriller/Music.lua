@@ -209,11 +209,7 @@ local function lfuncMusic()
             local elapsed = util.countMin(Music.gapStart)
             if elapsed < util.toGameTime(conf.music.gapRealSec) then return false end
 
-            Music.gapStart = -1
-            if Music.pick() then
-                Music.play(player)
-            end
-            return false
+            return 'songStartReady'
         end
 
         if not Music.handle then return false end

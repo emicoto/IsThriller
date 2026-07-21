@@ -1,432 +1,531 @@
--- ClaudeNote: IsThriller游戏内测试工具包(ITK) v0.1 — 控制台调用, 用于实测演员实例/坐标/寻路/舞蹈变量。
--- 放置: 42/media/lua/client/IsThriller/ (临时调试文件, 测完即撤, 不随发布)
--- 用法: 游戏内Lua控制台直接敲 ITK.help() 看指令清单。输出全英文(PZ控制台中文乱码)。
--- 依赖: 主MOD已加载(IsThriller全局); 寻路API依据《Claude的丧尸移动控制与pathToLocationF反编译报告》。
+-- GPTNote: IsThriller TestKit v1.0 compatibility backend for the merged DevTool panel (Build 42).
+-- This file keeps the ITK console API while using the current actor registry and TAD branch semantics.
 
 ITK = ITK or {}
+
+ITK.selected = ITK.selected or nil
+ITK.selectedID = ITK.selectedID or nil
+ITK.selectedLabel = ITK.selectedLabel or "none"
+ITK.lastResult = ITK.lastResult or "TestKit ready"
 
 local function say(...)
     print("[ITK]", ...)
 end
 
-
-function ITK.checkTicks()
-
-    if ITK.gameTick == nil then
-        ITK.gameTick = 0
-    end
-    if ITK.lastMs == nil then
-        ITK.lastMs = getTimestampMs()
-    end
-
-    local elapse = getTimestampMs() - ITK.lastMs
-
-    if ITK.gameTick > 60 then
-        print("LuneModDebug: checkTicks ", ITK.gameTick, "elapse", elapse)
-    end
-
-    if elapse > 1000 then
-        print("LuneModDebug: ", elapse," ms per ", ITK.gameTick," tick")
-        ITK.gameTick = 0
-        ITK.lastMs = getTimestampMs()
-    end
-
-    ITK.gameTick = ITK.gameTick + 1
-
+local function result(text)
+    ITK.lastResult = tostring(text or "")
+    say(ITK.lastResult)
+    return ITK.lastResult
 end
 
--- Events.OnTick.Add(ITK.checkTicks)
+function ITK.checkTicks()
+    ITK.gameTick = (ITK.gameTick or 0) + 1
+    ITK.lastMs = ITK.lastMs or getTimestampMs()
+    local elapsed = getTimestampMs() - ITK.lastMs
+    if elapsed >= 1000 then
+        say("tick sample:", ITK.gameTick, "ticks /", elapsed, "ms")
+        ITK.gameTick = 0
+        ITK.lastMs = getTimestampMs()
+    end
+end
 
-local function fpos(o)
-    if not o then return "nil" end
-    local ok, s = pcall(function()
-        return string.format("%.2f, %.2f, %.0f", o:getX(), o:getY(), o:getZ())
+local function safe(method, object, fallback)
+    if not object then return fallback end
+    local ok, value = pcall(function()
+        local fn = object[method]
+        if not fn then return fallback end
+        return fn(object)
     end)
-    return ok and s or "posErr"
+    if ok then return value end
+    return fallback
+end
+
+local function fpos(object)
+    if not object then return "nil" end
+    local ok, text = pcall(function()
+        return string.format("%.2f, %.2f, %.0f", object:getX(), object:getY(), object:getZ())
+    end)
+    return ok and text or "posErr"
 end
 
 local function fdist(a, b)
     if not a or not b then return -1 end
-    local ok, d = pcall(function() return a:DistTo(b) end)
-    return ok and tonumber(string.format("%.2f", d)) or -1
+    local ok, distance = pcall(function() return a:DistTo(b) end)
+    return ok and tonumber(string.format("%.2f", distance)) or -1
 end
 
--- 演员遍历: 返回 {label, zombie} 数组 (MJ + 存活伴舞)
-local function actors()
-    local list = {}
-    
-    local cell = getPlayer() and getPlayer():getCell()
-    if not cell then return list end
+local function actorModule()
+    return IsThriller and IsThriller.actor or nil
+end
 
+local function absoluteID(zombie)
+    if not zombie then return nil end
+    local actor = actorModule()
+    if actor and actor.getDancerID then
+        local ok, id = pcall(actor.getDancerID, zombie)
+        if ok and id ~= nil then return id end
+    end
 
-    local zblist = cell:getZombieList()
-    if not zblist or zblist:size() == 0 then return list end
+    local id
+    if (isClient and isClient()) or (isServer and isServer()) then
+        pcall(function() id = zombie:getOnlineID() end)
+    end
+    if id == nil or id < 0 then
+        pcall(function() id = zombie:getID() end)
+    end
+    return id
+end
 
-    local time = getTimestampMs()
+local function sortedRoster(fixedOnly)
+    local actor = actorModule()
+    local source = actor and (fixedOnly and actor.dancers or actor.allDancer) or nil
+    local rows = {}
+    for id, zombie in pairs(source or {}) do
+        if zombie and not safe("isDead", zombie, true) then
+            table.insert(rows, { id = id, zombie = zombie })
+        end
+    end
+    table.sort(rows, function(a, b)
+        if type(a.id) == "number" and type(b.id) == "number" then return a.id < b.id end
+        return tostring(a.id) < tostring(b.id)
+    end)
+    return rows
+end
 
-    list.dancer = {}
-    list.audience = {}
-    list.all = {}
+local function scanActors()
+    local list = { all = {}, dancer = {}, audience = {}, mj = nil, mjDead = false }
+    local seen = {}
+    local actor = actorModule()
 
-    for i = 0, zblist:size() -1 do
-        local zb = zblist:get(i)
-        if zb then
-            if not zb:isDead() then
-                if zb:getModData().isThrillerMJ then
-                    table.insert(list.all, { "MJ", zb })
-                    list.mj = zb
+    if actor and actor.mj and not safe("isDead", actor.mj, true) then
+        list.mj = actor.mj
+        table.insert(list.all, { "MJ", actor.mj })
+        seen[actor.mj] = true
+    elseif actor and actor.mjDead then
+        list.mjDead = true
+    end
+
+    for _, row in ipairs(sortedRoster(true)) do
+        local entry = { "DC:" .. tostring(row.id), row.zombie, row.id }
+        table.insert(list.dancer, row.zombie)
+        table.insert(list.all, entry)
+        seen[row.zombie] = true
+    end
+
+    local player = getPlayer and getPlayer()
+    local cell = player and player:getCell()
+    local zombies = cell and cell:getZombieList()
+    if zombies then
+        for i = 0, zombies:size() - 1 do
+            local zombie = zombies:get(i)
+            if zombie and not safe("isDead", zombie, true) then
+                local md = zombie:getModData()
+                if md.isThrillerMJ and not list.mj then
+                    list.mj = zombie
+                    table.insert(list.all, { "MJ", zombie })
+                    seen[zombie] = true
                 end
-                if zb:getModData().isThrillerDancer then
-                    table.insert(list.all, { "DC", zb})
-                    table.insert(list.dancer, zb)
+                if md.isThrillerDancer and not seen[zombie] then
+                    local id = absoluteID(zombie)
+                    table.insert(list.dancer, zombie)
+                    table.insert(list.all, { "DC:" .. tostring(id), zombie, id })
+                    seen[zombie] = true
                 end
-                if zb:getModData().isThrillerAudience then
-                    table.insert(list.all, {"AD", zb})
-                    table.insert(list.audience, zb)
-                end
-            else
-                if zb:getModData().isThrillerMJ then
-                    list.mj = nil
-                    list.mjDead = true
+                if md.isThrillerAudience then
+                    table.insert(list.audience, zombie)
+                    if not seen[zombie] then
+                        table.insert(list.all, { "AD", zombie, absoluteID(zombie) })
+                        seen[zombie] = true
+                    end
                 end
             end
         end
     end
-    
-    print("[LuneModDebug] <IsThriller> - time elapse on scan cell zombies:", getTimestampMs() - time)
-
     return list
 end
 
---==================== 实例与坐标 ====================--
+local function setSelected(zombie, label)
+    ITK.selected = zombie
+    ITK.selectedID = absoluteID(zombie)
+    ITK.selectedLabel = zombie and (label or "zombie") or "none"
+    result(("selected %s id=%s ref=%s"):format(ITK.selectedLabel, tostring(ITK.selectedID), tostring(zombie)))
+    return zombie
+end
 
--- 玩家实例(顺带打印坐标)
+function ITK.getAbsoluteID(zombie)
+    return absoluteID(zombie)
+end
+
+function ITK.getSelected()
+    if ITK.selected and safe("isDead", ITK.selected, true) then
+        ITK.selected = nil
+        ITK.selectedID = nil
+        ITK.selectedLabel = "none"
+    end
+    return ITK.selected
+end
+
+function ITK.select(zombie, label)
+    return setSelected(zombie, label)
+end
+
 function ITK.p()
-    local pl = getPlayer()
-    say("player:", tostring(pl), "pos:", fpos(pl))
-    return pl
+    local player = getPlayer and getPlayer()
+    say("player:", tostring(player), "pos:", fpos(player))
+    return player
 end
 
--- MJ实例
 function ITK.mj()
-    local ac = actors()
-    if not ac or not ac.mj then say("MJ = nil, mjDead=", ac and tostring(ac.mjDead)) return nil end
-    local z = ac.mj
-    say("MJ:", tostring(z), "dead=", tostring(z:isDead()), "hp=", tostring(z:getHealth()))
-    say("  pos:", fpos(z), " distToPlayer=", fdist(z, getPlayer()))
-    return z
-end
-
--- 伴舞列表(索引取单个: ITK.dc(2))
-function ITK.dc(i)
-    local ac = actors()
-    if not ac then return nil end
-    if i then
-        local z = ac.dancer[i]
-        say("DC" .. i .. ":", tostring(z), z and ("pos: " .. fpos(z)) or "")
-        return z
+    local actor = actorModule()
+    local zombie = actor and actor.mj or scanActors().mj
+    if not zombie or safe("isDead", zombie, true) then
+        result("MJ = nil/dead")
+        return nil
     end
-    local mj, pl = ac.mj, getPlayer()
-    for idx, z in ipairs(ac.dancer or {}) do
-        say(string.format("DC%d dead=%s pos=[%s] dMJ=%s dPl=%s",
-            idx, tostring(z:isDead()), fpos(z), tostring(fdist(z, mj)), tostring(fdist(z, pl))))
+    setSelected(zombie, "MJ")
+    say("  pos:", fpos(zombie), "hp=", tostring(safe("getHealth", zombie, "n/a")), "dPl=", tostring(fdist(zombie, getPlayer())))
+    return zombie
+end
+
+function ITK.dancerRows()
+    return sortedRoster(true)
+end
+
+function ITK.dancerByID(id)
+    local actor = actorModule()
+    if not actor then result("dancerByID: actor module missing") return nil end
+    local key = id
+    local zombie = actor.dancers and actor.dancers[key]
+    if not zombie and type(id) == "string" then
+        key = tonumber(id) or id
+        zombie = actor.dancers and actor.dancers[key]
     end
-    say("total dancers:", #(ac.dancer or {}), " roster:", tostring(IsThriller.actor.dancerTotal))
-    return ac.dancer
+    if not zombie then
+        result("dancerByID: ID not found: " .. tostring(id))
+        return nil
+    end
+    return setSelected(zombie, "Dancer " .. tostring(key))
 end
 
--- 任意对象坐标
-function ITK.pos(o)
-    say("pos:", fpos(o))
-    return o and o:getX(), o and o:getY(), o and o:getZ()
+function ITK.dc(index)
+    local rows = sortedRoster(true)
+    if index ~= nil then
+        local row = rows[tonumber(index) or -1]
+        if not row then result("dc: roster index not found: " .. tostring(index)) return nil end
+        return setSelected(row.zombie, "Dancer " .. tostring(row.id))
+    end
+    for i, row in ipairs(rows) do
+        say(("DC#%d absoluteID=%s ref=%s pos=[%s] dPl=%s"):format(i, tostring(row.id), tostring(row.zombie), fpos(row.zombie), tostring(fdist(row.zombie, getPlayer()))))
+    end
+    result("fixed dancer count=" .. tostring(#rows))
+    return rows
 end
 
--- ClaudeNote: 距离语义排查升级 — 一次打印四种口径:
--- DistTo(api)=引擎原样 / euclid=手算直线 / grid(cheby)=建造那种"格数"(斜向1格算1格) / manhattan / dz=楼层差
--- DistTo是2D欧氏直线且无视z, 与"square格数"斜向时必然不等(5格斜角: grid=5, DistTo=7.07)
+function ITK.dancerIDs()
+    local ids = {}
+    local display = {}
+    for _, row in ipairs(sortedRoster(true)) do
+        table.insert(ids, row.id)
+        table.insert(display, tostring(row.id))
+    end
+    result("fixed dancer absolute IDs = [" .. table.concat(display, ", ") .. "]")
+    return ids
+end
+
+function ITK.allDancerIDs()
+    local ids = {}
+    local display = {}
+    for _, row in ipairs(sortedRoster(false)) do
+        table.insert(ids, row.id)
+        table.insert(display, tostring(row.id))
+    end
+    result("all registered dancer absolute IDs = [" .. table.concat(display, ", ") .. "]")
+    return ids
+end
+
+function ITK.pos(object)
+    object = object or ITK.getSelected()
+    say("pos:", fpos(object))
+    return object and object:getX(), object and object:getY(), object and object:getZ()
+end
+
 function ITK.dist(a, b)
+    a = a or ITK.getSelected()
     b = b or getPlayer()
-    if not a or not b then say("dist: nil") return end
+    if not a or not b then result("dist: missing object") return nil end
     local dx = math.abs(a:getX() - b:getX())
     local dy = math.abs(a:getY() - b:getY())
     local dz = math.abs(a:getZ() - b:getZ())
     local api = fdist(a, b)
-    say(string.format("DistTo(api)=%.2f  euclid=%.2f  grid(cheby)=%d  manhattan=%.1f  dz=%d",
-        api, math.sqrt(dx * dx + dy * dy), math.floor(math.max(dx, dy)), dx + dy, math.floor(dz)))
-    say(string.format("  dx=%.2f dy=%.2f  A=[%s]  B=[%s]", dx, dy, fpos(a), fpos(b)))
+    say(string.format("DistTo=%.2f euclid=%.2f grid=%d manhattan=%.1f dz=%d", api, math.sqrt(dx * dx + dy * dy), math.floor(math.max(dx, dy)), dx + dy, math.floor(dz)))
     return api
 end
 
--- ClaudeNote: 距离校准 — 瞬移丧尸到玩家正东n格(格心对齐), DistTo应精确读n;
--- ITK.calib(z, n, true)改斜向45度: DistTo应读n*1.414, 若你要的是建造语义那它"该"读n
-function ITK.calib(z, n, diagonal)
-    local pl = getPlayer()
-    if not z or not pl then say("calib: need zombie") return end
-    n = n or 5
-    local x = math.floor(pl:getX()) + n + 0.5
-    local y = diagonal and (math.floor(pl:getY()) + n + 0.5) or (math.floor(pl:getY()) + 0.5)
-    local ok = pcall(function() z:teleportTo(x, y, pl:getZ()) end)
-    say("calib tp", ok and "OK" or "FAIL", diagonal and ("diag " .. n) or ("east " .. n),
-        string.format(" expect: straight=%d diag-euclid=%.2f diag-grid=%d", n, n * 1.41421, n))
-    ITK.dist(z, pl)
+function ITK.tp(zombie, x, y, z)
+    zombie = zombie or ITK.getSelected()
+    if not zombie then result("tp: no selected zombie") return false end
+    local ok, err = pcall(function() zombie:teleportTo(x, y, z or 0) end)
+    result(ok and ("teleport OK -> " .. tostring(x) .. "," .. tostring(y)) or ("teleport FAIL: " .. tostring(err)))
+    return ok
 end
 
---==================== 移动控制 ====================--
-
--- 瞬移 ITK.tp(z, x, y, zl)
-function ITK.tp(z, x, y, zl)
-    if not z then say("tp: nil target") return end
-    local ok, err = pcall(function() z:teleportTo(x, y, zl or 0) end)
-    say("tp ->", x, y, zl or 0, ok and "OK" or ("FAIL " .. tostring(err)))
+function ITK.tpNearPlayer(zombie)
+    zombie = zombie or ITK.getSelected()
+    local player = getPlayer()
+    if not zombie or not player then result("tpNearPlayer: missing selected/player") return false end
+    return ITK.tp(zombie, math.floor(player:getX()) + 1.5, math.floor(player:getY()) + 0.5, player:getZ())
 end
 
--- float寻路 ITK.pathF(z, x, y, zl)
-function ITK.pathF(z, x, y, zl)
-    if not z then say("pathF: nil target") return end
-    local ok, err = pcall(function() z:pathToLocationF(x, y, zl or 0) end)
-    say("pathF ->", x, y, zl or 0, ok and "OK" or ("FAIL " .. tostring(err)))
+function ITK.calib(zombie, distance, diagonal)
+    zombie = zombie or ITK.getSelected()
+    local player = getPlayer()
+    if not zombie or not player then result("calib: missing selected/player") return false end
+    distance = tonumber(distance) or 5
+    local x = math.floor(player:getX()) + distance + 0.5
+    local y = diagonal and (math.floor(player:getY()) + distance + 0.5) or (math.floor(player:getY()) + 0.5)
+    local ok = ITK.tp(zombie, x, y, player:getZ())
+    if ok then ITK.dist(zombie, player) end
+    return ok
 end
 
--- 寻路到角色 ITK.pathTo(z, chr) chr缺省=玩家
-function ITK.pathTo(z, chr)
-    if not z then say("pathTo: nil target") return end
-    chr = chr or getPlayer()
-    local ok, err = pcall(function() z:pathToCharacter(chr) end)
-    say("pathTo ->", tostring(chr), ok and "OK" or ("FAIL " .. tostring(err)))
+function ITK.pathF(zombie, x, y, z)
+    zombie = zombie or ITK.getSelected()
+    if not zombie then result("pathF: no selected zombie") return false end
+    local ok, err = pcall(function() zombie:pathToLocationF(x, y, z or zombie:getZ()) end)
+    result(ok and "pathToLocationF OK" or ("pathToLocationF FAIL: " .. tostring(err)))
+    return ok
 end
 
--- 声音寻路(最像丧尸) ITK.sound(z, x, y)
-function ITK.sound(z, x, y)
-    if not z then say("sound: nil target") return end
-    local ok, err = pcall(function() z:pathToSound(math.floor(x), math.floor(y), 0) end)
-    say("pathToSound ->", x, y, ok and "OK" or ("FAIL " .. tostring(err)))
+function ITK.pathTo(zombie, character)
+    zombie = zombie or ITK.getSelected()
+    character = character or getPlayer()
+    if not zombie or not character then result("pathTo: missing selected/character") return false end
+    local ok, err = pcall(function() zombie:pathToCharacter(character) end)
+    result(ok and "pathToCharacter OK" or ("pathToCharacter FAIL: " .. tostring(err)))
+    return ok
 end
 
--- 追踪目标 ITK.target(z, chr) / 解除 ITK.target(z, false)
-function ITK.target(z, chr)
-    if not z then say("target: nil target") return end
-    local tgt = chr
-    if chr == nil then tgt = getPlayer() end
-    if chr == false then tgt = nil end
-    local ok, err = pcall(function() z:setTarget(tgt) end)
-    say("setTarget ->", tostring(tgt), ok and "OK" or ("FAIL " .. tostring(err)))
+function ITK.sound(zombie, x, y, z)
+    zombie = zombie or ITK.getSelected()
+    if not zombie then result("sound: no selected zombie") return false end
+    local player = getPlayer()
+    x = x or (player and player:getX())
+    y = y or (player and player:getY())
+    z = z or (player and player:getZ()) or 0
+    if not x or not y then result("sound: missing location") return false end
+    local ok, err = pcall(function() zombie:pathToSound(math.floor(x), math.floor(y), math.floor(z)) end)
+    result(ok and "pathToSound OK" or ("pathToSound FAIL: " .. tostring(err)))
+    return ok
 end
 
--- 寻路状态查询
-function ITK.path(z)
-    if not z then say("path: nil target") return end
-    local function q(name)
-        local ok, v = pcall(function() return z[name](z) end)
-        return ok and tostring(v) or "n/a"
-    end
-    say("hasPath=", q("hasPath"), " isPathing=", q("isPathing"), " isMoving=", q("isMoving"))
-    local ok, tx = pcall(function() return z:getPathTargetX() end)
-    if ok then
-        local _, ty = pcall(function() return z:getPathTargetY() end)
-        say("pathTarget:", tostring(tx), tostring(ty))
-    end
-    say("bPathfind=", tostring(ITK.getVar(z, "bPathfind", true)))
+function ITK.target(zombie, character)
+    zombie = zombie or ITK.getSelected()
+    if not zombie then result("target: no selected zombie") return false end
+    if character == nil then character = getPlayer() end
+    if character == false then character = nil end
+    local ok, err = pcall(function() zombie:setTarget(character) end)
+    result(ok and ("setTarget -> " .. tostring(character)) or ("setTarget FAIL: " .. tostring(err)))
+    return ok
 end
 
--- 全体伴舞 -> MJ坐标汇合
-function ITK.rally()
-    local ac = actors()
-    if not ac or not ac.mj then say("rally: no MJ") return end
-    local mj = ac.mj
-    for i, z in ipairs(ac.dancer or {}) do
-        if not z:isDead() then
-            local ox = (ZombRand(5) - 2) * 0.6   -- 小偏移防叠格
-            local oy = (ZombRand(5) - 2) * 0.6
-            pcall(function() z:pathToLocationF(mj:getX() + ox, mj:getY() + oy, mj:getZ()) end)
-            say("rally DC" .. i, "-> MJ")
-        end
-    end
-end
-
--- MJ->玩家, 伴舞->MJ, 编队行进
-function ITK.march()
-    local ac = actors()
-    local pl = getPlayer()
-    if not ac or not ac.mj or not pl then say("march: missing MJ/player") return end
-    pcall(function() ac.mj:pathToCharacter(pl) end)
-    say("march: MJ -> player")
-    ITK.rally()
-end
-
---==================== 舞蹈与动画变量 ====================--
-
--- 起舞/收舞: ITK.dance(z, true, "BobTA_Thriller_One") / ITK.dance("all", false)
-function ITK.dance(z, on, move)
-    move = move or "BobTA_Thriller_One"
-    local targets = {}
-    if z == "all" then
-        for _, e in ipairs(actors()) do table.insert(targets, e) end
-    else
-        table.insert(targets, { "one", z })
-    end
-    for _, e in ipairs(targets) do
-        local label, zb = e[1], e[2]
-        if zb and not zb:isDead() then
-            if IsThrillerTAD and IsThrillerTAD.setDance then
-                pcall(IsThrillerTAD.setDance, zb, on, move)
-                say("dance(TAD)", label, tostring(on), move)
-            else
-                -- TAD接口不在时直接写变量兜底
-                pcall(function()
-                    zb:setUseless(on and true or false)
-                    zb:setVariable("ThrillerMove", move)
-                    zb:setVariable("bThrillerDance", on and true or false)
-                end)
-                say("dance(raw)", label, tostring(on), move)
-            end
-        end
-    end
-end
-
--- 单独改舞步变量(不动useless): 测moonwalk/引擎自动切换用
-function ITK.move(z, move)
-    if not z or not move then say("usage: ITK.move(zombie, moveName)") return end
-    local ok, err = pcall(function() z:setVariable("ThrillerMove", move) end)
-    say("setVariable ThrillerMove =", move, ok and "OK" or ("FAIL " .. tostring(err)))
-end
-
--- 读动画变量: ITK.getVar(z, "ThrillerMove") ; silent=true时只返回不打印
-function ITK.getVar(z, name, silent)
-    if not z then return nil end
-    local ok, v = pcall(function() return z:getVariableString(name) end)
-    if not ok then
-        ok, v = pcall(function() return z:getVariableBoolean(name) end)
-    end
-    local out = ok and tostring(v) or "n/a"
+function ITK.getVar(zombie, name, silent)
+    zombie = zombie or ITK.getSelected()
+    if not zombie then return nil end
+    local ok, value = pcall(function() return zombie:getVariableString(name) end)
+    if not ok then ok, value = pcall(function() return zombie:getVariableBoolean(name) end) end
+    local out = ok and tostring(value) or "n/a"
     if not silent then say("var", name, "=", out) end
     return out
 end
 
--- 一口气打印关键变量
-function ITK.vars(z)
-    if not z then say("vars: nil target") return end
-    for _, n in ipairs({ "bThrillerDance", "ThrillerMove", "bPathfind", "zombieWalkType" }) do
-        ITK.getVar(z, n)
+function ITK.setVar(zombie, name, value)
+    zombie = zombie or ITK.getSelected()
+    if not zombie then result("setVar: no selected zombie") return false end
+    local ok, err = pcall(function() zombie:setVariable(name, value) end)
+    result(ok and ("setVariable " .. tostring(name) .. "=" .. tostring(value)) or ("setVariable FAIL: " .. tostring(err)))
+    return ok
+end
+
+function ITK.vars(zombie)
+    zombie = zombie or ITK.getSelected()
+    if not zombie then result("vars: no selected zombie") return nil end
+    for _, name in ipairs({ "bThrillerDance", "ThrillerAnim", "ThrillerDone", "BumpType", "BumpAnimFinished", "bPathfind", "zombieWalkType" }) do
+        ITK.getVar(zombie, name)
     end
-    local ok, u = pcall(function() return z:isUseless() end)
-    say("isUseless =", ok and tostring(u) or "n/a")
+    say("moving=", tostring(safe("isMoving", zombie, "n/a")), "pathing=", tostring(safe("isPathing", zombie, "n/a")), "useless=", tostring(safe("isUseless", zombie, "n/a")))
+    result("selected animation/path variables printed")
+    return zombie
 end
 
--- 任意setVariable: ITK.setVar(z, "k", v)
-function ITK.setVar(z, k, v)
-    if not z then say("setVar: nil target") return end
-    local ok, err = pcall(function() z:setVariable(k, v) end)
-    say("setVariable", k, "=", tostring(v), ok and "OK" or ("FAIL " .. tostring(err)))
+function ITK.path(zombie)
+    zombie = zombie or ITK.getSelected()
+    if not zombie then result("path: no selected zombie") return nil end
+    say("hasPath=", tostring(safe("hasPath", zombie, "n/a")), "isPathing=", tostring(safe("isPathing", zombie, "n/a")), "isMoving=", tostring(safe("isMoving", zombie, "n/a")))
+    say("pathTarget=", tostring(safe("getPathTargetX", zombie, "n/a")), tostring(safe("getPathTargetY", zombie, "n/a")), "bPathfind=", tostring(ITK.getVar(zombie, "bPathfind", true)))
+    result("selected path state printed")
+    return zombie
 end
 
---==================== 侦察 ====================--
+function ITK.tags(zombie)
+    zombie = zombie or ITK.getSelected()
+    if not zombie then result("tags: no selected zombie") return nil end
+    local md = zombie:getModData()
+    say("MJ=", tostring(md.isThrillerMJ), "DANCER=", tostring(md.isThrillerDancer), "AUDIENCE=", tostring(md.isThrillerAudience), "absoluteID=", tostring(absoluteID(zombie)))
+    return md
+end
 
--- 玩家r格内丧尸清单(带标签): ITK.near(10)
-function ITK.near(r)
-    r = r or 10
-    local pl = getPlayer()
-    if not pl then return end
-    local cell = pl:getCell()
-    local zl = cell and cell:getZombieList()
-    if not zl then say("no zombie list") return end
-    local n = 0
-    for i = 0, zl:size() - 1 do
-        local z = zl:get(i)
-        if z and not z:isDead() and fdist(z, pl) <= r then
-            n = n + 1
-            local md = z:getModData()
-            local tag = (md.isThrillerMJ and "MJ") or (md.isThrillerDancer and "DANCER")
-                or (md.isThrillerAudience and "AUDIENCE") or "-"
-            say(string.format("#%d tag=%s d=%.1f pos=[%s] dance=%s",
-                n, tag, fdist(z, pl), fpos(z), ITK.getVar(z, "bThrillerDance", true)))
+function ITK.dance(zombie, on, move)
+    local targets = {}
+    if zombie == "all" then
+        for _, row in ipairs(sortedRoster(false)) do table.insert(targets, row.zombie) end
+    else
+        table.insert(targets, zombie or ITK.getSelected())
+    end
+
+    local changed = 0
+    for _, target in ipairs(targets) do
+        if target and not safe("isDead", target, true) then
+            if IsThrillerTAD and IsThrillerTAD.setDance then
+                if on and move and move ~= "walk" and move ~= "spin" then
+                    pcall(IsThrillerTAD.setDance, target, true)
+                    pcall(function() target:setVariable("ThrillerAnim", move) end)
+                else
+                    pcall(IsThrillerTAD.setDance, target, on and true or false, move)
+                end
+            else
+                pcall(function()
+                    target:setVariable("bThrillerDance", on and true or false)
+                    target:setVariable("ThrillerAnim", on and (move or "Thriller_1") or "")
+                    target:setUseless(on and move ~= "walk")
+                    target:setMoving(not on or move == "walk")
+                end)
+            end
+            changed = changed + 1
         end
     end
-    say("total in range:", n)
+    result(("dance on=%s branch/move=%s targets=%d"):format(tostring(on), tostring(move or "current"), changed))
+    return changed
 end
 
--- 查标签
-function ITK.tags(z)
-    if not z then say("tags: nil target") return end
-    local md = z:getModData()
-    say("MJ=", tostring(md.isThrillerMJ), " DANCER=", tostring(md.isThrillerDancer),
-        " AUDIENCE=", tostring(md.isThrillerAudience))
+function ITK.move(zombie, move)
+    return ITK.setVar(zombie, "ThrillerAnim", move)
 end
 
---==================== 持续观测 ====================--
+function ITK.spin(zombie)
+    zombie = zombie or ITK.getSelected()
+    if not zombie then result("spin: no selected zombie") return false end
+    if IsThrillerTAD and IsThrillerTAD.doSpin then
+        local ok, value = pcall(IsThrillerTAD.doSpin, zombie)
+        result(ok and ("one-shot spin requested: " .. tostring(value)) or ("one-shot spin FAIL: " .. tostring(value)))
+        return ok
+    end
+    result("spin: TAD doSpin unavailable")
+    return false
+end
+
+function ITK.rally()
+    local actor = actorModule()
+    local mj = actor and actor.mj
+    if not mj or safe("isDead", mj, true) then result("rally: no living MJ") return 0 end
+    local count = 0
+    for _, row in ipairs(sortedRoster(true)) do
+        local offsetX = (ZombRand(5) - 2) * 0.6
+        local offsetY = (ZombRand(5) - 2) * 0.6
+        local ok = pcall(function() row.zombie:pathToLocationF(mj:getX() + offsetX, mj:getY() + offsetY, mj:getZ()) end)
+        if ok then count = count + 1 end
+    end
+    result("rally commands=" .. tostring(count))
+    return count
+end
+
+function ITK.march()
+    local actor = actorModule()
+    local player = getPlayer()
+    if not actor or not actor.mj or not player then result("march: missing MJ/player") return false end
+    pcall(function() actor.mj:pathToCharacter(player) end)
+    ITK.rally()
+    result("march: MJ -> player, fixed dancers -> MJ")
+    return true
+end
+
+function ITK.near(radius)
+    radius = tonumber(radius) or 10
+    local player = getPlayer()
+    local zombies = player and player:getCell() and player:getCell():getZombieList()
+    if not zombies then result("near: no zombie list") return {} end
+    local rows = {}
+    for i = 0, zombies:size() - 1 do
+        local zombie = zombies:get(i)
+        if zombie and not safe("isDead", zombie, true) and fdist(zombie, player) <= radius then
+            local md = zombie:getModData()
+            local tag = md.isThrillerMJ and "MJ" or (md.isThrillerDancer and "DANCER" or (md.isThrillerAudience and "AUDIENCE" or "-"))
+            table.insert(rows, zombie)
+            say(("#%d tag=%s absoluteID=%s d=%.1f pos=[%s] dance=%s"):format(#rows, tag, tostring(absoluteID(zombie)), fdist(zombie, player), fpos(zombie), tostring(ITK.getVar(zombie, "bThrillerDance", true))))
+        end
+    end
+    result(("near radius=%s count=%d"):format(tostring(radius), #rows))
+    return rows
+end
 
 local watchTick = 0
-local watchEvery = 60   -- ~1秒
-
--- 必须具名, 才能Remove(Kahlua匿名函数无法移除)
+local watchEvery = 60
 local function watchLoop()
     watchTick = watchTick + 1
     if watchTick < watchEvery then return end
     watchTick = 0
-
-    local pl = getPlayer()
-    local ac = actors()
-    if not pl or not ac then return end
-    local mj = ac.mj
-
-    local line = "W| "
-    if mj then
-        line = line .. string.format("MJ[%s] dPl=%.1f path=%s dance=%s | ",
-            fpos(mj), fdist(mj, pl),
-            tostring(select(2, pcall(function() return mj:isPathing() end))),
-            ITK.getVar(mj, "bThrillerDance", true))
-    else
-        line = line .. "MJ=nil | "
+    local actor = actorModule()
+    local player = getPlayer()
+    if not actor or not player then return end
+    local parts = {}
+    if actor.mj then table.insert(parts, ("MJ dPl=%s path=%s"):format(tostring(fdist(actor.mj, player)), tostring(safe("isPathing", actor.mj, "n/a")))) end
+    for _, row in ipairs(sortedRoster(true)) do
+        table.insert(parts, ("DC[%s] dPl=%s path=%s dance=%s"):format(tostring(row.id), tostring(fdist(row.zombie, player)), tostring(safe("isPathing", row.zombie, "n/a")), tostring(ITK.getVar(row.zombie, "bThrillerDance", true))))
     end
-    for i, z in ipairs(ac.dancer or {}) do
-        local md = ac.dancer:getModData()
-        line = line .. tostring(md.dancerID)..string.format("DC%d dMJ=%s dPl=%.1f dance=%s | ",
-            i, tostring(fdist(z, mj)), fdist(z, pl), ITK.getVar(z, "bThrillerDance", true))
-    end
-    print("[ITK]" .. line)
+    print("[ITK] W| " .. table.concat(parts, " | "))
 end
 
--- 开关观测: ITK.watch(true) / ITK.watch(false) / ITK.watch(true, 2) 每2秒
-function ITK.watch(on, sec)
+function ITK.watch(on, seconds)
     Events.OnTick.Remove(watchLoop)
-    if on then
-        watchEvery = math.floor((sec or 1) * 60)
+    ITK.watching = on and true or false
+    if ITK.watching then
+        watchEvery = math.max(1, math.floor((tonumber(seconds) or 1) * 60))
         watchTick = 0
         Events.OnTick.Add(watchLoop)
-        say("watch ON, every", (sec or 1), "sec")
-    else
-        say("watch OFF")
     end
+    result("watch " .. (ITK.watching and "ON" or "OFF"))
+    return ITK.watching
 end
 
---==================== 生成与流程 ====================--
-
--- 强制生成: ITK.spawn("mj") / ITK.spawn("dc")
 function ITK.spawn(what)
-    local st = IsThriller
-    local pl = getPlayer()
-    if not st or not pl then return end
+    local actor = actorModule()
+    local player = getPlayer()
+    if not actor or not player then result("spawn: missing actor/player") return false end
     if what == "mj" then
-        pcall(st.actor.mjStandby, pl)
-        say("spawn mj -> ", tostring(st.actor.mj))
+        local ok, err = pcall(actor.mjStandby, player)
+        result(ok and ("spawn MJ -> " .. tostring(actor.mj)) or ("spawn MJ FAIL: " .. tostring(err)))
+        return ok
     elseif what == "dc" then
-        pcall(st.actor.dancerStandby, pl)
-        say("spawn dancers -> ", st.actor:dancerCount(), " all -> ", st.actor:allDancerNum())
-    else
-        say("usage: ITK.spawn('mj') or ITK.spawn('dc')")
+        local ok, err = pcall(actor.dancerStandby, player)
+        result(ok and ("spawn dancers alive=" .. tostring(actor:dancerCount())) or ("spawn dancers FAIL: " .. tostring(err)))
+        return ok
     end
+    result("spawn usage: 'mj' or 'dc'")
+    return false
 end
 
--- 主MOD全量状态
 function ITK.dump()
-    pcall(IsThriller.util.dump)
+    if IsThriller and IsThriller.util and IsThriller.util.dump then
+        pcall(IsThriller.util.dump)
+        result("mod state dumped to console")
+    end
 end
 
 function ITK.help()
-    say("-- instance: p() mj() dc(i?) pos(o) dist(a,b?)")
-    say("-- move: tp(z,x,y,z) pathF(z,x,y,z) pathTo(z,chr?) sound(z,x,y) target(z,chr|false) path(z)")
-    say("-- group: rally() march()")
-    say("-- dance: dance(z|'all',on,move?) move(z,move) vars(z) getVar(z,n) setVar(z,k,v)")
-    say("-- scout: near(r?) tags(z) watch(on,sec?) spawn('mj'|'dc') dump()")
+    say("-- select: mj() dc(index?) dancerByID(absoluteID) dancerIDs() allDancerIDs() getSelected()")
+    say("-- inspect: p() pos(o?) dist(a?,b?) vars(z?) path(z?) tags(z?) getVar(z?,name) setVar(z?,name,value)")
+    say("-- move: tp(z?,x,y,z) tpNearPlayer(z?) calib(z?,n,diagonal) pathF(z?,x,y,z) pathTo(z?,chr?) sound(z?,x?,y?,z?) target(z?,chr|false)")
+    say("-- dance: dance(z|'all',on,branchOrMove?) move(z?,move) spin(z?) rally() march()")
+    say("-- tools: near(radius?) watch(on,seconds?) spawn('mj'|'dc') dump()")
 end
 
-say("TestKit loaded. ITK.help() for commands.")
+say("TestKit v1.0 loaded. ITK.help() for console commands.")

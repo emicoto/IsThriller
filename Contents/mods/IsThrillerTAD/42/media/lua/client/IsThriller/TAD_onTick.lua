@@ -221,10 +221,10 @@ function td.onBeat(player)
     local walk = td.walks[td.walkIdx]
 
     for zombie in pairs(td.active) do
-        zombie:setVariable("ThrillerMove", move)
+        zombie:setVariable("ThrillerAnim", move)
     end
     for zombie in pairs(td.chaser) do
-        zombie:setVariable("ThrillerMove", walk)
+        zombie:setVariable("ThrillerAnim", walk)
     end
     dMsg("move rotate ->", move)
 end

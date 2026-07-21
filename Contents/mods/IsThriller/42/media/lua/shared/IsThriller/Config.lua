@@ -35,7 +35,8 @@ local Config = {
 
         wipeBonus = 3 ,
         rewardBox = "Base.Present_ExtraLarge",
-        fanTicketExchange = 5,     -- FanTicket兑换HealTheWorld所需张数
+        HealExchange = 5,           -- FanTicket兑换HealTheWorld所需张数
+        AuraExchange = 3,           -- Fanticket兑换幽灵buff所需张数
     },
 
 
@@ -47,8 +48,8 @@ local Config = {
         grudgeBeats = 30,   -- cooldown when get hit
 
         -- 舞蹈判定权收归主MOD
-        danceExitRange = 15,    -- MJ跳舞中玩家超过此距离则收舞追场(与danceRange构成滞回)
-        danceRange = 8,         -- the range consider player can see the dance show
+        danceExitRange = 14,    -- MJ跳舞中玩家超过此距离则收舞追场(与danceRange构成滞回)
+        danceRange = 7,         -- the range consider player can see the dance show
         groupRange = 3,        -- 伴舞锚定MJ的编队/起舞半径
         rallySec = 20,          -- rally超时(真实秒), 到点没齐也强制开拔march
 

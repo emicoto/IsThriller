@@ -198,6 +198,9 @@ local function StageTick()
     -- 播满MaxWave首歌交由onSongLimit判定: 全员存活60%概率加演recall
     elseif res == "songlimit" then
         return stage.onSongLimit(st, player)
+    
+    elseif res == "songStartReady" then
+        return stage.onSongStart(player)
 
     -- — myBgm单曲自然播完, 正常收场并记冷却
     elseif res == "bgmdone" then

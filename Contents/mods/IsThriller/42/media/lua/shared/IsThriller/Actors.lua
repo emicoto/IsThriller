@@ -28,7 +28,7 @@ local outfit = require("IsThriller/Outfit")
 function Actor:dancerCount()
     if not self.dancers then return 0 end
     local count = 0
-    for _, dancer in pairs(self.dancers) do
+    for id, dancer in pairs(self.dancers) do
         if dancer and not dancer:isDead() then
             count = count + 1
         end
@@ -257,10 +257,6 @@ function Actor.auction(player)
                 res.rangeCount = res.rangeCount + 1
             end
 
-            -- if stage play time then sign class
-            if IsThriller:isMJPlaying() and dist <= range then
-                signClass(zb)
-            end
         end
     end
     st.report[pid] = res
@@ -401,7 +397,7 @@ function Actor.crowdStandby(player)
         local zb = zbList:get(i)
         if zb and not zb:isDead() then
             local dist = util.countDist(zb, player)
-            if dist <= range then
+            if dist <= range + 10 then
                 -- rollspeed
                 signClass(zb)
                 -- spin all
@@ -431,7 +427,7 @@ local function attendanceOk(player)
 end
 
 -- 尝试删除actor尸体(modData识别; 认不出就保留, 不误删别的尸体)
--- OnZombieDead记录的是死亡瞬间坐标，尸体实例化后可能落到相邻格，因此扫描中心格周围3x3。
+-- OnZombieDead记录的是死亡瞬间坐标，尸体实例化后可能落到相邻格，因此扫描中心格周围。
 -- 使用IsoGridSquare.removeCorpse走完整尸体清理路径（含容器更新/联机通知）。
 local function removeMJCorpse()
     local pos = Actor.mjDeathPos
@@ -445,8 +441,8 @@ local function removeMJCorpse()
     local cz = math.floor(pos.z)
 
     local ok, removed = pcall(function()
-        for dx = -1, 1 do
-            for dy = -1, 1 do
+        for dx = -2, 2 do
+            for dy = -2, 2 do
                 local sq = cell:getGridSquare(cx + dx, cy + dy, cz)
                 if sq then
                     local bodies = sq:getDeadBodys()
@@ -509,23 +505,30 @@ local function rollDropItem(drop)
     return nil
 end
 
+local function createBoxOnWorld(square)
+    if not square then return end
+    local boxItem = instanceItem(conf.get("rewardBox"))
+    square:AddWorldInventoryItem(boxItem, 0.5, 0.5, 0)
+    return boxItem
+end
+
 -- curtain call event
 -- only drop when main actor dead. if all back dancers already dead will get extra reward
 local function dropReward()
     local pos = Actor.mjDeathPos
     if not pos then return end
 
-    local sq = getCell() and getCell():getGridSquare(pos.x, pos.y, pos.z)
-    if not sq then return end
+    local square = getCell() and getCell():getGridSquare(pos.x, pos.y, pos.z)
+    if not square then return end
 
-    local drop = require("IsThriller/DropList")
-    local worldItem = sq:AddWorldInventoryItem(conf.get("rewardBox"), 0.5, 0.5, 0)
-
-    local container = pcall(function() return worldItem:getItem():getItemContainer() end)
-    if not container then
+    local item = createBoxOnWorld(square)
+    local container = item and item:getItemContainer()
+    if not item or not container then
         util.debugMsg("dropReward: box has no inventory, fullType=", tostring(conf.get("rewardBox")))
         return
     end
+
+    local drop = require("IsThriller/DropList")
 
     container:clear()
 
@@ -546,12 +549,12 @@ end
 
 
 local function dropPacifist(mj)
-    local sq = mj and mj:getSquare()
-    if not sq then return end
+    local square = mj and mj:getSquare()
+    if not square then return end
 
-    local worldItem = sq:AddWorldInventoryItem(conf.get("rewardBox"), 0.5, 0.5, 0)
-    local container = pcall(function() return worldItem:getItem():getItemContainer() end)
-    if not container then
+    local item = createBoxOnWorld(square)
+    local container = item and item:getItemContainer()
+    if not item or not container then
         util.debugMsg("dropReward: box has no inventory, fullType=", tostring(conf.get("rewardBox")))
         return
     end
@@ -784,7 +787,7 @@ end
 
 
 -- when the group not marched, set path need wait a bit time.
-local function rallyCtrl()
+local function rallyCtrl(player)
     Actor.marchTick = (Actor.marchTick + 1) % 4
     local issueOrder = (Actor.marchTick == 0) -- can order path finding or not
     local mj = Actor.mj
@@ -798,12 +801,23 @@ local function rallyCtrl()
             if dist > conf.get("groupRange") then
                 assembled = false
                 if issueOrder then
-                    local ox = (ZombRand(3) - 2) * 0.6  -- 小数偏移防叠格(反编译报告: float精确落点)
-                    local oy = (ZombRand(3) - 2) * 0.6
-                    dancer:setUseless(true)
-                    dancer:pathToLocationF(mj:getX() + ox, mj:getY() + oy, mj:getZ())
+                    dancer:setUseless(false)
+                    dancer:setMoving(true)
+                    dancer:pathToCharacter(mj)
                 end
             end
+        end
+    end
+
+    -- let mj move to near player
+    if player then
+        local x  = player:getX() + ZombRand(-5, 5)
+        local y = player:getY() + ZombRand(-5, 5)
+        local z = player:getZ()
+        local dist = mj:DistTo(player)
+        if dist > conf.get("danceRange") or not player:CanSee(mj) then
+            mj:setUseless(false)
+            mj:pathToLocation(x, y, z)
         end
     end
 
@@ -812,7 +826,7 @@ local function rallyCtrl()
         Actor.groupState = "march"
         util.debugMsg("group rally done ->march", "assembled=", tostring(assembled), "timeout=", tostring(timeout))
     else
-        -- 汇合期MJ只挂光环引怪, 不移动
+        -- 汇合期MJ尽量不乱动
         Actor.mjHalo(mj)
     end
 end
@@ -827,12 +841,11 @@ function Actor.groupCtrl(player)
 
     if Actor.groupState == "rally" then
         rallyCtrl()
-    else
-    -- on marched
-        Actor.dancerCtrl(player)
-        Actor.mjCtrl(player)
     end
 
+    -- on marched
+    Actor.dancerCtrl(player)
+    Actor.mjCtrl(player)
 end
 
 
@@ -843,9 +856,12 @@ function Actor.mjCtrl(player)
     local range = conf.get("danceRange")
     local dist = dancer:DistTo(player)
 
+    local x  = player:getX() + ZombRand(-5, 5)
+    local y = player:getY() + ZombRand(-5, 5)
+    local z = player:getZ()
     if dist >= range and not Actor.isDancing(dancer) then
-        dancer:setTarget(player)
-        dancer:pathToCharacter(player)
+        dancer:setUseless(false)
+        dancer:pathToLocation(x, y , z)
 
     -- restore dancing flag if condition wrent wrong
     elseif dist < range and not Actor.isDancing(dancer) and Actor:dancerCount() > 0 and not dancer:isUseless() then
@@ -868,9 +884,20 @@ function Actor.dancerCtrl(player)
     for _, dancer in pairs(Actor.dancers) do
         if dancer and not dancer:isDead() and not Actor.isDancing(dancer) then
             local dist = dancer:DistTo(anchor)
-            if dist >= range and Actor.groupState ~= "rally" then
-                Actor.groupState = "rally"
-                Actor.rallyStart = util.now()
+            local md = dancer:getModData()
+            if dist >= range  then
+                Actor.doDance(dancer, false)
+                dancer:pathToCharacter(anchor)
+
+            -- if the dancing flag wrent wrong
+            elseif dist < range 
+                and not Actor.isDancing(dancer) 
+                and mjIsAlive() 
+                and not dancer:isUseless()  
+                and (not md.isThriller_Grudge or (type(md.isThriller_Grudge) == "number" and md.isThriller_Grudge <= 0)) 
+                then
+                    
+                Actor.doDance(dancer, true)
             end
         end
     end
@@ -890,7 +917,7 @@ function Actor.onBeat(mt, player)
         local dist = mj:DistTo(player)
         if Actor.isDancing(mj) then
             if dist >= conf.get("danceExitRange") or not player:CanSee(mj) then
-                Actor.doDance(mj, true, "walk")
+                Actor.doDance(mj, false)
             end
         elseif dist <= conf.get("danceRange") + 1 or player:CanSee(mj) then
             Actor.doDance(mj, true)
@@ -920,7 +947,8 @@ function Actor.onBeat(mt, player)
                 local dist = dancer:DistTo(anchor)
                 if Actor.isDancing(dancer) then
                     if dist > range + 1 or not player:CanSee(dancer) then
-                        Actor.doDance(dancer, true, "walk")
+                        Actor.doDance(dancer, false)
+                        dancer:pathToCharacter(anchor)
                     end
                 elseif dist <= range then
                     Actor.doDance(dancer, true)

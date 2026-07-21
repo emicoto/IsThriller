@@ -7,6 +7,6 @@
 	<m_BlendOutTime>0.10</m_BlendOutTime>
 	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
 	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
-	<m_useDeferredMovement>true</m_useDeferredMovement>
+	<m_useDeferredMovement>false</m_useDeferredMovement>
 	<m_useDeferedRotation>false</m_useDeferedRotation>
 </animNode>

@@ -12,7 +12,8 @@ end
 
 function PlayerBuff.doStart(st, player)
     st.state = "playing"
-    st.music.start(player)
+    st.music.pick()
+    st.music.play(player)
 
     -- TODO: get buff
 end

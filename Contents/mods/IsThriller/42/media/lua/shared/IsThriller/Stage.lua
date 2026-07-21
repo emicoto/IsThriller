@@ -31,6 +31,33 @@ local function isZombieSurround(report)
     return report and (report.nearCount >= conf.get("minNearZombie") or report.rangeCount >= conf.get("minRangeZombie"))
 end
 
+local function playIsSafe(player)
+    if not player then return true end
+    if player:isGhostMode() then return true end
+
+    local px = math.floor(player:getX())
+    local py = math.floor(player:getY())
+    local pz = math.floor(player:getZ())
+
+    local inRVHome = ( px > 22500 and py > 12000 )
+    if inRVHome then return true end
+
+    local cell = player:getCell()
+
+    if not cell then return true end
+    if not SafeHouse then return false end
+
+    for i = -8, 8 do
+        local x = py + i
+        local y = py + i
+        local square = cell:getGridSquare(x, y ,pz) 
+        local isSafehouse = SafeHouse.getSafeHouse(square)
+        if isSafehouse then return true end
+    end
+
+    return false
+end
+
 ---@param mt table theIsThriller main object
 ---@param player IsoPlayer
 function Stage.hardStop(mt, player)
@@ -98,8 +125,8 @@ function Stage.onSongLimit(mt, player)
         and ZombRand(100) < conf.get("encoreChance") then
 
         music.encored = true
-        music.pick()    -- ClaudeNote: Phase2修正 — 加演前重新选曲, 否则会复读上一首
-        music.start(player)
+        Stage.onSongStart(player)
+
         util.debugMsg("onSongLimit: encore! recall stage", "played=", music.played)
         return
     end
@@ -153,6 +180,9 @@ function Stage.checkStart(mt, player)
         util.debugMsg("checkStart pass (myBgm)", "pid=", pid)
         return true
     end
+
+    -- 如果处于幽灵模式或无法被选中的位置（如安全屋）则跳过检测
+    if playIsSafe(player) then return false end
 
     local chance = util.getSV('EventChance')
     if util.isNight() then
@@ -265,14 +295,12 @@ function Stage.doStage(mt, player)
     mt.tadTick = 0
     local md = util.getModData()
     md.state = "playing"
-
-    music.start(player)
     md.song = music.current
 
     local pd = util.getData(player)
     pd.lastTarget = util.getMin()   -- 安全脱离计时从开演起算
-
-    actor.crowdStandby(player)
+    
+    Stage.onSongStart(player, true)
 
     -- 音爆: 短暂大声引怪, 包围圈内丧尸把注意力对准玩家(README音乐机制)
     pcall(function()
@@ -280,6 +308,20 @@ function Stage.doStage(mt, player)
     end)
 
     util.debugMsg("doStage -> playing", "song=", tostring(music.current))
+end
+
+function Stage.onSongStart(player, skip)
+    if not skip then
+        music.pick()
+        local md = util.getModData()
+        md.song = music.current
+    end
+    local ok = music.play(player)
+    if not ok then return music.pick() end
+    
+    actor.crowdStandby(player)
+
+    music.gapStart = -1
 end
 
 -- 条件确立，进入预演状态
