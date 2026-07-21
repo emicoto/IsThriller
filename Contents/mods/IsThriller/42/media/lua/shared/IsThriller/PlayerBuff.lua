@@ -22,4 +22,15 @@ function PlayerBuff.doEnd(st, player)
     -- remove buff
 end
 
+
+PlayerBuff.AURA_ITEM = "IsThriller.JuiceAura"
+PlayerBuff.AURA_SLOT = "IsThriller:Aura"
+
+local function conf(name)
+    return IsThriller.config.get(name)
+end
+
+
+-- ---- 果汁(KingOfPopJuice) ----
+
 return PlayerBuff

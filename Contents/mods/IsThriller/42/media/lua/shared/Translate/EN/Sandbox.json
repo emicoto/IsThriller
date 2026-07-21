@@ -1,39 +1,29 @@
 {
     "Sandbox_IsThriller": "Is Thriller?",
-
-    "Sandbox_IsThriller_Range": "Trigger Radius (Tiles)",
-    "Sandbox_IsThriller_Range_tooltip": "Surround detection radius. The event may trigger if there are enough zombies within this distance and the player is in combat (either targeted or attacking). During the event, zombie movement speeds within this range will be recalculated.",
-
-    "Sandbox_IsThriller_SprintChance": "Sprint Chance (%)",
-    "Sandbox_IsThriller_SprintChance_tooltip": "The chance that a zombie turns into a sprinter when entering the range. Those who fail the roll become fast shamblers.",
-
-    "Sandbox_IsThriller_MaxZombies": "Max Extras (Zombies)",
-    "Sandbox_IsThriller_MaxZombies_tooltip": "During the music intro, the maximum number of additional extra zombies spawned per minute outside the player's line of sight (randomized between 2 and this value, spawning from the edge of the gathering radius).",
-
-    "Sandbox_IsThriller_MaxDancer": "Number of Backup Dancers (0 = Random 2~5)",
-    "Sandbox_IsThriller_MaxDancer_tooltip": "The number of special backup dancer zombies that appear alongside MJ when the Thriller stage performance begins. Set to 0 for a random amount between 2 and 5. Note: Dancers have higher stats than normal zombies and possess health regeneration, so prepare accordingly.",
-
-    "Sandbox_IsThriller_EventChance": "Event Chance per Minute (%)",
-    "Sandbox_IsThriller_EventChance_tooltip": "The probability of triggering a Thriller event per in-game minute when zombies are nearby. Chance is doubled at night. 1 = 0.1% chance. Since this is checked every minute, keep this value low if you do not want it to trigger too frequently.",
-
-    "Sandbox_IsThriller_EventCooldown": "Event Cooldown (In-game Hours)",
-    "Sandbox_IsThriller_EventCooldown_tooltip": "Once a Thriller stage event successfully ends, this is the number of in-game hours that must pass before another can trigger.",
-
-    "Sandbox_IsThriller_MaxWave": "Max Waves / Songs",
-    "Sandbox_IsThriller_MaxWave_tooltip": "The number of songs played during a single Thriller stage event. After playing this amount, the stage enters its outro and fades out. The maximum spawn wave of extras during the intro is twice the number of songs; adjust as needed.",
-
-    "Sandbox_IsThriller_MusicOptionsDivider": "──────── Track Selection (Multi-select) ────────",
-    "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "You can select multiple tracks. When a Thriller event triggers, a random song from the selected list will play. This option is only a divider and has no effect. If left empty, all tracks are enabled by default. If a music expansion mod is installed, those tracks will also be added to the combat playlist.",
-
+    "Sandbox_IsThriller_Range": "Stage Radius (Tiles)",
+    "Sandbox_IsThriller_Range_tooltip": "The Thriller or myBGM stage can only trigger if there are enough zombies within this distance and the player is in combat (targeted or actively attacking). Zombie movement speed within the area will also be rerolled during the Thriller stage.",
+    "Sandbox_IsThriller_SprintChance": "Sprinter Chance (%)",
+    "Sandbox_IsThriller_SprintChance_tooltip": "The probability of zombies becoming sprinters upon entering the stage radius. If they fail the roll and are shamblers, they will be upgraded to fast shamblers.",
+    "Sandbox_IsThriller_MaxZombies": "Max Extra Zombies",
+    "Sandbox_IsThriller_MaxZombies_tooltip": "During the music intro, the maximum number of extra background zombies spawned per minute just outside the player's vision (random between 2 and this value, spawning from the edge of the gathering radius). These extras have a chance to join the backup dancers.",
+    "Sandbox_IsThriller_MaxDancer": "Backup Dancer Zombies (0=Random 2~5)",
+    "Sandbox_IsThriller_MaxDancer_tooltip": "The number of backup dancers appearing alongside MJ when the Thriller stage begins. Set to 0 for a random number between 2 and 5. Note: Backup dancers have higher stats than normal zombies and a healing mechanic. They will heal and enter counter-attack mode when hit during the performance. Proceed with caution.",
+    "Sandbox_IsThriller_MaxFinal": "Rioting Fans Count",
+    "Sandbox_IsThriller_MaxFinal_tooltip": "The total number of rioting fans added around the stage when MJ is killed. Minimum: 10, Maximum: 300. Rioting fan zombies are buffed, with a high chance of being sprinters and a low chance of being super sprinters. Proceed with caution.",
+    "Sandbox_IsThriller_EventChance": "Trigger Chance/Min (%)",
+    "Sandbox_IsThriller_EventChance_tooltip": "The probability of triggering the Thriller stage every in-game minute when zombies are nearby. The chance doubles at night. 1 = 0.1% chance. Since this is calculated per minute, it is highly recommended to keep the value low to avoid overly frequent triggers.",
+    "Sandbox_IsThriller_EventCooldown": "Tour Cooldown (In-game Hours)",
+    "Sandbox_IsThriller_EventCooldown_tooltip": "After a Thriller event starts and successfully concludes, you must wait this many in-game hours before the next one can trigger.",
+    "Sandbox_IsThriller_MaxWave": "Max Waves / Song Count",
+    "Sandbox_IsThriller_MaxWave_tooltip": "How many songs will play during a single Thriller stage. Once this number is reached, the stage fades out. The maximum number of extra zombie spawn waves during the intro is twice the song count. Please adjust to balance the extra zombie cap and the max waves.",
+    "Sandbox_IsThriller_MusicOptionsDivider": "──────── Track Selection (Multiple) ────────",
+    "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "Multiple tracks can be selected; a random track from the selection will play when the Thriller event triggers. This option acts only as a divider and has no effect. If left empty, it defaults to the full song. If a track expansion mod is installed, they will automatically be added to the combat playlist.",
     "Sandbox_IsThriller_JustBeatIt": "Play Beat It",
     "Sandbox_IsThriller_JustBeatIt_tooltip": "Plays Beat It when MJ appears.",
-
     "Sandbox_IsThriller_JustSmoothCriminal": "Play Smooth Criminal",
     "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "Plays Smooth Criminal when MJ appears.",
-
     "Sandbox_IsThriller_JustThriller": "Play Thriller",
     "Sandbox_IsThriller_JustThriller_tooltip": "Plays Thriller when MJ appears.",
-
-    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM": "No One Can Beat Me in My BGM",
-    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip": "Changes the mod mode so that entering combat merely plays a random or selected MJ track and grants an extra buff lasting 15 in-game minutes, instead of triggering a special horde event."
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM" :"Nobody Can Beat Me In My BGM",
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip" :"Changes the mod's operation mode. Instead of triggering the special zombie horde event, entering combat will simply play a random or selected MJ song and grant the player an extra buff lasting 15 in-game minutes."
 }

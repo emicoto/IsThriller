@@ -11,6 +11,17 @@ local Drop = {
     }
 }
 
+Drop.growSticks = {
+    "AuthenticZClothing.AuthenticGlowstick_Red",
+    "AuthenticZClothing.AuthenticGlowstick_Blue",
+    "AuthenticZClothing.AuthenticGlowstick_Green",
+    "AuthenticZClothing.AuthenticGlowstick_Orange",
+    "AuthenticZClothing.AuthenticGlowstick_Pink",
+    "AuthenticZClothing.AuthenticGlowstick_Purple",
+    "AuthenticZClothing.AuthenticGlowstick_Yellow",
+    "AuthenticZClothing.AuthenticGlowstick_White",
+}
+
 Drop.itemList = {
     -- full type list
     ammos = {
@@ -104,6 +115,11 @@ function Drop.initSpecial()
         IsThriller.util.debugMsg("special album list initialized", "count=", #fullList)
     end
     return fullList
+end
+
+function Drop.pickSticks()
+    local id = ZombRand(#Drop.growSticks + 1)
+    return Drop.growSticks[id]
 end
 
 return Drop

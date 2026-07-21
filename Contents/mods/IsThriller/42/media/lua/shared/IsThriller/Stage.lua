@@ -27,8 +27,28 @@ local function cleanStat(mt, player)
     actor.dismiss()
 end
 
-local function isZombieSurround(report)
-    return report and (report.nearCount >= conf.get("minNearZombie") or report.rangeCount >= conf.get("minRangeZombie"))
+local function isZombieSurround(report, player)
+    if not report then return false end
+
+    local cell = player:getCell()
+    local zlist = cell and cell:getZombieList()
+    local zSize = zlist and zlist:size() or 0
+    if not zSize or zSize == 0 then return false end
+
+     local zRate = math.min(zSize / 120, 3.5)
+
+    local minRange =  math.max(math.floor(conf.get("minRangeZombie") * zRate), 8)
+    local minSight = math.max(conf.get("minNearZombie") * zRate, 5)
+    local minNear =  math.max(math.floor(conf.get("minNearZombie") * zRate), 4)
+    local minTarget = math.ceil(conf.get("minTargetZombie") * zRate)
+
+    if report.targeting >= minTarget then return true end
+    if report.sightCount >= minSight then return true end
+    if report.nearCount >= minNear then return true end
+
+    local rangeThreat = (report.rangeCount - report.areaCount) * 0.25 + report.areaCount * 0.75
+
+    return rangeThreat >= minRange
 end
 
 local function playIsSafe(player)
@@ -45,14 +65,18 @@ local function playIsSafe(player)
     local cell = player:getCell()
 
     if not cell then return true end
-    if not SafeHouse then return false end
+    
+    local zlist = cell:getZombieList()
+    local zSize = zlist and zlist:size()
 
-    for i = -8, 8 do
-        local x = py + i
-        local y = py + i
-        local square = cell:getGridSquare(x, y ,pz) 
-        local isSafehouse = SafeHouse.getSafeHouse(square)
-        if isSafehouse then return true end
+    if not zlist or (zSize  and zSize < 10) then return true end
+
+    -- check around 8x8 grid if inside the safehouse zone
+    for dx = -4, 4 do
+        for dy = -4, 4 do
+            local square = cell:getGridSquare(px + dx, py + dy, pz)
+            if square and SafeHouse.getSafeHouse(square) then return true end
+        end
     end
 
     return false
@@ -109,7 +133,7 @@ function Stage.doFinal(mt, player, reason)
         md.state = "fading"
         md.lastStage = util.getMin()
         md.fadeStart = util.getMin()
-        md.cooldown = util.getHour() + util.getSV("EventCooldown")
+        md.cooldown = util.getHour() + util.getSV("EventCooldown") + (conf.get("finalCountDown") / 60)
         md.song = nil
         util.debugMsg("doFinal -> fading", "fadeStart=", md.fadeStart, "cooldownUntil=", md.cooldown)
     else
@@ -172,17 +196,18 @@ function Stage.checkStart(mt, player)
         return false
     end
 
+    -- 如果处于幽灵模式或无法被选中的位置（如安全屋）则跳过检测
+    if playIsSafe(player) then return false end
+
     -- 两种模式都要求被包围; myBgm不掷骰, 只有thriller走EventChance概率
     local report = mt.report[pid]
-    if not isZombieSurround(report) then return false end
+    if not isZombieSurround(report, player) then return false end
+
 
     if not mt:isMJtime() then
         util.debugMsg("checkStart pass (myBgm)", "pid=", pid)
         return true
     end
-
-    -- 如果处于幽灵模式或无法被选中的位置（如安全屋）则跳过检测
-    if playIsSafe(player) then return false end
 
     local chance = util.getSV('EventChance')
     if util.isNight() then
@@ -216,7 +241,14 @@ function Stage.checkStage(mt, player)
         pd.lastTarget = util.getMin()
     end
 
+
     if mt:isLuring() then
+
+        -- 如果处于绝对安全状态
+        if playIsSafe(player) then
+            return "cancel"
+        end
+        
         -- MJ生成失败时每分钟重试(找落点可能因地形失败)
         if not actor.mj then
             actor.mjStandby(player)
@@ -252,24 +284,25 @@ function Stage.checkStage(mt, player)
     end
 
     if mt:isPlaying() then
+
         --— playing每分钟记账
         pd.showMin = (pd.showMin or 0) + 1
         if actor.mj and not actor.mj:isDead()
-            and actor.mj:DistTo(player) <= (conf.get("attendRange") or 10) then
+            and actor.mj:DistTo(player) <= conf.get("attendRange") then
             pd.attendMin = (pd.attendMin or 0) + 1
         end
 
-        -- 尾声条件a: 可感知范围(safeRange=30)内已无任何丧尸
+        -- 尾声条件a: 可感知范围(safeRange)内已无任何丧尸
         if rp and rp.safeCount == 0 then
             util.debugMsg("checkStage: area clear -> final")
             return "final"
         end
 
-        -- 尾声条件b: 主演+伴舞全灭, 且[真实5分钟折算]内无人被丧尸盯上
+        -- 尾声条件b: 主演+伴舞全灭, 且[fadeMin真实分钟折算]时间范围内无人被丧尸盯上
         local wiped = (not actor.mj or actor.mj:isDead()) and actor:dancerCount() == 0
         if wiped then
             local idleMin = util.countMin(pd.lastTarget or util.getMin())
-            if idleMin >= util.toGameTime(5 * 60) then
+            if idleMin >= util.toGameTime(conf.get("fadeMin") * 60) then
                 util.debugMsg("checkStage: wiped + no attention -> final")
                 return "final"
             end
@@ -355,6 +388,16 @@ end
 
 -- 演出期间的tick循环
 function Stage.onTick(mt, player)
+
+    -- if mj died before song limit, or at fading state, then the fan riot will happen.
+    -- the stage will become dangerous.
+    if mt.fanRiot then
+        if  mt:isFading() or (mt:isPlaying() and music.played < util.getSV("MaxWave")) then
+            actor.fanRiot(player)
+        end
+        mt.fanRiot = nil
+    end
+
     if mt:isLuring() then
         -- 编队总控(rally汇合→march同行)
         actor.groupCtrl(player)

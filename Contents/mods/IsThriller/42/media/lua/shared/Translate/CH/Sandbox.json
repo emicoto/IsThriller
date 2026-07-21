@@ -13,6 +13,9 @@
     "Sandbox_IsThriller_MaxDancer": "舞者喪屍數量（0=隨機2~5）",
     "Sandbox_IsThriller_MaxDancer_tooltip": "Thriller舞台開演時隨MJ一同登場的特殊喪屍舞者的數量。填0則在2~5之間隨機。注意，舞者屬性比普通喪屍高並且有回血機製，請量力而爲。",
 
+    "Sandbox_IsThriller_MaxFinal": "暴動粉絲數量",
+    "Sandbox_IsThriller_MaxFinal_tooltip": "殺死MJ時，從死亡點周圍突然冒出來的暴動粉絲總數。最小10，最大300。暴動生成的粉絲喪屍都獲得了強化，請量力而為。",
+
     "Sandbox_IsThriller_EventChance": "事件觸发概率/分鐘（%）",
     "Sandbox_IsThriller_EventChance_tooltip": "週圍有喪屍時，每遊戲分鐘觸发Thriller事件的概率。夜晚概率翻倍。1=0.1% 概率。畢竟是按分鐘算的概率，不希望觸发過於頻繁請儘可能將概率調低。",
 

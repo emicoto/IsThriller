@@ -1,39 +1,29 @@
 {
     "Sandbox_IsThriller": "Is Thriller?",
-
-    "Sandbox_IsThriller_Range": "Raggio di attivazione (caselle)",
-    "Sandbox_IsThriller_Range_tooltip": "Raggio di rilevamento accerchiamento: l'evento può attivarsi se ci sono abbastanza zombi entro questa distanza e il giocatore è in combattimento (preso di mira o se attacca attivamente). Durante l'evento, la velocità di movimento dei zombi in questo raggio verrà ricalcolata.",
-
-    "Sandbox_IsThriller_SprintChance": "Possibilità di scatto (%)",
-    "Sandbox_IsThriller_SprintChance_tooltip": "La probabilità che uno zombi si trasformi in un velocista quando entra nel raggio. Quelli che falliscono diventano camminatori veloci (fast shamblers).",
-
-    "Sandbox_IsThriller_MaxZombies": "Numero massimo di zombi comparse",
-    "Sandbox_IsThriller_MaxZombies_tooltip": "Durante l'intro musicale, il numero massimo di zombi comparse extra generati al minuto al di fuori della visuale del giocatore (casuale tra 2 e questo valore, partendo dal bordo del raggio di raduno).",
-
-    "Sandbox_IsThriller_MaxDancer": "Numero di zombi ballerini (0 = Casuale 2~5)",
-    "Sandbox_IsThriller_MaxDancer_tooltip": "Il numero di zombi ballerini speciali che appaiono insieme a MJ quando inizia lo spettacolo Thriller. Imposta su 0 per un valore casuale tra 2 e 5. Nota: i ballerini hanno statistiche superiori rispetto agli zombi normali e possiedono una rigenerazione della salute. Regolati di conseguenza.",
-
-    "Sandbox_IsThriller_EventChance": "Probabilità evento al minuto (%)",
-    "Sandbox_IsThriller_EventChance_tooltip": "La probabilità di attivare un evento Thriller per ogni minuto di gioco quando ci sono zombi nelle vicinanze. La probabilità raddoppia di notte. 1 = 0,1% di probabilità. Poiché questo controllo avviene ogni minuto, tieni basso questo valore se non desideri che si attivi troppo spesso.",
-
-    "Sandbox_IsThriller_EventCooldown": "Ricarica dell'evento (ore di gioco)",
-    "Sandbox_IsThriller_EventCooldown_tooltip": "Una volta che un evento Thriller si conclude con successo, questo è il numero di ore di gioco che devono trascorrere prima che possa attivarsene un altro.",
-
-    "Sandbox_IsThriller_MaxWave": "Ondate massime / Canzoni",
-    "Sandbox_IsThriller_MaxWave_tooltip": "Il numero di canzoni suonate durante un singolo spettacolo Thriller sul palco. Una volta raggiunto questo numero, lo spettacolo entra nella sua fase finale con dissolvenza. Il numero massimo di ondate di comparse generate durante l'intro è il doppio del numero di canzoni; regola in base alle tue esigenze.",
-
-    "Sandbox_IsThriller_MusicOptionsDivider": "──────── Selezione dei brani (scelta multipla) ────────",
-    "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "Puoi selezionare più brani contemporaneamente. Quando si attiva l'evento Thriller, verrà riprodotta una canzone casuale dalla lista selezionata. Questa opzione funge solo da divisore e non ha alcun effetto pratico. Se lasciata vuota, verranno riprodotti tutti i brani per impostazione predefinita. Se è installata una mod di espansione musicale, anche questi brani verranno aggiunti alla playlist di combattimento.",
-
+    "Sandbox_IsThriller_Range": "Raggio del palco (Caselle)",
+    "Sandbox_IsThriller_Range_tooltip": "L'evento Thriller o myBGM si attiva solo se ci sono abbastanza zombi in questa distanza e il giocatore è in combattimento. Anche la velocità di movimento degli zombi nell'area verrà ricalcolata durante il palco Thriller.",
+    "Sandbox_IsThriller_SprintChance": "Probabilità di Sprint (%)",
+    "Sandbox_IsThriller_SprintChance_tooltip": "Probabilità che gli zombi diventino corridori (sprinter) entrando nel raggio del palco. Se falliscono e sono barcollanti, diventeranno barcollanti veloci.",
+    "Sandbox_IsThriller_MaxZombies": "Zombi Comparse Max",
+    "Sandbox_IsThriller_MaxZombies_tooltip": "Durante l'intro musicale, numero massimo di zombi comparse spawnati al minuto appena fuori dalla vista (casuale tra 2 e questo valore, dal bordo del raggio). Le comparse possono unirsi ai ballerini.",
+    "Sandbox_IsThriller_MaxDancer": "Zombi Ballerini (0=Casuale 2~5)",
+    "Sandbox_IsThriller_MaxDancer_tooltip": "Numero di ballerini di supporto con MJ. Imposta 0 per 2~5 casuali. Nota: i ballerini hanno statistiche elevate e si curano. Se colpiti durante l'esibizione, si curano e contrattaccano. Procedi con cautela.",
+    "Sandbox_IsThriller_MaxFinal": "Numero di fan in rivolta",
+    "Sandbox_IsThriller_MaxFinal_tooltip": "Totale di fan in rivolta spawnati attorno al palco alla morte di MJ. Min: 10, Max: 300. I fan sono potenziati, con alta probabilità di essere corridori. Procedi con cautela.",
+    "Sandbox_IsThriller_EventChance": "Prob. di attivazione/Min (%)",
+    "Sandbox_IsThriller_EventChance_tooltip": "Probabilità al minuto di attivare l'evento Thriller se ci sono zombi vicini. Raddoppia di notte. 1 = 0,1%. Si consiglia di tenerlo basso.",
+    "Sandbox_IsThriller_EventCooldown": "Cooldown del Tour (Ore in-game)",
+    "Sandbox_IsThriller_EventCooldown_tooltip": "Dopo la fine di un evento Thriller, devi aspettare queste ore in-game prima del prossimo.",
+    "Sandbox_IsThriller_MaxWave": "Ondate Max / Numero Canzoni",
+    "Sandbox_IsThriller_MaxWave_tooltip": "Quante canzoni verranno riprodotte prima della fine. Il numero max di ondate di comparse durante l'intro è il doppio delle canzoni. Bilancia questo valore con il limite di comparse.",
+    "Sandbox_IsThriller_MusicOptionsDivider": "──────── Selezione Tracce (Multipla) ────────",
+    "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "Selezione multipla consentita. Solo divisore visivo. Se vuoto, riproduce la canzone completa per impostazione predefinita.",
     "Sandbox_IsThriller_JustBeatIt": "Riproduci Beat It",
-    "Sandbox_IsThriller_JustBeatIt_tooltip": "Riproduce Beat It all'apparizione di MJ.",
-
+    "Sandbox_IsThriller_JustBeatIt_tooltip": "Riproduce Beat It quando appare MJ.",
     "Sandbox_IsThriller_JustSmoothCriminal": "Riproduci Smooth Criminal",
-    "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "Riproduce Smooth Criminal all'apparizione di MJ.",
-
+    "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "Riproduce Smooth Criminal quando appare MJ.",
     "Sandbox_IsThriller_JustThriller": "Riproduci Thriller",
-    "Sandbox_IsThriller_JustThriller_tooltip": "Riproduce Thriller all'apparizione di MJ.",
-
-    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM": "Nessuno può battermi con la mia musica",
-    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip": "Modifica la modalità della mod in modo che l'inizio di un combattimento riproduca semplicemente un brano di MJ casuale o selezionato, conferendo un potenziamento temporaneo di 15 minuti di gioco invece di attivare uno speciale evento di orda."
+    "Sandbox_IsThriller_JustThriller_tooltip": "Riproduce Thriller quando appare MJ.",
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM" :"Nessuno può battermi nella mia BGM",
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip" :"Cambia la modalità. Invece di innescare l'evento orda, il combattimento riproduce una canzone e garantisce al giocatore un buff per 15 minuti in-game."
 }

@@ -20,10 +20,13 @@ td.moves = {
     "Thriller_3",
     "Thriller_3",
     "Thriller_4",
+    "Thriller_4",
     "Thriller_2",
     "Thriller_3",
     "Thriller_3",
     "Thriller_4",
+    "Thriller_4",
+    "MoonWalk_1",
 }
 
 td.walks = {
@@ -54,12 +57,7 @@ local function restoreCtrl(zombie)
     local sv = td.spiner[zombie]
     if sv.group then
         td[sv.group][zombie] = true
-
-        if sv.group == "chaser" then
-            td.setDance(zombie, true, "walk")
-        else
-            td.setDance(zombie, true)
-        end
+        td.setDance(zombie, true)
 
     elseif sv.target and not sv.target:isDead() then
         zombie:setTarget(sv.target)
@@ -182,7 +180,7 @@ local function updateSpin()
         else
             session.beats = session.beats + 1
             local done = zombie:getVariableBoolean("ThrillerDone")
-            local timedOut = session.beats >= 24
+            local timedOut = session.beats >= 12
             if done or timedOut then
                 zombie:setVariable("BumpAnimFinished", true)
                 td.setDance(zombie, false)

@@ -7,12 +7,13 @@ local Config = {
 
     -- raw sandbox var
     sv = {
-        Range           = 15,   -- default range to lure zombies
+        Range           = 24,   -- default range to lure zombies
         SprintChance    = 10,   -- 10% chance to sprint
         MaxZombies      = 6,    -- maximum additional zombies per phase
         MaxDancer       = 2,    -- max mini boss will spawn with MJ
         MaxWave         = 5,    -- 最大波次=事件内歌曲上限, 每首歌前奏期每2秒刷一波群演
-        EventChance     = 15,   -- event rate per in-game min
+        MaxFinal        = 30,    -- max zombies when the early final has been triggered
+        EventChance     = 25,   -- event rate per in-game min
         EventCooldown   = 2,    -- event cooldown after stage fully finish
  
         JustThriller    = true,
@@ -23,20 +24,26 @@ local Config = {
 
     --== triggers ==--
     flag = {
-        safeRange       = 36,       -- no zombie in this range consider as safe
-        nearRange       = 8,        -- how much distance consider as near by player
-        safeMinSP       = 10,       -- how much time didn't get attention by zombies consider as safe
-        safeMinMP       = 20,
+        safeRange       = 32,       -- no zombie in this range consider as safe
+        nearRange       = 7,        -- how much distance consider as near by player
+        fadeMin         = 7,       -- how much time didn't get attention by zombies after stage be wiped, then consider as safe
+        safeMinSP       = 20,       -- how much time didn't get attention by zombies consider as safe
+        safeMinMP       = 36,
         maxPhase        = 30,       -- max waves of thriller stage per song, soft limitation
         escapeDistance  = 300,      -- how much distance if stay in 30 min consider as transported then consider safe
-        minNearZombie   = 5,
-        minRangeZombie  = 12,
+        minNearZombie   = 8,
+        minRangeZombie  = 16,
+        minTargetZombie = 6,
         danceRate       = 30,       -- the rate of dancing zombies
+        sprinterRateAtRiot = 30,    -- the rate of sprinter zombies during riot
+        superSprinterRate  = 10,    -- the rate of super sprinter during riot
 
         wipeBonus = 3 ,
         rewardBox = "Base.Present_ExtraLarge",
-        HealExchange = 5,           -- FanTicket兑换HealTheWorld所需张数
-        AuraExchange = 3,           -- Fanticket兑换幽灵buff所需张数
+        
+        JuiceExchange = 5,          -- FanTicket兑换KingOfPopJuice所需张数
+        HealExchange = 8,           -- FanTicket兑换HealTheWorld所需张数(原5)
+        AuraExchange = 20,          -- FanTicket兑换GhostTicket(隐身卷)所需张数(原3的幽灵buff升级为隐身卷)
     },
 
 
@@ -48,21 +55,19 @@ local Config = {
         grudgeBeats = 30,   -- cooldown when get hit
 
         -- 舞蹈判定权收归主MOD
-        danceExitRange = 14,    -- MJ跳舞中玩家超过此距离则收舞追场(与danceRange构成滞回)
-        danceRange = 7,         -- the range consider player can see the dance show
+        danceExitRange = 12,    -- MJ跳舞中玩家超过此距离则收舞追场(与danceRange构成滞回)
+        danceRange = 6,         -- the range consider player can see the dance show
         groupRange = 3,        -- 伴舞锚定MJ的编队/起舞半径
         rallySec = 20,          -- rally超时(真实秒), 到点没齐也强制开拔march
 
-        spinBeats = 5,       -- spin animation beats(~0.5s/per beat)
-        moonwalkBeats = 6,
-        retreatDistance = 6, -- retreat when get hit
+        retreatDistance = 6,    -- retreat when get hit
 
-        finalCountDown = 60, -- fading尾声周期时长(游戏分钟), 到点正式散场
+        finalCountDown = 45, -- fading尾声周期时长(游戏分钟), 到点正式散场
         encoreChance = 60,   -- 播满波次且全员存活时加演recall的概率(%)
 
         waveSec = 2,         -- 前奏波次间隔(真实秒)
         attendRange = 10,    -- 和平观演考勤半径(格)
-        attendRate = 0.4,    -- 考勤达标线(在场分钟/演出总分钟)
+        attendRate = 0.5,    -- 考勤达标线(在场分钟/演出总分钟)
     
         maxActiveDancer = 30,
     },

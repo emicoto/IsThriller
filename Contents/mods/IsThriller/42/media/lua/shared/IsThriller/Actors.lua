@@ -24,6 +24,7 @@ local Actor = {
 
 local st, util, conf = IsThriller, IsThriller.util, IsThriller.config
 local outfit = require("IsThriller/Outfit")
+local drop = require("IsThriller/DropList")
 
 function Actor:dancerCount()
     if not self.dancers then return 0 end
@@ -103,6 +104,7 @@ function Actor.class(zombie, type)
         util.doZombieStats(zombie, "Sight")
         util.doZombieStats(zombie, "Memory")
         util.doZombieStats(zombie, "Strength")
+        util.doHPMult(zombie, 2)
 
     elseif type == "shambler" then
         util.setZombieSpeed(zombie, "shambler")
@@ -111,7 +113,7 @@ function Actor.class(zombie, type)
         dancerRoll = true
 
     elseif type == "mj" then
-        util.setZombieSpeed(zombie, "shambler")
+        util.setZombieSpeed(zombie, "sprinter")
         util.doZombieStats(zombie, "Sight")
         util.doZombieStats(zombie, "Memory")
         util.doZombieStats(zombie, "Strength")
@@ -120,7 +122,7 @@ function Actor.class(zombie, type)
         registerDancer(zombie)
 
     elseif type == "dancer" then
-        util.setZombieSpeed(zombie, "shambler")
+        util.setZombieSpeed(zombie, "sprinter")
         util.doZombieStats(zombie, "Sight")
         util.doZombieStats(zombie, "Memory")
         util.doZombieStats(zombie, "Strength")
@@ -133,6 +135,7 @@ function Actor.class(zombie, type)
 
     if dancerRoll and Actor:allDancerNum() < conf.get("maxActiveDancer") and ZombRand(100) < conf.get("danceRate") then
         registerDancer(zombie)
+        util.doHPMult(zombie, 2)
     end
 end
 
@@ -209,14 +212,16 @@ function Actor.spawn(size, x, y, outfitID, femaleChance)
     return list
 end
 
-function Actor.auction(player)
+function Actor.audition(player)
     if not player or not player.getCell then return end
 
     local cell = player:getCell()
     if not cell then return end
 
     local res = {
+        sightCount = 0,
         nearCount = 0,
+        areaCount = 0,
         rangeCount = 0,
         safeCount = 0,
         targeting = 0,
@@ -232,45 +237,90 @@ function Actor.auction(player)
         return
     end
 
-    local range = util.getSV("Range")
+    local range = util.getSV("Range") or 18
+    local safeRange = conf.get("safeRange")
+    local nearRange = conf.get("nearRange")
+    local pz = player:getZ()
+    -- GPTNote: 保留near跨区域与targeting使用safeRange的语义，仅缩小高成本检查的执行范围。
+
+    local nearLimit = nearRange + 1
+    local sightLimit = math.min(range, 24)
 
     for i = 0, zbList:size() - 1 do
         local zb = zbList:get(i)
-        if zb and not zb:isDead() then
-            res.total = res.total + 1
-            local dist = util.countDist(zb, player)
 
-            if dist <= conf.get("safeRange") then
-                res.safeCount = res.safeCount + 1
-                local targeted = false
-                pcall(function() targeted = zb:getTarget() == player end)
-                if targeted then
-                    res.targeting = res.targeting + 1
+        if zb and not zb:isDead() then
+            local z = zb:getZ()
+            local dz = math.abs(z - pz)
+            local sightCounted
+
+            -- 相差超过一层时，所有现有统计都不会使用它，无需计算距离。
+            if dz <= 1 then
+                local dist = zb:DistTo(player)
+                local isNear = dist <= nearLimit
+                local sameArea = util.inSameArea(zb, player)
+
+                -- 移动时间2分钟内范围内所有丧尸
+                if dist <= 95 then
+                    res.total = res.total + 1
+                end
+
+                -- 丧尸最大可感知范围内，脱战判断距离
+                if dist <= safeRange then
+                    -- 已经锚定玩家时，顺便把sightCount计入，毕竟setTarget的前提就是zombie:CanSee(player)
+                    if zb:getTarget() == player then
+                        res.targeting = res.targeting + 1
+                        res.sightCount = res.sightCount + 1
+                        sightCounted = true
+                    end
+
+                    res.safeCount = res.safeCount + 1
+                end
+
+                -- 同层范围，实际威胁
+                if z == pz then
+                    if dist <= range then
+                        res.rangeCount = res.rangeCount + 1
+
+                        if sameArea then
+                            res.areaCount = res.areaCount + 1
+                        end
+
+                        if isNear then
+                            res.nearCount = res.nearCount + 1
+                        end
+                    end
+                end
+
+                -- 可能才隔着一个楼梯，所以视线判断放这里
+                if not sightCounted and dist <= sightLimit and (isNear or sameArea) then
+                    if zb:CanSee(player) or player:CanSee(zb) then
+                        res.sightCount = res.sightCount + 1
+                    end
                 end
             end
-
-            if dist <= conf.get("nearRange") then
-                res.nearCount = res.nearCount + 1
-            end
-
-            if dist <= range then
-                res.rangeCount = res.rangeCount + 1
-            end
-
         end
     end
+
     st.report[pid] = res
 end
 
 -- 一波群演: 视野边缘随机方位生成
 function Actor.addCrowd(player)
     if not player then return end
-    local ang = ZombRand(360) * math.pi / 180
-    local sx = math.floor(player:getX() + math.cos(ang) * 18)
-    local sy = math.floor(player:getY() + math.sin(ang) * 18)
-    local size = ZombRand(2, util.getSV("MaxZombies") + 1)
 
-    local list = Actor.spawn(size, sx, sy, nil, 50)
+    local dist = ZombRand(6) + 15
+    local size = ZombRand(2, util.getSV("MaxZombies") + 1)
+    local sq = findSpawnSquare(player, dist)
+
+    if not sq then
+        -- try one more time
+        dist =  ZombRand(10) + 15
+        sq = findSpawnSquare(player, dist)
+    end
+    if not sq then return end
+    
+    local list = Actor.spawn(size, sq:getX(), sq:getY(), nil, 50)
     local chance = util.getSV("SprintChance")
 
     local endPoint = Actor.mj or player
@@ -281,11 +331,16 @@ function Actor.addCrowd(player)
         Actor.class(zb, t)
 
         -- 如果装了AuthZ就往inventory里塞荧光棒
-        if st.hasAuthZ and zb.getInventory and zb:getInventory() then
+        if st.hasAuthZ and zb.getInventory then
+            local fullType = Drop.pickSticks()
+            local item = instanceItem(fullType)
+            local inv = zb:getInventory()
+            if inv then
+                inv.AddItem(item)
+            end
         end
         pcall(function() zb:pathToLocation(endPoint:getX(), endPoint:getY(), endPoint:getZ()) end)
     end
-    return list
 end
 
 -- 每首歌前奏期的波次调度
@@ -326,11 +381,7 @@ function Actor.mjStandby(player)
 
     outfit.set(zb, outfitID)
 
-    pcall(function()
-        local hp = zb:getHealth()
-        zb:setHealth(hp * conf.get("mjHP"))
-    end)
-    Actor.mjHP = zb:getHealth()
+    Actor.mjHP = util.doHPMult(zb, conf.get("mjHP"))
 
     Actor.class(zb, "mj")
     Actor.mj = zb
@@ -362,11 +413,7 @@ function Actor.dancerStandby(player)
 
     local list = Actor.spawn(count, sq:getX(), sq:getY(), outfitID, 50)
     for _, zb in ipairs(list) do
-        pcall(function()
-            local hp = zb:getHealth()
-            zb:setHealth(hp * conf.get("djHP"))
-        end)
-        Actor.dcHP = zb:getHealth()
+        Actor.dcHP = util.doHPMult(zb, conf.get("djHP"))
 
         Actor.class(zb, "dancer")
     end
@@ -396,8 +443,8 @@ function Actor.crowdStandby(player)
     for i = 0, zbList:size() - 1 do
         local zb = zbList:get(i)
         if zb and not zb:isDead() then
-            local dist = util.countDist(zb, player)
-            if dist <= range + 10 then
+            local dist = zb:DistTo(player)
+            if dist <= range + 5 then
                 -- rollspeed
                 signClass(zb)
                 -- spin all
@@ -407,13 +454,9 @@ function Actor.crowdStandby(player)
     end
 end
 
-
-
 --=============                    ===============
 --=============  ON DISMISS EVENT  ===============
 --=============                    ===============
-
-
 
 ---@param player IsoPlayer
 ---@param canceled boolean|nil true=预演取消, 不掉奖励
@@ -528,8 +571,6 @@ local function dropReward()
         return
     end
 
-    local drop = require("IsThriller/DropList")
-
     container:clear()
 
     local total = drop.totalRewardItems
@@ -560,8 +601,6 @@ local function dropPacifist(mj)
     end
 
     container:clear()
-
-    local drop = require("IsThriller/DropList")
     container:AddItem(drop.specialItem)
 
     local fullList = drop.special.fullList
@@ -617,6 +656,39 @@ end
 --=============    ON EVENT   ===============
 --=============               ===============
 
+
+-- on MJ dead event, spawn a huge amount of zombies to curtain call
+function Actor.fanRiot(player)
+    if not player then return end
+
+    local ang = ZombRand(360) * math.pi / 180
+    local sx = math.floor(player:getX() + math.cos(ang) * 18)
+    local sy = math.floor(player:getY() + math.sin(ang) * 18)
+    local size = ZombRand(10, util.getSV("MaxFinal") + 1)
+
+    local list = Actor.spawn(size, sx, sy, nil, 50)
+
+    for _, zb in ipairs(list) do
+        local class = "shambler"
+        local rand = ZombRand(100)
+        if rand < conf.get("superSprinterRate") then
+            class = "sprinter2"
+
+        elseif rand < conf.get("sprinterRateAtRiot") then
+            class = "sprinter"
+
+        end
+        Actor.class(zb, class)
+
+        pcall(function() 
+            zb:setTarget(player)
+            zb:pathToLocation(player:getX(), player:getY(), player:getZ())
+        end)
+    end
+    
+end
+
+
 -- — MJ挨打寻找安全方位瞬移
 function Actor.retreat(zb)
     if not zb then return false end
@@ -627,7 +699,7 @@ function Actor.retreat(zb)
     local z = zb:getZ()
     local dist = conf.get("retreatDistance")
     
-    for _ = 1, 8 do
+    for _ = -2, 8 do
         local ang = ZombRand(360) * math.pi / 180
         local x = math.floor(zb:getX() + math.cos(ang) * dist)
         local y = math.floor(zb:getY() + math.sin(ang) * dist)
@@ -689,9 +761,9 @@ function Actor.onHit(zombie, player)
     if id ~= nil and Actor.allDancer[id] then
         doCounter(zombie, player)
 
-        -- heal 10% if mj alive
+        -- heal 20% if mj alive
         if Actor.dancers[id] and mjIsAlive() then
-            local newHP = zombie:getHealth() + (Actor.dcHP * 0.1)
+            local newHP = zombie:getHealth() + (Actor.dcHP * 0.2)
             zombie:setHealth(math.min(newHP, Actor.dcHP))
         end
 
@@ -719,12 +791,15 @@ function Actor.onDead(zombie)
         Actor.mj = nil
         util.debugMsg("MJ died at", Actor.mjDeathPos.x, Actor.mjDeathPos.y)
 
-        -- all dance member do a special animation then get evolve
+        -- all dance member get evolve
         for _, dancer in pairs(Actor.allDancer) do
             if dancer and not dancer:isDead() then
                 Actor.class(dancer, "sprinter2")
             end
         end
+
+        -- send triggered to main
+        IsThriller.fanRiot = true
         return
     end
 
@@ -742,7 +817,6 @@ function Actor.onDead(zombie)
         util.debugMsg("dancer died,", Actor:dancerCount(), "fixed left,", Actor:allDancerNum(), "all left")
     end
 end
-
 
 
 --=============               ===============

@@ -67,6 +67,7 @@ local function lfunthr()
         self.state = "idle"
         self.phase = -1
         self.tadTick = 0
+        self.fanRiot = nil
 
         local md = IsThriller.util.getModData()
         if not md then return end
@@ -179,10 +180,13 @@ local function StageTick()
         return stage.hardStop(st, player)
     end
 
-    -- do zombie scan
+    -- do zombie scan if posible
     if st.lastTick + conf.scanTime < util.now() then
        st.lastTick = util.now()
-       actor.auction(player)
+       local cell = player:getCell()
+       if cell and cell:getZombieList() then
+            actor.audition(player)
+       end
     end
 
     local res = music.onTick(st, player)
@@ -251,6 +255,10 @@ local function zombieDead(zombie)
     local st = IsThriller
     if not st:isMJtime() or st:isIdle() then return end
     actor.onDead(zombie)
+end
+
+local function onHour()
+    
 end
 
 Events.OnZombieDead.Add(zombieDead)

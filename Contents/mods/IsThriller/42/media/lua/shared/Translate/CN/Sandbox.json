@@ -1,26 +1,31 @@
 {
+
     "Sandbox_IsThriller": "Is Thriller?",
 
-    "Sandbox_IsThriller_Range": "触发半径（格）",
-    "Sandbox_IsThriller_Range_tooltip": "包围判定半径：此距离内丧尸数量足够、且玩家处于战斗中（被盯上或主动出手）才可能触发事件。事件期间范围内丧尸还会重刷移动速度。",
+
+    "Sandbox_IsThriller_Range": "舞台半径（格）",
+    "Sandbox_IsThriller_Range_tooltip": "此距离内丧尸数量足够、且玩家处于战斗中（被盯上或主动出手）才可能触发Thriller舞台或myBGM舞台。Thriller舞台期间范围内丧尸还会重刷移动速度。",
 
     "Sandbox_IsThriller_SprintChance": "变奔跑概率（%）",
-    "Sandbox_IsThriller_SprintChance_tooltip": "丧尸进入范围时变成奔跑丧尸的概率，未中奖的变成快步蹒跚。",
+    "Sandbox_IsThriller_SprintChance_tooltip": "丧尸进入舞台范围时变成奔跑丧尸的概率，未中奖的如果本身速度为蹒跚则会升级为快步蹒跚。",
 
     "Sandbox_IsThriller_MaxZombies": "群演丧尸数量上限",
-    "Sandbox_IsThriller_MaxZombies_tooltip": "音乐前奏期间，每分钟在玩家视线边缘外，额外追加的群演丧尸数量上限（2到此值之间随机，从聚怪半径边缘刷入）。",
+    "Sandbox_IsThriller_MaxZombies_tooltip": "音乐前奏期间，每分钟在玩家视线边缘外，额外追加的群演丧尸数量上限（2到此值之间随机，从聚怪半径边缘刷入）。追加的丧尸将有概率加入伴舞团。",
 
-    "Sandbox_IsThriller_MaxDancer": "舞者丧尸数量（0=随机2~5）",
-    "Sandbox_IsThriller_MaxDancer_tooltip": "Thriller舞台开演时随MJ一同登场的特殊丧尸舞者的数量。填0则在2~5之间随机。注意，舞者属性比普通丧尸高并且有回血机制，请量力而为。",
+    "Sandbox_IsThriller_MaxDancer": "伴舞丧尸数量（0=随机2~5）",
+    "Sandbox_IsThriller_MaxDancer_tooltip": "Thriller舞台开演时随MJ一同登场的伴舞团人数。填0则在2~5之间随机。注意，伴舞属性比普通丧尸高并且有回血机制，舞台演出期间受到攻击还会回血并进入反击模式，请量力而为。",
 
-    "Sandbox_IsThriller_EventChance": "事件触发概率/分钟（%）",
-    "Sandbox_IsThriller_EventChance_tooltip": "周围有丧尸时，每游戏分钟触发Thriller事件的概率。夜晚概率翻倍。1=0.1% 概率。毕竟是按分钟算的概率，不希望触发过于频繁请尽可能将概率调低。",
+    "Sandbox_IsThriller_MaxFinal": "暴动粉丝数量",
+    "Sandbox_IsThriller_MaxFinal_tooltip": "杀死MJ时，从舞台周围追加的暴动粉丝总数。最小10，最大300。暴动生成的粉丝丧尸都获得了强化，并且较高概率成为奔跑者，较低概率成为超级奔跑者，请量力而为。",
 
-    "Sandbox_IsThriller_EventCooldown": "事件冷却（游戏内小时）",
+    "Sandbox_IsThriller_EventChance": "触发概率/分钟（%）",
+    "Sandbox_IsThriller_EventChance_tooltip": "周围有丧尸时，每游戏分钟触发Thriller舞台的概率。夜晚概率翻倍。1=0.1% 概率。毕竟是按分钟算的概率，不希望触发过于频繁请尽可能将概率调低。",
+
+    "Sandbox_IsThriller_EventCooldown": "巡演冷却（游戏内小时）",
     "Sandbox_IsThriller_EventCooldown_tooltip": "Thriller事件开演并顺利结束后，需等待此游戏内小时数才可能触发下一场。",
 
     "Sandbox_IsThriller_MaxWave": "最大波次/歌曲数",
-    "Sandbox_IsThriller_MaxWave_tooltip": "一场Thriller舞台事件会播放几首歌。播满该数量后，舞台进入尾声淡出。前奏阶段的群演最大刷新波次为歌曲数两倍，请根据需求来调整。",
+    "Sandbox_IsThriller_MaxWave_tooltip": "一场Thriller舞台会播放几首歌。播满该数量后，舞台进入尾声淡出。前奏阶段的群演最大刷新波次为歌曲数两倍，请根据需求来调整群演随机上限与最大波次之间的平衡。",
 
     "Sandbox_IsThriller_MusicOptionsDivider": "──────── 曲目选择（可多选） ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "可以同时选择多首曲目；Thriller事件触发时，将从已选曲目中随机播放一首。此项仅用作分割线，本身没有效果。如果留空，则默认播放全曲。当装了曲目追加MOD时，也会自动加入战斗歌单。",
@@ -36,4 +41,5 @@
 
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM" :"在我的BGM中没有人能打败我",
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip" :"将模组运行模式改为触发战斗时，只是播放随机或选定的MJ歌曲，并获得持续15游戏分钟的额外增益。而不是触发特殊尸潮事件。"
+
 }

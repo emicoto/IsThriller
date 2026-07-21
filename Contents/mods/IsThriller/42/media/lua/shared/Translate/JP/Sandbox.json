@@ -1,39 +1,29 @@
 {
     "Sandbox_IsThriller": "Is Thriller?",
-
-    "Sandbox_IsThriller_Range": "トリガー半径（グリッド）",
-    "Sandbox_IsThriller_Range_tooltip": "包囲判定半径：この距離内に十分なゾンビがおり、プレイヤーが戦闘中（ターゲットにされている、または自ら攻撃を仕掛けた）の場合にのみイベントが発生する可能性があります。イベント期間中、範囲内のゾンビの移動速度が再計算されます。",
-
-    "Sandbox_IsThriller_SprintChance": "スプリンター化確率（%）",
-    "Sandbox_IsThriller_SprintChance_tooltip": "ゾンビが範囲に入った際にスプリンター（走るゾンビ）に変化する確率。確率から外れたゾンビは高速歩行（ファスト・シャンブラー）になります。",
-
-    "Sandbox_IsThriller_MaxZombies": "エキストラゾンビの上限数",
-    "Sandbox_IsThriller_MaxZombies_tooltip": "イントロ（前奏）中、プレイヤーの視界の外側で1分ごとに追加されるエキストラゾンビの最大数（2からこの設定値の間でランダムに決定され、集客半径の境界から出現します）。",
-
-    "Sandbox_IsThriller_MaxDancer": "ダンサーゾンビの数（0 = 2~5の間でランダム）",
-    "Sandbox_IsThriller_MaxDancer_tooltip": "Thrillerステージ開演時にMJと共に登場する特別なダンサーゾンビの数。0に設定すると2～5の間でランダムに決定されます。注意：ダンサーゾンビは通常ゾンビよりもステータスが高く、HP回復能力を持っています。ご自身の戦闘力に合わせて調整してください。",
-
-    "Sandbox_IsThriller_EventChance": "イベント発生確率/分（%）",
-    "Sandbox_IsThriller_EventChance_tooltip": "周囲にゾンビがいる場合、ゲーム内の1分ごとにThrillerイベントが発生する確率。夜間は確率が2倍になります。値「1」は「0.1%」の確率を意味します。毎分判定されるため、頻繁な発生を避けたい場合はできるだけ低く設定してください。",
-
-    "Sandbox_IsThriller_EventCooldown": "イベントクールダウン（ゲーム内時間）",
-    "Sandbox_IsThriller_EventCooldown_tooltip": "Thrillerステージイベントが無事に終了した後、次のイベントが発生可能になるまでに必要なゲーム内の経過時間です。",
-
-    "Sandbox_IsThriller_MaxWave": "最大ウェーブ数 / 曲数",
-    "Sandbox_IsThriller_MaxWave_tooltip": "1回のThrillerステージイベントで再生される曲数。設定した曲数を流し終えると、ステージはフィナーレ（フェードアウト）に入ります。イントロ期間中にスポンするエキストラの最大ウェーブ数は曲数の2倍になります。必要に応じて調整してください。",
-
+    "Sandbox_IsThriller_Range": "ステージ半径（マス）",
+    "Sandbox_IsThriller_Range_tooltip": "この距離内に十分なゾンビがおり、かつプレイヤーが戦闘中（狙われているか攻撃中）の場合のみ、ThrillerまたはmyBGMステージが発生する可能性があります。Thrillerステージ中、範囲内のゾンビの移動速度も再抽選されます。",
+    "Sandbox_IsThriller_SprintChance": "全力疾走確率（%）",
+    "Sandbox_IsThriller_SprintChance_tooltip": "ゾンビがステージ範囲に入った際、全力疾走ゾンビになる確率。外れた場合でも、元の速度が「鈍歩」であれば「早歩き」にアップグレードされます。",
+    "Sandbox_IsThriller_MaxZombies": "エキストラゾンビの上限",
+    "Sandbox_IsThriller_MaxZombies_tooltip": "楽曲のイントロ中、プレイヤーの視界の外縁に毎分追加されるエキストラゾンビの最大数（2からこの値の間でランダム。集敵半径の端からスポーン）。追加されたゾンビは確率でバックダンサーに加わります。",
+    "Sandbox_IsThriller_MaxDancer": "バックダンサーゾンビの数（0=ランダム2~5）",
+    "Sandbox_IsThriller_MaxDancer_tooltip": "Thrillerステージ開演時にMJと共に登場するバックダンサーの人数。0にすると2~5の間でランダムになります。注意：バックダンサーは通常のゾンビよりステータスが高く、回復メカニズムを持っています。公演中に攻撃を受けると回復し、反撃モードに入ります。無理のない範囲で設定してください。",
+    "Sandbox_IsThriller_MaxFinal": "暴動ファンの数",
+    "Sandbox_IsThriller_MaxFinal_tooltip": "MJを倒した際、ステージの周囲に追加される暴動ファンの総数。最小10、最大300。暴動によって生成されたファンゾンビは強化されており、高い確率で全力疾走、低い確率でスーパー全力疾走ゾンビになります。無理のない範囲で挑んでください。",
+    "Sandbox_IsThriller_EventChance": "発生確率/分（%）",
+    "Sandbox_IsThriller_EventChance_tooltip": "周囲にゾンビがいる場合、ゲーム内1分ごとにThrillerステージが発生する確率。夜間は確率が2倍になります。1 = 0.1%の確率。毎分計算されるため、頻繁に発生させたくない場合は確率を低く設定してください。",
+    "Sandbox_IsThriller_EventCooldown": "ツアーのクールダウン（ゲーム内時間）",
+    "Sandbox_IsThriller_EventCooldown_tooltip": "Thrillerイベントが開演し、無事に終了した後、次のステージが発生するまでに必要なゲーム内の待機時間です。",
+    "Sandbox_IsThriller_MaxWave": "最大ウェーブ数/楽曲数",
+    "Sandbox_IsThriller_MaxWave_tooltip": "1回のThrillerステージで再生される曲数。この数に達するとステージはフェードアウトして終了します。イントロ段階でのエキストラの最大スポーンウェーブ数は曲数の2倍です。エキストラの上限と最大ウェーブ数のバランスを考慮して調整してください。",
     "Sandbox_IsThriller_MusicOptionsDivider": "──────── 楽曲選択（複数選択可） ────────",
-    "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "複数の楽曲を同時に選択できます。Thrillerイベント発生時に、選択された楽曲の中から1曲がランダムで再生されます。この項目は単なる区切り線であり、それ自体に効果はありません。空欄にした場合はデフォルトで全曲が再生されます。追加の楽曲MODが導入されている場合、それらの曲も自動的に戦闘プレイリストに追加されます。",
-
-    "Sandbox_IsThriller_JustBeatIt": "Beat It を再生",
-    "Sandbox_IsThriller_JustBeatIt_tooltip": "MJ登場時に「Beat It」を再生します。",
-
-    "Sandbox_IsThriller_JustSmoothCriminal": "Smooth Criminal を再生",
-    "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "MJ登場時に「Smooth Criminal」を再生します。",
-
-    "Sandbox_IsThriller_JustThriller": "Thriller を再生",
-    "Sandbox_IsThriller_JustThriller_tooltip": "MJ登場時に「Thriller」を再生します。",
-
-    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM": "マイBGMのなかで私に勝てる者はいない",
-    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip": "モッドの動作モードを変更し、戦闘開始時に特殊なゾンビ襲撃イベントを発生させる代わりに、ランダムまたは選択されたMJの楽曲を再生して15分（ゲーム内時間）の追加バフを付与するだけにします。"
+    "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "複数の楽曲を同時に選択できます。Thrillerイベント発生時、選択した楽曲の中からランダムで1曲再生されます。この項目は区切り線としてのみ機能し、効果はありません。空白の場合、デフォルトでフルバージョンが再生されます。楽曲追加MODを導入している場合、それらも自動的に戦闘プレイリストに追加されます。",
+    "Sandbox_IsThriller_JustBeatIt": "Beat Itを再生",
+    "Sandbox_IsThriller_JustBeatIt_tooltip": "MJ登場時にBeat Itを再生します。",
+    "Sandbox_IsThriller_JustSmoothCriminal": "Smooth Criminalを再生",
+    "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "MJ登場時にSmooth Criminalを再生します。",
+    "Sandbox_IsThriller_JustThriller": "Thrillerを再生",
+    "Sandbox_IsThriller_JustThriller_tooltip": "MJ登場時にThrillerを再生します。",
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM" :"俺のBGMの中で俺を倒せる奴はいない",
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip" :"MODの動作モードを変更します。特殊なゾンビ大群イベントを発生させる代わりに、戦闘時にランダムまたは選択したMJの楽曲を再生し、プレイヤーにゲーム内時間15分間持続する追加バフを付与します。"
 }

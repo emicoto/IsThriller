@@ -1,39 +1,29 @@
 {
     "Sandbox_IsThriller": "Is Thriller?",
-
-    "Sandbox_IsThriller_Range": "트리거 반경 (타일)",
-    "Sandbox_IsThriller_Range_tooltip": "포위 판정 반경: 이 거리 내에 좀비가 충분히 있고, 플레이어가 전투 상태(표적이 되거나 먼저 공격함)일 때만 이벤트가 트리거될 수 있습니다. 이벤트 진행 동안 범위 내 좀비들의 이동 속도가 재설정됩니다.",
-
-    "Sandbox_IsThriller_SprintChance": "뛰는 좀비 변환 확률 (%)",
-    "Sandbox_IsThriller_SprintChance_tooltip": "좀비가 범위 내로 진입할 때 뛰는 좀비(스프린터)로 변할 확률입니다. 확률을 통과하지 못한 좀비는 빠른 걸음 좀비(패스트 섐블러)가 됩니다.",
-
-    "Sandbox_IsThriller_MaxZombies": "보조 출연자 좀비 최대 수",
-    "Sandbox_IsThriller_MaxZombies_tooltip": "음악 전주(인트로) 동안, 플레이어의 시야 밖에서 매 분마다 추가로 스폰되는 보조 출연자 좀비의 최대 수입니다 (2마리에서 설정값 사이의 무작위 수로, 모여드는 반경 가장자리에서 스폰됨).",
-
-    "Sandbox_IsThriller_MaxDancer": "댄서 좀비 수 (0 = 2~5마리 무작위)",
-    "Sandbox_IsThriller_MaxDancer_tooltip": "Thriller 무대가 시작될 때 MJ와 함께 등장하는 특별한 댄서 좀비의 수입니다. 0으로 입력하면 2~5마리 사이에서 무작위로 결정됩니다. 참고: 댄서 좀비는 일반 좀비보다 능력치가 높고 자가 치유 능력이 있으므로 신중히 상대해 주세요.",
-
-    "Sandbox_IsThriller_EventChance": "이벤트 트리거 확률/분 (%)",
-    "Sandbox_IsThriller_EventChance_tooltip": "주변에 좀비가 있을 때, 게임 시간으로 매 분마다 Thriller 이벤트가 발생할 확률입니다. 밤에는 확률이 두 배가 됩니다. 1 = 0.1% 확률을 의미합니다. 매 분마다 계산되는 확률이므로, 이벤트가 너무 자주 일어나는 것을 원치 않으시면 최대한 확률을 낮춰 주십시오.",
-
-    "Sandbox_IsThriller_EventCooldown": "이벤트 대기 시간 (게임 시간 기준 시간)",
-    "Sandbox_IsThriller_EventCooldown_tooltip": "Thriller 무대 이벤트가 시작되고 무사히 종료된 후, 다음 이벤트가 발생하기까지 대기해야 하는 게임 내 시간(시간 단위)입니다.",
-
+    "Sandbox_IsThriller_Range": "무대 반경 (타일)",
+    "Sandbox_IsThriller_Range_tooltip": "이 거리 내에 좀비가 충분히 있고 플레이어가 전투 중(타겟이 되거나 공격 중)일 때만 Thriller 또는 myBGM 무대가 트리거될 수 있습니다. Thriller 무대 동안 범위 내 좀비의 이동 속도도 재조정됩니다.",
+    "Sandbox_IsThriller_SprintChance": "전력질주 확률 (%)",
+    "Sandbox_IsThriller_SprintChance_tooltip": "좀비가 무대 범위에 들어올 때 전력질주 좀비가 될 확률입니다. 확률에 실패하더라도 원래 속도가 느린 걸음이었다면 빠른 걸음으로 업그레이드됩니다.",
+    "Sandbox_IsThriller_MaxZombies": "엑스트라 좀비 최대 수",
+    "Sandbox_IsThriller_MaxZombies_tooltip": "음악 전주 동안 플레이어의 시야 밖에서 분당 추가로 스폰되는 엑스트라 좀비의 최대 수입니다 (2부터 이 값 사이에서 무작위, 몬스터가 모이는 반경 가장자리에서 스폰). 추가된 좀비는 확률적으로 백업 댄서에 합류합니다.",
+    "Sandbox_IsThriller_MaxDancer": "백업 댄서 좀비 수 (0=랜덤 2~5)",
+    "Sandbox_IsThriller_MaxDancer_tooltip": "Thriller 무대가 시작될 때 MJ와 함께 등장하는 백업 댄서의 수입니다. 0으로 설정하면 2~5 사이에서 무작위로 정해집니다. 주의: 백업 댄서는 일반 좀비보다 능력치가 높고 체력 회복 메커니즘이 있습니다. 공연 중 공격을 받으면 체력을 회복하고 반격 모드에 돌입하니 주의하십시오.",
+    "Sandbox_IsThriller_MaxFinal": "폭동 팬 수",
+    "Sandbox_IsThriller_MaxFinal_tooltip": "MJ를 처치했을 때 무대 주변에서 추가로 스폰되는 폭동 팬의 총 마릿수입니다. 최소 10, 최대 300. 폭동으로 생성된 팬 좀비들은 강화된 상태이며 높은 확률로 전력질주 좀비, 낮은 확률로 슈퍼 전력질주 좀비가 되므로 주의하십시오.",
+    "Sandbox_IsThriller_EventChance": "발생 확률/분 (%)",
+    "Sandbox_IsThriller_EventChance_tooltip": "주변에 좀비가 있을 때 게임 내 1분마다 Thriller 무대가 발생할 확률입니다. 밤에는 확률이 두 배가 됩니다. 1 = 0.1% 확률. 분당 계산되므로 너무 자주 발생하지 않도록 확률을 낮게 설정하는 것을 권장합니다.",
+    "Sandbox_IsThriller_EventCooldown": "투어 쿨다운 (게임 내 시간)",
+    "Sandbox_IsThriller_EventCooldown_tooltip": "Thriller 이벤트가 시작되고 무사히 끝난 후, 다음 무대가 발생하기 위해 기다려야 하는 게임 내 시간입니다.",
     "Sandbox_IsThriller_MaxWave": "최대 웨이브 / 곡 수",
-    "Sandbox_IsThriller_MaxWave_tooltip": "한 번의 Thriller 무대 이벤트 동안 재생될 곡의 수입니다. 설정된 곡 수가 모두 재생되면 무대는 아웃트로와 함께 페이드아웃됩니다. 전주(인트로) 단계에서 보조 출연자가 스폰되는 최대 웨이브 수는 곡 수의 두 배가 되니, 필요에 따라 조정해 주십시오.",
-
+    "Sandbox_IsThriller_MaxWave_tooltip": "한 번의 Thriller 무대에서 재생될 곡의 수입니다. 이 수치에 도달하면 무대가 페이드 아웃되며 종료됩니다. 전주 단계의 엑스트라 스폰 최대 웨이브 수는 곡 수의 2배입니다. 엑스트라 최대 수와 최대 웨이브 수 사이의 밸런스를 고려하여 조정하십시오.",
     "Sandbox_IsThriller_MusicOptionsDivider": "──────── 곡 선택 (다중 선택 가능) ────────",
-    "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "여러 곡을 동시에 선택할 수 있으며, Thriller 이벤트가 시작될 때 선택된 곡 중 무작위로 한 곡이 재생됩니다. 이 항목은 구분선일 뿐이며 자체적인 효과는 없습니다. 비워 둘 경우 기본적으로 모든 곡이 활성화됩니다. 추가 곡 관련 모드가 설치되어 있다면 해당 곡들도 전투 플레이리스트에 자동으로 추가됩니다.",
-
+    "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "여러 곡을 동시에 선택할 수 있으며, Thriller 이벤트 발생 시 선택한 곡 중 하나가 무작위로 재생됩니다. 이 항목은 구분선 역할만 하며 효과는 없습니다. 비워두면 기본적으로 전체 곡이 재생됩니다. 트랙 추가 모드가 설치된 경우 전투 플레이리스트에 자동으로 추가됩니다.",
     "Sandbox_IsThriller_JustBeatIt": "Beat It 재생",
     "Sandbox_IsThriller_JustBeatIt_tooltip": "MJ 등장 시 Beat It을 재생합니다.",
-
     "Sandbox_IsThriller_JustSmoothCriminal": "Smooth Criminal 재생",
     "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "MJ 등장 시 Smooth Criminal을 재생합니다.",
-
     "Sandbox_IsThriller_JustThriller": "Thriller 재생",
     "Sandbox_IsThriller_JustThriller_tooltip": "MJ 등장 시 Thriller를 재생합니다.",
-
-    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM": "내 BGM 안에서 날 이길 수 있는 자는 없다",
-    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip": "모드 작동 방식을 변경하여, 특수 좀비 웨이브 이벤트를 트리거하는 대신 전투 발생 시 무작위 또는 선택한 MJ 곡만 재생하고 게임 내 시간으로 15분 동안 지속되는 추가 버프를 부여합니다."
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM" :"내 BGM 안에서 날 이길 수 있는 자는 없다",
+    "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip" :"모드의 작동 방식을 변경합니다. 특수 좀비 무리 이벤트를 발생시키는 대신, 전투 시 무작위 또는 선택한 MJ 노래만 재생되며 플레이어는 게임 내 시간으로 15분 동안 지속되는 추가 버프를 얻습니다."
 }

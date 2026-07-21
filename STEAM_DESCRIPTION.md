@@ -12,6 +12,8 @@
 
 嘿！你以为这个DJ只是来跳舞的吗？错啦！它还有普通丧尸 [b]10 倍的生命值[/b]，并在登场后的 [b]15 秒内锁血自动回满状态[/b]哦！ 你要么尽快搞定它，要么把它留下来一起来Thriller Time！
 
+[img]https://i.imgur.com/UsgtStT.gif[/img]
+
 [h2]主要特色[/h2]
 
 [list]

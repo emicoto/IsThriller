@@ -6,9 +6,39 @@ function Util.debugMsg(...)
     end
 end
 
+---@param tag string 出错时定位用的标签
+---@param fn function
+function Util.try(tag, fn)
+    local ok, err = pcall(fn)
+    if not ok then
+        print("[isThriller][FAIL] " .. tostring(tag) .. " : " .. tostring(err))
+    end
+    return ok, err
+end
+
+function Util.inSameArea(charaA, charaB)
+    if not charaA or not charaB then return false end
+
+    local sqA = charaA:getCurrentSquare()
+    local sqB = charaB:getCurrentSquare()
+    if not sqA or not sqB then return false end
+
+    local bdA = sqA:getBuilding()
+    local bdB = sqB:getBuilding()
+
+    if bdA or bdB then
+        return bdA ~= nil and bdA == bdB
+    end
+
+    return true
+end
+
 function Util.getSV(varName)
     local sv = SandboxVars.IsThriller
     if sv and sv[varName] ~= nil then return sv[varName] end
+    if getSandboxOptions and getSandboxOptions():getOptionByName(varName) then
+        return getSandboxOptions():getOptionByName(varName):getValue()
+    end
     return IsThriller.config.sv[varName]
 end
 
@@ -16,6 +46,14 @@ function Util.hasItem(fullType)
     local item = ScriptManager.instance:getItem(fullType)
     if not item then return false end
     return true
+end
+
+function Util.doHPMult(zombie, mult)
+    if not zombie then return end
+    local hp = zombie:getHealth() * mult
+    zombie:setHealth(hp)
+
+    return zombie:getHealth()
 end
 
 ---@param zombie IsoZombie
@@ -27,10 +65,11 @@ function Util.moveTo(zombie, x, y, z)
     zombie:pathToLocation(x, y, z or zombie:getZ())
 end
 
-function Util.countDist(zombie, player)
+function Util.countDist(zombie, player, radius)
     if not player or not zombie then return 0 end
-    
-    return math.ceil(zombie:DistTo(player) / 1.25)
+    local dx = zombie:getX() - player:getX()
+    local dy = zombie:getY() - player:getY()
+    return (dx * dx + dy * dy) <= (radius * radius)
 end
 
 -- 游戏分钟 -> 正常速度下的真实秒数
@@ -91,16 +130,23 @@ function Util.doZombieStats(zombie, typeName, value)
     stats:setValue(temp)
 end
 
+local SPEED_RANK = { sprinter = 1, shambler = 2 } 
 -- do their own func to set stats to specific zombies
 function Util.setZombieSpeed(zombie, type)
     if not zombie then return end
+
+    local want = SPEED_RANK[type] or 3
+    local cur = -1
+    pcall(function() cur = zombie:getSpeedType() end)
+    if (cur ~= -1 or cur ~= 0) and cur <= want then return end -- 已同级/更快: 不动它
+
     local ok, msg
     if type == "sprinter" then
         ok, msg = pcall(function() zombie:doSprinter() end)
     elseif type == "shambler" then
         ok, msg = pcall(function () zombie:doFastShambler() end)
     else
-        ok, msg = pcall(function() zombie:doFakeShamble() end)
+        ok, msg = pcall(function() zombie:doFakeShambler(3) end)
     end
     if not ok and IsThriller.debug then
         print("[isThriller DEBUG] setZombieSpeed failed, stack: "..tostring(msg))
