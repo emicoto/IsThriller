@@ -570,6 +570,12 @@ local function dropReward()
     local square = getCell() and getCell():getGridSquare(pos.x, pos.y, pos.z)
     if not square then return end
 
+    local roll = ZombRand(100)
+
+    if roll  >= conf.get("FinalRewardRate") and not st.spEnd then
+        return
+    end
+
     local item = createBoxOnWorld(square)
     local container = item and item:getItemContainer()
     if not item or not container then
@@ -579,7 +585,8 @@ local function dropReward()
 
     container:clear()
 
-    local total = drop.totalRewardItems
+    local total = ZombRand(conf.get("FinalDropSize"))
+
     if Actor:dancerCount() == 0 then
         total = total + conf.get("wipeBonus")    -- 全灭加料
     end
@@ -591,6 +598,11 @@ local function dropReward()
             container:AddItem(fullType)
         end
     end
+
+    if st.spEnd then
+        container:AddItem(drop.fanTicket)
+    end
+    
     util.debugMsg("dropReward:", total, "items in", tostring(conf.get("rewardBox")))
 end
 
@@ -618,7 +630,16 @@ local function dropPacifist(mj)
     end
 
     container:AddItem(drop.fanTicket)
-    container:AddItem(drop.fanTicket)
+
+    local total = ZombRand(conf.get("FinalDropSize"))
+
+    for _ = 1, total do
+        local fullType = rollDropItem(drop)
+        local item = instanceItem(fullType)
+        if item then
+            container:AddItem(fullType)
+        end
+    end
 
     util.debugMsg("pacifist reward dropped.")
 end

@@ -27,6 +27,12 @@
     "Sandbox_IsThriller_MaxWave": "最大波次/歌曲数",
     "Sandbox_IsThriller_MaxWave_tooltip": "一场Thriller舞台会播放几首歌。播满该数量后，舞台进入尾声淡出。前奏阶段的群演最大刷新波次为歌曲数两倍，请根据需求来调整群演随机上限与最大波次之间的平衡。",
 
+    "Sandbox_IsThriller_FinalRewardRate": "礼物掉落概率",
+    "Sandbox_IsThriller_FinalRewardRate_tooltip": "舞台按正常路线结束时，礼物盒掉落的概率",
+
+    "Sandbox_IsThriller_FinalDropSize": "礼物数量",
+    "Sandbox_IsThriller_FinalDropSize_tooltip": "舞台按正常路线结束时，礼物盒里面掉落物的数量（随机的上限）。",
+
     "Sandbox_IsThriller_MusicOptionsDivider": "──────── 曲目选择（可多选） ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "可以同时选择多首曲目；Thriller事件触发时，将从已选曲目中随机播放一首。此项仅用作分割线，本身没有效果。如果留空，则默认播放全曲。当装了曲目追加MOD时，也会自动加入战斗歌单。",
 

@@ -1,7 +1,5 @@
 -- GPTNote: 按音乐模组ID维护完整专辑，并在模组初始化时汇总已激活的JacketFull。
-local Drop = {
-    totalRewardItems = 5,
-    
+local Drop = {    
     pickRate = {        -- total should be 1000
         ammos = 140,
         bombs = 220,

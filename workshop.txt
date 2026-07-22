@@ -1,8 +1,6 @@
 version=1
 id=3762305797
-title=Is time to Thriller?
-description=IT'S THRILLER TIME! A mini horde event for Build 42: when the event triggers, Michael Jackson's Thriller starts playing and a DJ zombie in the iconic red outfit makes its entrance, leading a pack toward you.
-description=The DJ has 10x health with a debut protection period. Zombies in range become fast shamblers with a configurable sprinter chance. Nights double the event chance. Event radius, sprinter chance, horde size, trigger chance and cooldown are all sandbox options.
-description=Optional addon (bundled): with True Actions Dancing enabled, the DJ performs the actual 4-part Thriller choreography, and idle zombies may join as backup dancers while you fight.
-tags=Build 42;Audio;Hardmode;Misc;Silly/Fun
+title=Is time to Thriller
+description=A mini-horde event mod inspired by Michael Jackson! When surrounded by zombies, MJ and his backup troupe arrive to kick off an apocalyptic dance show. Dodge, join the dance, or fight for unique rewards—if you can survive the rhythm! Highly customizable with sandbox settings and integrates with True Actions Dancing and Authentic Z.
+tags=Build 42;Audio;Hardmode;Misc;Pop Culture;Silly/Fun
 visibility=public

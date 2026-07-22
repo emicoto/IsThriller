@@ -15,7 +15,11 @@
     "Sandbox_IsThriller_EventCooldown": "Tour-Abklingzeit (In-Game-Stunden)",
     "Sandbox_IsThriller_EventCooldown_tooltip": "Nachdem ein Thriller-Event erfolgreich abgeschlossen wurde, müssen Sie diese Anzahl an In-Game-Stunden warten, bevor das nächste ausgelöst werden kann.",
     "Sandbox_IsThriller_MaxWave": "Max. Wellen / Songanzahl",
-    "Sandbox_IsThriller_MaxWave_tooltip": "Wie viele Songs während einer einzelnen Thriller-Bühne gespielt werden. Danach blendet die Bühne aus. Die maximale Anzahl der Spawn-Wellen von Extras in der Intro-Phase entspricht dem Doppelten der Songanzahl. Bitte ausbalancieren.",
+ "Sandbox_IsThriller_FinalRewardRate": "Geschenk-Dropchance",
+    "Sandbox_IsThriller_FinalRewardRate_tooltip": "Die Dropchance von Geschenkboxen, wenn die Stage auf dem normalen Weg abgeschlossen wird.",
+
+    "Sandbox_IsThriller_FinalDropSize": "Geschenkmenge",
+    "Sandbox_IsThriller_FinalDropSize_tooltip": "Anzahl der Gegenstände in der Geschenkbox, wenn die Stage auf dem normalen Weg abgeschlossen wird (zufallsbedingte Obergrenze).",   "Sandbox_IsThriller_MaxWave_tooltip": "Wie viele Songs während einer einzelnen Thriller-Bühne gespielt werden. Danach blendet die Bühne aus. Die maximale Anzahl der Spawn-Wellen von Extras in der Intro-Phase entspricht dem Doppelten der Songanzahl. Bitte ausbalancieren.",
     "Sandbox_IsThriller_MusicOptionsDivider": "──────── Trackauswahl (Mehrfachauswahl) ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "Mehrere Tracks können ausgewählt werden; beim Auslösen des Events wird ein zufälliger Track gespielt. Dies dient nur als Trennlinie. Bleibt dies leer, wird standardmäßig der volle Song gespielt. Tracks aus Erweiterungs-Mods werden automatisch hinzugefügt.",
     "Sandbox_IsThriller_JustBeatIt": "Spiele Beat It",

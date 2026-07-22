@@ -68,6 +68,7 @@ local function lfunthr()
         self.phase = -1
         self.tadTick = 0
         self.fanRiot = nil
+        self.spEnd = nil
 
         local md = IsThriller.util.getModData()
         if not md then return end

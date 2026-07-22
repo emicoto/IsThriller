@@ -14,7 +14,11 @@
     "Sandbox_IsThriller_EventChance_tooltip": "Probabilità al minuto di attivare l'evento Thriller se ci sono zombi vicini. Raddoppia di notte. 1 = 0,1%. Si consiglia di tenerlo basso.",
     "Sandbox_IsThriller_EventCooldown": "Cooldown del Tour (Ore in-game)",
     "Sandbox_IsThriller_EventCooldown_tooltip": "Dopo la fine di un evento Thriller, devi aspettare queste ore in-game prima del prossimo.",
-    "Sandbox_IsThriller_MaxWave": "Ondate Max / Numero Canzoni",
+ "Sandbox_IsThriller_FinalRewardRate": "Probabilità drop regalo",
+    "Sandbox_IsThriller_FinalRewardRate_tooltip": "La probabilità di drop della scatola regalo quando si completa il livello lungo il percorso normale.",
+
+    "Sandbox_IsThriller_FinalDropSize": "Quantità di regali",
+    "Sandbox_IsThriller_FinalDropSize_tooltip": "Il numero di oggetti all'interno della scatola regalo quando si completa il livello lungo il percorso normale (limite massimo casuale).",   "Sandbox_IsThriller_MaxWave": "Ondate Max / Numero Canzoni",
     "Sandbox_IsThriller_MaxWave_tooltip": "Quante canzoni verranno riprodotte prima della fine. Il numero max di ondate di comparse durante l'intro è il doppio delle canzoni. Bilancia questo valore con il limite di comparse.",
     "Sandbox_IsThriller_MusicOptionsDivider": "──────── Selezione Tracce (Multipla) ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "Selezione multipla consentita. Solo divisore visivo. Se vuoto, riproduce la canzone completa per impostazione predefinita.",

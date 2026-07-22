@@ -16,7 +16,11 @@
     "Sandbox_IsThriller_EventCooldown_tooltip": "Thrillerイベントが開演し、無事に終了した後、次のステージが発生するまでに必要なゲーム内の待機時間です。",
     "Sandbox_IsThriller_MaxWave": "最大ウェーブ数/楽曲数",
     "Sandbox_IsThriller_MaxWave_tooltip": "1回のThrillerステージで再生される曲数。この数に達するとステージはフェードアウトして終了します。イントロ段階でのエキストラの最大スポーンウェーブ数は曲数の2倍です。エキストラの上限と最大ウェーブ数のバランスを考慮して調整してください。",
-    "Sandbox_IsThriller_MusicOptionsDivider": "──────── 楽曲選択（複数選択可） ────────",
+"Sandbox_IsThriller_FinalRewardRate": "ギフトドロップ率",
+    "Sandbox_IsThriller_FinalRewardRate_tooltip": "ステージを通常ルートでクリアした際、ギフトボックスがドロップする確率",
+
+    "Sandbox_IsThriller_FinalDropSize": "ギフトドロップ数",
+    "Sandbox_IsThriller_FinalDropSize_tooltip": "ステージを通常ルートでクリアした際、ギフトボックスから獲得できるアイテムの数（ランダム上限）。",    "Sandbox_IsThriller_MusicOptionsDivider": "──────── 楽曲選択（複数選択可） ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "複数の楽曲を同時に選択できます。Thrillerイベント発生時、選択した楽曲の中からランダムで1曲再生されます。この項目は区切り線としてのみ機能し、効果はありません。空白の場合、デフォルトでフルバージョンが再生されます。楽曲追加MODを導入している場合、それらも自動的に戦闘プレイリストに追加されます。",
     "Sandbox_IsThriller_JustBeatIt": "Beat Itを再生",
     "Sandbox_IsThriller_JustBeatIt_tooltip": "MJ登場時にBeat Itを再生します。",

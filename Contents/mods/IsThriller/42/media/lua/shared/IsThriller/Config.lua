@@ -15,6 +15,9 @@ local Config = {
         MaxFinal        = 30,    -- max zombies when the early final has been triggered
         EventChance     = 25,   -- event rate per in-game min
         EventCooldown   = 2,    -- event cooldown after stage fully finish
+
+        FinalRewardRate   = 20,   -- the normal reward drop rate
+        FinalDropSize     = 3,    -- normal reward drop size
  
         JustThriller    = true,
         JustBeatIt      = true,
@@ -38,7 +41,7 @@ local Config = {
         sprinterRateAtRiot = 30,    -- the rate of sprinter zombies during riot
         superSprinterRate  = 10,    -- the rate of super sprinter during riot
 
-        wipeBonus = 3 ,
+        wipeBonus = 2 ,
         rewardBox = "Base.Present_ExtraLarge",
         
         JuiceExchange = 5,          -- FanTicket兑换KingOfPopJuice所需张数

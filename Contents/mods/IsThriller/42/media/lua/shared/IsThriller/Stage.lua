@@ -397,7 +397,9 @@ function Stage.onTick(mt, player)
     -- if mj died before song limit, or at fading state, then the fan riot will happen.
     -- the stage will become dangerous.
     if mt.fanRiot then
-        if  mt:isFading() or (mt:isPlaying() and music.played < util.getSV("MaxWave") and mt.phase >= 5) then
+        if mt.isPlaying() and music.played >= util.getSV("MaxWave") and mt.phase >= util.getSV("MaxWave") then
+            mt.spEnd = true
+        else
             actor.fanRiot(player)
         end
         mt.fanRiot = nil

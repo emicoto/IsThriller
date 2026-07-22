@@ -16,7 +16,11 @@
     "Sandbox_IsThriller_EventCooldown_tooltip": "Après la fin réussie d'un événement Thriller, vous devez attendre ce nombre d'heures en jeu avant le prochain.",
     "Sandbox_IsThriller_MaxWave": "Vagues Max / Nombre de chansons",
     "Sandbox_IsThriller_MaxWave_tooltip": "Combien de chansons seront jouées. Ensuite, la scène s'estompe. Le nombre max de vagues de figurants pendant l'intro est le double du nombre de chansons. Ajustez pour équilibrer la limite de figurants et les vagues.",
-    "Sandbox_IsThriller_MusicOptionsDivider": "──────── Sélection de pistes ────────",
+"Sandbox_IsThriller_FinalRewardRate": "Taux de drop de cadeaux",
+    "Sandbox_IsThriller_FinalRewardRate_tooltip": "Probabilité d'obtenir une boîte cadeau en terminant le niveau via la route normale.",
+
+    "Sandbox_IsThriller_FinalDropSize": "Quantité de cadeaux",
+    "Sandbox_IsThriller_FinalDropSize_tooltip": "Nombre d'objets dans la boîte cadeau en terminant le niveau via la route normale (limite maximale aléatoire).",    "Sandbox_IsThriller_MusicOptionsDivider": "──────── Sélection de pistes ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "Plusieurs pistes peuvent être sélectionnées. Lors du déclenchement, une piste aléatoire sera jouée. Cette ligne sert de séparateur. Si vide, la chanson complète par défaut est jouée.",
     "Sandbox_IsThriller_JustBeatIt": "Jouer Beat It",
     "Sandbox_IsThriller_JustBeatIt_tooltip": "Joue Beat It quand MJ apparaît.",

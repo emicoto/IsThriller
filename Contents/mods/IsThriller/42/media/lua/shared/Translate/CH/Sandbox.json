@@ -21,6 +21,11 @@
 
     "Sandbox_IsThriller_EventCooldown": "事件冷卻（遊戲內小時）",
     "Sandbox_IsThriller_EventCooldown_tooltip": "Thriller事件開演並順利結束後，需等待此遊戲內小時數才可能觸发下一場。",
+    "Sandbox_IsThriller_FinalRewardRate": "禮物掉落機率",
+    "Sandbox_IsThriller_FinalRewardRate_tooltip": "舞台按正常路線結束時，禮物盒掉落的機率",
+
+    "Sandbox_IsThriller_FinalDropSize": "禮物數量",
+    "Sandbox_IsThriller_FinalDropSize_tooltip": "舞台按正常路線結束時，禮物盒內掉落物的數量（隨機上限）。",
 
     "Sandbox_IsThriller_MaxWave": "最大波次/歌曲數",
     "Sandbox_IsThriller_MaxWave_tooltip": "一場Thriller舞台事件會播放幾首歌。播滿該數量後，舞台進入尾聲淡出。前奏階段的群演最大刷新波次爲歌曲數兩倍，請根據需求來調整。",

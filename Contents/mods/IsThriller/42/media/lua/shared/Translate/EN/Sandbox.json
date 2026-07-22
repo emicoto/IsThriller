@@ -14,7 +14,11 @@
     "Sandbox_IsThriller_EventChance_tooltip": "The probability of triggering the Thriller stage every in-game minute when zombies are nearby. The chance doubles at night. 1 = 0.1% chance. Since this is calculated per minute, it is highly recommended to keep the value low to avoid overly frequent triggers.",
     "Sandbox_IsThriller_EventCooldown": "Tour Cooldown (In-game Hours)",
     "Sandbox_IsThriller_EventCooldown_tooltip": "After a Thriller event starts and successfully concludes, you must wait this many in-game hours before the next one can trigger.",
-    "Sandbox_IsThriller_MaxWave": "Max Waves / Song Count",
+ "Sandbox_IsThriller_FinalRewardRate": "Gift Drop Rate",
+    "Sandbox_IsThriller_FinalRewardRate_tooltip": "The drop rate of gift boxes when completing the stage via the normal route.",
+
+    "Sandbox_IsThriller_FinalDropSize": "Gift Quantity",
+    "Sandbox_IsThriller_FinalDropSize_tooltip": "The quantity of items inside the gift box when completing the stage via the normal route (upper limit for random drops). ",   "Sandbox_IsThriller_MaxWave": "Max Waves / Song Count",
     "Sandbox_IsThriller_MaxWave_tooltip": "How many songs will play during a single Thriller stage. Once this number is reached, the stage fades out. The maximum number of extra zombie spawn waves during the intro is twice the song count. Please adjust to balance the extra zombie cap and the max waves.",
     "Sandbox_IsThriller_MusicOptionsDivider": "──────── Track Selection (Multiple) ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "Multiple tracks can be selected; a random track from the selection will play when the Thriller event triggers. This option acts only as a divider and has no effect. If left empty, it defaults to the full song. If a track expansion mod is installed, they will automatically be added to the combat playlist.",

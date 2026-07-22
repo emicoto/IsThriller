@@ -14,7 +14,11 @@
     "Sandbox_IsThriller_EventChance_tooltip": "주변에 좀비가 있을 때 게임 내 1분마다 Thriller 무대가 발생할 확률입니다. 밤에는 확률이 두 배가 됩니다. 1 = 0.1% 확률. 분당 계산되므로 너무 자주 발생하지 않도록 확률을 낮게 설정하는 것을 권장합니다.",
     "Sandbox_IsThriller_EventCooldown": "투어 쿨다운 (게임 내 시간)",
     "Sandbox_IsThriller_EventCooldown_tooltip": "Thriller 이벤트가 시작되고 무사히 끝난 후, 다음 무대가 발생하기 위해 기다려야 하는 게임 내 시간입니다.",
-    "Sandbox_IsThriller_MaxWave": "최대 웨이브 / 곡 수",
+ "Sandbox_IsThriller_FinalRewardRate": "선물 드롭 확률",
+    "Sandbox_IsThriller_FinalRewardRate_tooltip": "일반 루트로 스테이지를 완료할 때 선물 상자가 드롭될 확률",
+
+    "Sandbox_IsThriller_FinalDropSize": "선물 수량",
+    "Sandbox_IsThriller_FinalDropSize_tooltip": "일반 루트로 스테이지를 완료할 때 선물 상자에서 나오는 아이템 수 (최대 무작위 상한선).",   "Sandbox_IsThriller_MaxWave": "최대 웨이브 / 곡 수",
     "Sandbox_IsThriller_MaxWave_tooltip": "한 번의 Thriller 무대에서 재생될 곡의 수입니다. 이 수치에 도달하면 무대가 페이드 아웃되며 종료됩니다. 전주 단계의 엑스트라 스폰 최대 웨이브 수는 곡 수의 2배입니다. 엑스트라 최대 수와 최대 웨이브 수 사이의 밸런스를 고려하여 조정하십시오.",
     "Sandbox_IsThriller_MusicOptionsDivider": "──────── 곡 선택 (다중 선택 가능) ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "여러 곡을 동시에 선택할 수 있으며, Thriller 이벤트 발생 시 선택한 곡 중 하나가 무작위로 재생됩니다. 이 항목은 구분선 역할만 하며 효과는 없습니다. 비워두면 기본적으로 전체 곡이 재생됩니다. 트랙 추가 모드가 설치된 경우 전투 플레이리스트에 자동으로 추가됩니다.",

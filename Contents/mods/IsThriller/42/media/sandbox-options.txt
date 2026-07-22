@@ -79,6 +79,27 @@ option IsThriller.MaxFinal
     page = IsThriller,
     translation = IsThriller_MaxFinal,
 }
+
+option IsThriller.FinalRewardRate
+{
+    type = integer,
+    min = 1,
+    max = 100,
+    default = 20,
+    page = IsThriller,
+    translation = IsThriller_FinalRewardRate,
+}
+
+option IsThriller.FinalDropSize
+{
+    type = integer,
+    min = 1,
+    max = 20,
+    default = 3,
+    page = IsThriller,
+    translation = IsThriller_FinalDropSize,
+}
+
 option IsThriller.MusicOptionsDivider
 {
     type = boolean,
