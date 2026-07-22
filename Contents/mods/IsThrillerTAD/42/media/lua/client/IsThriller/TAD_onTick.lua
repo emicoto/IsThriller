@@ -12,6 +12,7 @@ IsThrillerTAD = IsThrillerTAD or {
 }
 local td = IsThrillerTAD
 local st = IsThriller
+local util = IsThriller.util
 
 
 td.moves = {
@@ -36,20 +37,9 @@ td.walks = {
 }
 
 local function dMsg(...)
-    IsThriller.util.debugMsg("[TAD]", ...)
+    util.debugMsg("[TAD]", ...)
 end
 
-local function cancelMovement(zombie)
-    pcall(function()
-        local pfb = zombie:getPathFindBehavior2()
-        if pfb then
-            pfb:cancel()
-            pfb:reset()
-        end
-        zombie:setPath2(nil)
-        zombie:setVariable("bPathfind", false)
-    end)
-end
 
 local function restoreCtrl(zombie)
     if not zombie or not td.spiner[zombie] then return end
@@ -122,7 +112,7 @@ function td.setDance(zombie, on, branch)
             td.active[zombie] = nil
 
         elseif branch == "spin" then
-            cancelMovement(zombie)
+            util.cancelMovement(zombie)
             zombie:setUseless(true)
             zombie:setVariable("ThrillerDone", false)
             zombie:setVariable("BumpAnimFinished", false)
@@ -130,7 +120,7 @@ function td.setDance(zombie, on, branch)
             zombie:setVariable("ThrillerAnim", "Soul_Spin")
 
         else
-            cancelMovement(zombie)
+            util.cancelMovement(zombie)
             zombie:setVariable("ThrillerAnim", td.moves[td.moveIdx])
             zombie:setUseless(true)
             td.active[zombie] = true
@@ -180,7 +170,7 @@ local function updateSpin()
         else
             session.beats = session.beats + 1
             local done = zombie:getVariableBoolean("ThrillerDone")
-            local timedOut = session.beats >= 12
+            local timedOut = session.beats >= 6
             if done or timedOut then
                 zombie:setVariable("BumpAnimFinished", true)
                 td.setDance(zombie, false)

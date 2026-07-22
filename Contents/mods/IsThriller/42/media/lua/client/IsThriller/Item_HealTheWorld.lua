@@ -13,7 +13,9 @@ local BAD_STATS = {
     "BOREDOM",          -- 无聊
 }
 
+
 local function healBodyParts(player)
+    local ut = IsThriller.util
     local bd = player:getBodyDamage()
     if not bd then return end
 
@@ -23,73 +25,115 @@ local function healBodyParts(player)
     for i = 0, parts:size() - 1 do
         local part = parts:get(i)
         if part then
-            -- 止血
-            pcall(function() part:setBleedingTime(0) end)
-            -- 深伤口 -> 已缝合
-            pcall(function()
-                if part:isDeepWounded() and not part:isStitched() then
+            local tag = "part#" .. tostring(i)
+            -- 1) 伤口感染清除(不是丧尸病毒)
+            ut.try(tag .. ".infection", function()
+                part:setInfectedWound(false)
+                part:setWoundInfectionLevel(0)
+            end)
+            -- 2) 止血
+            ut.try(tag .. ".bleeding", function()
+                part:setBleedingTime(0)
+            end)
+            -- 3) 取出玻璃碎片/弹头(10=最高医生等级处理)
+            ut.try(tag .. ".glass", function() part:setHaveGlass(false) end)
+            ut.try(tag .. ".bullet", function() part:setHaveBullet(false, 10) end)
+            -- 4) 深伤口 -> 已缝合
+            ut.try(tag .. ".stitch", function()
+                if part:isDeepWounded() and not part:stitched() then
                     part:setStitched(true)
                 end
             end)
-            -- 取出玻璃碎片/弹头
-            pcall(function() part:setHaveGlass(false) end)
-            pcall(function() part:setHaveBullet(false, 0) end)
-            -- 伤口感染清除(不是丧尸病毒)
-            pcall(function() part:setInfectedWound(false) end)
-            pcall(function() part:setWoundInfectionLevel(0) end)
-            -- 骨折 -> 上好夹板
-            pcall(function()
+            -- 5) 骨折 -> 上好夹板(splintFactor=10, 顶级护理)
+            ut.try(tag .. ".splint", function()
                 if part:getFractureTime() > 0 and not part:isSplint() then
                     part:setSplint(true, 10)
                 end
             end)
-            -- 高质量包扎(有伤才包)
-            pcall(function()
+            -- 6) 烧伤 -> 视为已清洗
+            ut.try(tag .. ".burnwash", function()
+                if part:getBurnTime() > 0 then
+                    part:setNeedBurnWash(false)
+                end
+            end)
+            -- 7) 消毒(原版ISDisinfect同通道: alcoholLevel)
+            ut.try(tag .. ".disinfect", function()
+                if part:HasInjury() and part:getAlcoholLevel() < 5 then
+                    part:setAlcoholLevel(5)
+                end
+            end)
+            -- 8) 高级包扎(有伤才包; 4参版=含酒精+绷带类型, 原版ISApplyBandage同款调用)
+            -- bandageLife=15约等于10级医生+最高级绷带的上限
+            ut.try(tag .. ".bandage", function()
                 if part:HasInjury() and not part:bandaged() then
-                    part:setBandaged(true, 10)
+                    part:setBandaged(true, 15, true, "Base.Bandage")
+                end
+            end)
+
+            -- 清除肌肉痉挛
+            ut.try(tag..".stiffness", function()
+                if part:getStiffness() then
+                    part:setStiffness(0)
                 end
             end)
         end
     end
 end
-
 local function clearBadStates(player)
+    local ut = IsThriller.util
+
+    -- 感冒全清
     local bd = player:getBodyDamage()
     if bd then
-        pcall(function() bd:setColdStrength(0) end)
+        ut.try("cold", function()
+            bd:setHasACold(false)
+            bd:setColdStrength(0)
+            bd:setCatchACold(0)
+            bd:setSneezeCoughActive(0)
+        end)
     end
 
     local stats = player:getStats()
-    if stats and CharacterStat then
-        -- GPTNote: B42.19已将食物中毒与毒素迁移到CharacterStat。
-        pcall(function() stats:set(CharacterStat.FOOD_SICKNESS, 0) end)
-        pcall(function() stats:set(CharacterStat.POISON, 0) end)
-        pcall(function() stats:set(CharacterStat.PAIN, 0) end)
-        pcall(function() stats:set(CharacterStat.PANIC, 0) end)
-        pcall(function() stats:set(CharacterStat.STRESS, 0) end)
-        pcall(function() stats:set(CharacterStat.UNHAPPINESS, 0) end)
-        pcall(function() stats:set(CharacterStat.FATIGUE, 0) end)
+    if not stats then
+        ut.try("stats.nil", function() error("player:getStats() returned nil") end)
+        return
+    end
+    if not CharacterStat then
+        ut.try("CharacterStat.nil", function() error("global CharacterStat is nil") end)
+        return
+    end
+
+    for _, name in ipairs(BAD_STATS) do
+        ut.try("stat." .. name, function()
+            local stat = CharacterStat[name]
+            if not stat then error("CharacterStat." .. name .. " not found") end
+            stats:set(stat, 0)
+        end)
     end
 end
 
 local function useHealTheWorld(item, player)
     if not item or not player or player:isDead() then return end
+    local ut = IsThriller.util
 
     healBodyParts(player)
     clearBadStates(player)
 
-    -- 一次性: 用掉即消失
-    pcall(function()
-        player:getInventory():Remove(item)
+    -- 一次性: 用掉即消失(从道具实际所在容器移除, 而非固定主背包)
+    ut.try("consume", function()
+        local container = item:getContainer()
+        if container then
+            container:Remove(item)
+        else
+            player:getInventory():Remove(item)
+        end
     end)
 
-    pcall(function()
+    ut.try("halo", function()
         HaloTextHelper.addTextWithArrow(player, "Heal The World", true, HaloTextHelper.getColorGreen())
     end)
 
-    if IsThriller and IsThriller.util then
-        IsThriller.util.debugMsg("HealTheWorld used by", IsThriller.util.getPID(player))
-    end
+    ut.debugMsg("HealTheWorld used by", ut.getPID(player))
 end
 
 -- 右键菜单入口: 只在背包里有本道具时添加选项

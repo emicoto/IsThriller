@@ -259,7 +259,12 @@ function Stage.checkStage(mt, player)
         end
 
         local elapsed = util.countMin(mt.lureStart or util.getMin())
-        local timeout = elapsed >= util.toGameTime(conf.get("maxLureSec"))
+        local timeout = elapsed >= util.toGameTime(conf.get("maxLureSec")) + util.toGameTime(conf.get("minLureSec"))
+        local wait = elapsed >= util.toGameTime(conf.get("minLureSec"))
+
+        if not wait then
+            return "wait"
+        end
 
         -- 包围解除且没有演员在场: 预演失败
         if timeout and not actor.mj then
@@ -392,7 +397,7 @@ function Stage.onTick(mt, player)
     -- if mj died before song limit, or at fading state, then the fan riot will happen.
     -- the stage will become dangerous.
     if mt.fanRiot then
-        if  mt:isFading() or (mt:isPlaying() and music.played < util.getSV("MaxWave")) then
+        if  mt:isFading() or (mt:isPlaying() and music.played < util.getSV("MaxWave") and mt.phase >= 5) then
             actor.fanRiot(player)
         end
         mt.fanRiot = nil
@@ -414,7 +419,8 @@ function Stage.onTick(mt, player)
         actor.waves(mt, player)
 
     else
-        -- fading 期间如果还存活的后续处理
+        -- fading 期间如果还存活的后续处理. 
+        -- 运行落幕仪式？丧尸集体朝mj方向聚拢并挥手致敬什么的
     end
 end
 

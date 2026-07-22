@@ -25,4 +25,26 @@ module IsThriller {
         Icon = FanTicket,
         Tags = base:ismemento,
     }
+
+    item KingOfPopJuice
+    {
+        DisplayName = King of Pop Vegetable Juice,
+
+        DisplayCategory = FirstAid,
+        ItemType = base:normal,
+        Weight = 0.3,
+        Icon = KingOfPopJuice,
+        Tags = base:consumable,
+    }
+
+    item GhostTicket
+    {
+        DisplayName = Ghost Ticket,
+
+        DisplayCategory = Memento,
+        ItemType = base:normal,
+        Weight = 0.01,
+        Icon = GhostTicket,
+        Tags = base:ismemento,
+    }
 }

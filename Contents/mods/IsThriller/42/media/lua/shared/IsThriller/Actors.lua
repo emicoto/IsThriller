@@ -142,6 +142,7 @@ end
 local function signClass(zombie)
     local chance = util.getSV("SprintChance")
     local md = zombie:getModData()
+
     -- already signed
     if md.isThrillerMJ or md.isThrillerDancer or md.isThrillerAudience then
         return
@@ -157,16 +158,16 @@ local function signClass(zombie)
 end
 
 -- find available square to spawn
-local function findSpawnSquare(center, dist)
+local function findSpawnSquare(x, y, z, dist)
     local cell = getCell()
-    if not cell or not center then return nil end
+    if not cell or (not x and not y and not z) then return nil end
 
     for _ = 1, 20 do
         local ang = ZombRand(360) * math.pi / 180
         local d = dist + ZombRand(-2, 3)
-        local x = math.floor(center:getX() + math.cos(ang) * d)
-        local y = math.floor(center:getY() + math.sin(ang) * d)
-        local sq = cell:getGridSquare(x, y, 0)
+         x = math.floor(x + math.cos(ang) * d)
+         y = math.floor(y + math.sin(ang) * d)
+        local sq = cell:getGridSquare(x, y, z)
         if sq and util.isValidLot(sq) then
             return sq
         end
@@ -186,13 +187,18 @@ end
 
 function Actor.doSpin(zombie)
     if not st.hasTAD or not IsThrillerTAD then return end
+    if not zombie then return end
+
+    local md = zombie:getModData()
+    if md and md.isThrillerMJ then return end
+
     IsThrillerTAD.doSpin(zombie)
 end
 
 
 -- addZombiesInOutfit will return java array list, turn into lua table
 ---@return IsoZombie[] lua数组(可能为空)
-function Actor.spawn(size, x, y, outfitID, femaleChance)
+function Actor.spawn(size, x, y, z, outfitID, femaleChance)
     local ok, arr = pcall(function()
         return addZombiesInOutfit(x, y, 0, size or 1, outfitID, femaleChance or 50)
     end)
@@ -261,7 +267,7 @@ function Actor.audition(player)
                 local sameArea = util.inSameArea(zb, player)
 
                 -- 移动时间2分钟内范围内所有丧尸
-                if dist <= 95 then
+                if dist <= 100 then
                     res.total = res.total + 1
                 end
 
@@ -311,32 +317,30 @@ function Actor.addCrowd(player)
 
     local dist = ZombRand(6) + 15
     local size = ZombRand(2, util.getSV("MaxZombies") + 1)
-    local sq = findSpawnSquare(player, dist)
+    local sq = findSpawnSquare(player:getX(), player:getY(), 0, dist)
 
     if not sq then
         -- try one more time
         dist =  ZombRand(10) + 15
-        sq = findSpawnSquare(player, dist)
+        sq = findSpawnSquare(player:getX(), player:getY(), 0, dist)
     end
     if not sq then return end
     
-    local list = Actor.spawn(size, sq:getX(), sq:getY(), nil, 50)
+    local list = Actor.spawn(size, sq:getX(), sq:getY(), 0, nil, 50)
     local chance = util.getSV("SprintChance")
 
     local endPoint = Actor.mj or player
 
     for _, zb in ipairs(list) do
-        local t = "shambler"
-        if ZombRand(100) < chance then t = "sprinter" end
-        Actor.class(zb, t)
+        signClass(zb)
 
         -- 如果装了AuthZ就往inventory里塞荧光棒
         if st.hasAuthZ and zb.getInventory then
-            local fullType = Drop.pickSticks()
+            local fullType = drop.pickSticks()
             local item = instanceItem(fullType)
             local inv = zb:getInventory()
             if inv then
-                inv.AddItem(item)
+                inv:AddItem(item)
             end
         end
         pcall(function() zb:pathToLocation(endPoint:getX(), endPoint:getY(), endPoint:getZ()) end)
@@ -365,13 +369,13 @@ function Actor.mjStandby(player)
     if Actor.mj then return end
     if not player then return end
 
-    local sq = findSpawnSquare(player, conf.get("spawnDist"))
+    local sq = findSpawnSquare(player:getX(), player:getY(), 0, conf.get("spawnDist"))
     if not sq then
        return util.debugMsg("mjStandby: no valid square, retry next minute")
     end
 
     local outfitID = outfit.pick(st.music.current)
-    local list = Actor.spawn(1, sq:getX(), sq:getY(), outfitID, 10)
+    local list = Actor.spawn(1, sq:getX(), sq:getY(), 0, outfitID, 0)
     local zb = list[1]
     if not zb then
        return util.debugMsg("mjStandby: spawn failed")
@@ -401,17 +405,19 @@ function Actor.dancerStandby(player)
 
     local count = util.getSV("MaxDancer")
     if count == 0 then count = ZombRand(2, 6) end
+    
+    local anchor = Actor.mj or player
 
     -- 落点在MJ附近,缩短汇合路程
-    local sq = findSpawnSquare(Actor.mj, conf.get("groupRange") + 1)
+    local sq = findSpawnSquare(anchor:getX(), anchor:getY(), anchor:getZ(), conf.get("groupRange"))
     if not sq then
-        sq = findSpawnSquare(player, conf.get("spawnDist"))
+        sq = findSpawnSquare(anchor:getX(), anchor:getY(), anchor:getZ(), conf.get("spawnDist"))
     end
     if not sq then return end
 
     local outfitID = outfit.dancer[ZombRand(1, #outfit.dancer + 1)]
 
-    local list = Actor.spawn(count, sq:getX(), sq:getY(), outfitID, 50)
+    local list = Actor.spawn(count, sq:getX(), sq:getY(), 0, outfitID, 50)
     for _, zb in ipairs(list) do
         Actor.dcHP = util.doHPMult(zb, conf.get("djHP"))
 
@@ -484,8 +490,8 @@ local function removeMJCorpse()
     local cz = math.floor(pos.z)
 
     local ok, removed = pcall(function()
-        for dx = -2, 2 do
-            for dy = -2, 2 do
+        for dx = -3, 3 do
+            for dy = -3, 3 do
                 local sq = cell:getGridSquare(cx + dx, cy + dy, cz)
                 if sq then
                     local bodies = sq:getDeadBodys()
@@ -659,14 +665,35 @@ end
 
 -- on MJ dead event, spawn a huge amount of zombies to curtain call
 function Actor.fanRiot(player)
-    if not player then return end
+    if not player and not Actor.mjDeathPos then return end
 
-    local ang = ZombRand(360) * math.pi / 180
-    local sx = math.floor(player:getX() + math.cos(ang) * 18)
-    local sy = math.floor(player:getY() + math.sin(ang) * 18)
-    local size = ZombRand(10, util.getSV("MaxFinal") + 1)
+    local sx = player:getX()
+    local sy = player:getY()
+    local sz = player:getZ()
+    if Actor.mjDeathPos then
+        sx = Actor.mjDeathPos.x
+        sy = Actor.mjDeathPos.y
+        sz = Actor.mjDeathPos.z
+    end
 
-    local list = Actor.spawn(size, sx, sy, nil, 50)
+    local square = findSpawnSquare(sx, sy, sz, 18)
+    -- try one more time
+    if not square then
+        square = findSpawnSquare(sx, sy, sz, 18)
+    end
+    -- still not find then spawn on death pos
+    if not square then
+        sx = Actor.mjDeathPos.x
+        sy = Actor.mjDeathPos.y
+        sz = Actor.mjDeathPos.z
+    else
+        sx = square:getX()
+        sy = square:getY()
+        sz = square:getZ()
+    end
+
+    local size = conf.get("MaxFinal") or 30
+    local list = Actor.spawn(size, sx, sy, sz, nil, 50)
 
     for _, zb in ipairs(list) do
         local class = "shambler"
@@ -699,7 +726,7 @@ function Actor.retreat(zb)
     local z = zb:getZ()
     local dist = conf.get("retreatDistance")
     
-    for _ = -2, 8 do
+    for _ = 1, 8 do
         local ang = ZombRand(360) * math.pi / 180
         local x = math.floor(zb:getX() + math.cos(ang) * dist)
         local y = math.floor(zb:getY() + math.sin(ang) * dist)
@@ -836,9 +863,17 @@ function Actor.heal()
         Actor.mj:setHealth(Actor.mjHP)
 
         -- keep stand
-        if Actor.mj:isCrawling() or not Actor.mj:isCanWalk() then
+        if Actor.mj:isCrawling() or not Actor.mj:isCanWalk() or Actor.mj:isProne() then
             Actor.mj:doFastShambler()
             Actor.mj:setCanWalk(true)
+        end
+
+        if not Actor.mj:isInvincible() then
+            Actor.mj:setInvincible(true)
+        end
+    elseif mjIsAlive() then
+        if Actor.mj:isInvincible() then
+            Actor.mj:setInvincible(false)
         end
     end
 
@@ -876,7 +911,7 @@ local function rallyCtrl(player)
                 assembled = false
                 if issueOrder then
                     dancer:setUseless(false)
-                    dancer:setMoving(true)
+                    util.cancelMovement(dancer)
                     dancer:pathToCharacter(mj)
                 end
             end
@@ -891,6 +926,7 @@ local function rallyCtrl(player)
         local dist = mj:DistTo(player)
         if dist > conf.get("danceRange") or not player:CanSee(mj) then
             mj:setUseless(false)
+            util.cancelMovement(mj)
             mj:pathToLocation(x, y, z)
         end
     end
@@ -930,11 +966,12 @@ function Actor.mjCtrl(player)
     local range = conf.get("danceRange")
     local dist = dancer:DistTo(player)
 
-    local x  = player:getX() + ZombRand(-5, 5)
-    local y = player:getY() + ZombRand(-5, 5)
+    local x  = player:getX() + ZombRand(-3, 4)
+    local y = player:getY() + ZombRand(-3, 4)
     local z = player:getZ()
     if dist >= range and not Actor.isDancing(dancer) then
         dancer:setUseless(false)
+        util.cancelMovement(dancer)
         dancer:pathToLocation(x, y , z)
 
     -- restore dancing flag if condition wrent wrong
@@ -961,6 +998,7 @@ function Actor.dancerCtrl(player)
             local md = dancer:getModData()
             if dist >= range  then
                 Actor.doDance(dancer, false)
+                util.cancelMovement(dancer)
                 dancer:pathToCharacter(anchor)
 
             -- if the dancing flag wrent wrong
@@ -970,7 +1008,6 @@ function Actor.dancerCtrl(player)
                 and not dancer:isUseless()  
                 and (not md.isThriller_Grudge or (type(md.isThriller_Grudge) == "number" and md.isThriller_Grudge <= 0)) 
                 then
-                    
                 Actor.doDance(dancer, true)
             end
         end
@@ -993,7 +1030,7 @@ function Actor.onBeat(mt, player)
             if dist >= conf.get("danceExitRange") or not player:CanSee(mj) then
                 Actor.doDance(mj, false)
             end
-        elseif dist <= conf.get("danceRange") + 1 or player:CanSee(mj) then
+        elseif dist <= conf.get("danceRange") + 1 then
             Actor.doDance(mj, true)
         end
     end
@@ -1020,7 +1057,7 @@ function Actor.onBeat(mt, player)
             else
                 local dist = dancer:DistTo(anchor)
                 if Actor.isDancing(dancer) then
-                    if dist > range + 1 or not player:CanSee(dancer) then
+                    if dist > range or not player:CanSee(dancer) then
                         Actor.doDance(dancer, false)
                         dancer:pathToCharacter(anchor)
                     end

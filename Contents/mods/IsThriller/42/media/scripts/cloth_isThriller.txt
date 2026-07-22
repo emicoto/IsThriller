@@ -32,8 +32,8 @@ module IsThriller {
 		Icon = battle_aura,
 		ClothingItem = battleAura,
 
-		BodyLocation = mybgm:aura,
-		CanBeEquipped = mybgm:aura,
+		BodyLocation = thriller:aura,
+		CanBeEquipped = thriller:aura,
         CanHaveHoles = false,
 		RemoveOnBroken = false,
 

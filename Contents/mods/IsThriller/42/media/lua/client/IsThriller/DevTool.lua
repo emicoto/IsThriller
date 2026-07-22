@@ -329,10 +329,12 @@ local function summaryTexts()
 
     local player = getPlayer()
     local report = player and state.report and state.report[state.util.getPID(player)] or nil
-    local reportText = "near " .. fmt(report and report.nearCount)
-        .. " / range " .. fmt(report and report.rangeCount)
-        .. " / safe " .. fmt(report and report.safeCount)
+    local reportText = "sight"..fmt(report and report.sightCount)
+        .."/ near " .. fmt(report and report.nearCount)
         .. " / tar " .. fmt(report and report.targeting)
+        .. " / area " .. fmt(report and report.areaCount)
+        .. " / safe " .. fmt(report and report.safeCount)
+        .. " / field " .. fmt(report and report.rangeCount)
         .. " / total " .. fmt(report and report.total)
 
     local actor = state.actor or {}
@@ -341,12 +343,12 @@ local function summaryTexts()
     local _, allIDs = sortedAliveIDs(actor.allDancer)
     local mjText = actor.mj and "alive" or (actor.mjDead and "dead" or "nil")
     local stateText = 'state "' .. fmt(state.state) .. '"'
-        .. " / music " .. tostring(music.handle)
-        .. " / MJ " .. mjText .. " " .. (actor.mjEverHit and "hit" or "not-hit")
+        .. " / phase "..tostring(state.phase)
+        .. " / music " .. tostring(music.current)
+        .. " / MJ " .. mjText .. " " .. (actor.mjEverHit and "hit" or "safe")
         .. " / dancers " .. tostring(#fixedIDs)
         .. " / all " .. tostring(#allIDs)
-        .. " / song " .. tostring(music.current)
-        .. " / songs " .. fmt(music.played or 0) .. "/" .. fmt(state.util.getSV("MaxWave"))
+        .. " / song " .. fmt(music.played or 0) .. "/" .. fmt(state.util.getSV("MaxWave"))
     return reportText, stateText
 end
 
@@ -669,8 +671,10 @@ function IsThrillerDevPanel:buildStatusRows()
         statusKV(rows, "player health / dead", fmt(safe(player, "getHealth", "-")) .. " / " .. boolText(safe(player, "isDead", false)))
         local report = state.report and state.report[util.getPID(player)]
         if report then
-            statusKV(rows, "near / range / safe", fmt(report.nearCount) .. " / " .. fmt(report.rangeCount) .. " / " .. fmt(report.safeCount))
-            statusKV(rows, "targeting / total", fmt(report.targeting) .. " / " .. fmt(report.total))
+            statusKV(rows, "sight/ near/ tar", fmt(report.sightCount) .. " / " .. fmt(report.nearCount) .. " / " .. fmt(report.targeting))
+            statusKV(rows, "area / safe / range", fmt(report.areaCount) .. " / " .. fmt(report.safeCount) .. " / " .. fmt(report.rangeCount))
+            statusKV(rows, "total ", fmt(report.total))
+            statusKV(rows, "areaThreat"..fmt((report.rangeCount - report.areaCount) * 0.25 + report.areaCount * 0.75))
         else
             statusKV(rows, "scan report", "not available yet")
         end

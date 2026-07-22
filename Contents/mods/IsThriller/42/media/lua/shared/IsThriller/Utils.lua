@@ -48,6 +48,21 @@ function Util.hasItem(fullType)
     return true
 end
 
+function Util.cancelMovement(zombie)
+    local ok, msg = pcall(function()
+        local pfb = zombie:getPathFindBehavior2()
+        if pfb then
+            pfb:cancel()
+            pfb:reset()
+        end
+        zombie:setPath2(nil)
+        zombie:setVariable("bPathfind", false)
+    end)
+    if not ok then
+        Util.debugMsg(msg)
+    end
+end
+
 function Util.doHPMult(zombie, mult)
     if not zombie then return end
     local hp = zombie:getHealth() * mult

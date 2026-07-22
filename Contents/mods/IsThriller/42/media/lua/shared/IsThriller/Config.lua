@@ -10,7 +10,7 @@ local Config = {
         Range           = 24,   -- default range to lure zombies
         SprintChance    = 10,   -- 10% chance to sprint
         MaxZombies      = 6,    -- maximum additional zombies per phase
-        MaxDancer       = 2,    -- max mini boss will spawn with MJ
+        MaxDancer       = 4,    -- max mini boss will spawn with MJ
         MaxWave         = 5,    -- 最大波次=事件内歌曲上限, 每首歌前奏期每2秒刷一波群演
         MaxFinal        = 30,    -- max zombies when the early final has been triggered
         EventChance     = 25,   -- event rate per in-game min
@@ -43,15 +43,17 @@ local Config = {
         
         JuiceExchange = 5,          -- FanTicket兑换KingOfPopJuice所需张数
         HealExchange = 8,           -- FanTicket兑换HealTheWorld所需张数(原5)
-        AuraExchange = 20,          -- FanTicket兑换GhostTicket(隐身卷)所需张数(原3的幽灵buff升级为隐身卷)
+        AuraExchange = 20,          -- FanTicket兑换GhostTicket(隐身卷)所需张数(原3的幽灵buff升级为隐身卷)ItemBuffMin = 60,           -- 果汁压制期与隐身卷持续时长(游戏分钟)
+        ItemBuffMin = 60,           -- 果汁压制期与隐身卷持续时长(游戏分钟)
     },
 
 
     --== stage controll ==--
     stage = {
         radius = 40,        -- world sound radius
-        maxLureSec = 30,    -- lure超时(真实秒), 判定时经toGameTime换算游戏分钟
-        spawnDist = 16,     -- how faraway from player when actor try to spawn
+        minLureSec = 12,    -- lure缓冲时间（真实秒）
+        maxLureSec = 36,    -- lure超时(真实秒), 判定时经toGameTime换算游戏分钟
+        spawnDist = 18,     -- how faraway from player when actor try to spawn
         grudgeBeats = 30,   -- cooldown when get hit
 
         -- 舞蹈判定权收归主MOD
@@ -60,7 +62,7 @@ local Config = {
         groupRange = 3,        -- 伴舞锚定MJ的编队/起舞半径
         rallySec = 20,          -- rally超时(真实秒), 到点没齐也强制开拔march
 
-        retreatDistance = 6,    -- retreat when get hit
+        retreatDistance = 8,    -- retreat when get hit
 
         finalCountDown = 45, -- fading尾声周期时长(游戏分钟), 到点正式散场
         encoreChance = 60,   -- 播满波次且全员存活时加演recall的概率(%)

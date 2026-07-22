@@ -118,7 +118,7 @@ function Drop.initSpecial()
 end
 
 function Drop.pickSticks()
-    local id = ZombRand(#Drop.growSticks + 1)
+    local id = ZombRand(1, #Drop.growSticks + 1)
     return Drop.growSticks[id]
 end
 

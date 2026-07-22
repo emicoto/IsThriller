@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<clothingItem>
+    <name>battleAura</name>
+    <m_MaleModel></m_MaleModel>
+	<m_FemaleModel></m_FemaleModel>
+	<m_GUID>7a8f3d1e-92bc-4c8d-b103-5e749f128ab9</m_GUID>
+	<bodyLocation>thriller:aura</bodyLocation>
+    <m_Static>false</m_Static>
+	<m_AllowRandomHue>false</m_AllowRandomHue>
+	<m_AllowRandomTint>false</m_AllowRandomTint>
+	<m_AttachBone></m_AttachBone>
+	<m_BaseTextures>emptytexture</m_BaseTextures>
+</clothingItem>
