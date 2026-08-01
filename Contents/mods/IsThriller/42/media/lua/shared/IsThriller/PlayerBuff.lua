@@ -111,7 +111,7 @@ function PlayerBuff.handle(st, player)
 end
 
 
-function PlayerBuff.doEnd(st, player)
+function PlayerBuff.finish(player)
     PlayerBuff.removeExcited(player)
 end
 

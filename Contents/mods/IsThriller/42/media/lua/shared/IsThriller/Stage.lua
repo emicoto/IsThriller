@@ -1,5 +1,5 @@
 if not IsThriller then return end
-local util, music, actor, pbuff, conf = IsThriller.util, IsThriller.music, IsThriller.actor, IsThriller.pbuff, IsThriller.config
+local util, music, actor, conf = IsThriller.util, IsThriller.music, IsThriller.actor, IsThriller.config
 
 
 local Stage = {
@@ -111,7 +111,7 @@ function Stage.onFire(mt, player, zombie)
         Stage.doStart(mt, player)
     else
         -- bgmTime start is handlered by pbuff
-        pbuff.doStart(mt, player)
+        IsThriller.pbuff.doStart(mt, player)
     end
 end
 
@@ -177,7 +177,7 @@ function Stage.finishBgm(mt, player)
     md.lastStage = util.getMin()
     md.song = nil
 
-    pbuff.doEnd(mt, player)
+    IsThriller.pbuff.finish(player)
     cleanStat(mt, player)
     music.stop(player)
     util.debugMsg("finishBgm", "cooldownUntil=", md.cooldown)
