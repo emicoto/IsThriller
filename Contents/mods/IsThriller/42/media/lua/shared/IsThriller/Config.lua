@@ -22,7 +22,10 @@ local Config = {
         JustThriller    = true,
         JustBeatIt      = true,
         JustSmoothCriminal = true,
+        JustBad         = true,
+        JustBillieJean  = true,
         NoBodyCanBeatMeInBGM = false,
+        DebutDay = 1,
     },
 
     --== triggers ==--
@@ -96,6 +99,8 @@ local Config = {
             "ThrillerSong", -- Thriller
             "BeatItSong", -- Beat It
             "SmoothCriminalSong", -- Smooth Criminal
+            "BadSong", -- Bad
+            "BillieJeanSong", -- Billie Jean
         },
 
         extraSong = {},
@@ -106,7 +111,9 @@ local Config = {
     songFlag = {
         JustThriller = "ThrillerSong",
         JustBeatIt = "BeatItSong",
-        JustSmoothCriminal = "SmoothCriminalSong"
+        JustSmoothCriminal = "SmoothCriminalSong",
+        JustBad = "BadSong",
+        JustBillieJean = "BillieJeanSong",
     },
 
     --== global data templer ==--

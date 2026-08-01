@@ -20,6 +20,9 @@
     "Sandbox_IsThriller_FinalDropSize": "Gift Quantity",
     "Sandbox_IsThriller_FinalDropSize_tooltip": "The quantity of items inside the gift box when completing the stage via the normal route (upper limit for random drops). ",   "Sandbox_IsThriller_MaxWave": "Max Waves / Song Count",
     "Sandbox_IsThriller_MaxWave_tooltip": "How many songs will play during a single Thriller stage. Once this number is reached, the stage fades out. The maximum number of extra zombie spawn waves during the intro is twice the song count. Please adjust to balance the extra zombie cap and the max waves.",
+
+    "Sandbox_IsThriller_DebutDay": "First Performance Day",
+    "Sandbox_IsThriller_DebutDay_tooltip": "The earliest world day on which the Thriller stage can occur (counted from world creation; day 1 is available immediately). Set to 0 to choose one day at random from days 1–7 for this save. This only affects Thriller stage mode; myBGM mode is not delayed. Default: 1. Maximum: 60.",
     "Sandbox_IsThriller_MusicOptionsDivider": "──────── Track Selection (Multiple) ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "Multiple tracks can be selected; a random track from the selection will play when the Thriller event triggers. This option acts only as a divider and has no effect. If left empty, it defaults to the full song. If a track expansion mod is installed, they will automatically be added to the combat playlist.",
     "Sandbox_IsThriller_JustBeatIt": "Play Beat It",
@@ -28,6 +31,10 @@
     "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "Plays Smooth Criminal when MJ appears.",
     "Sandbox_IsThriller_JustThriller": "Play Thriller",
     "Sandbox_IsThriller_JustThriller_tooltip": "Plays Thriller when MJ appears.",
+    "Sandbox_IsThriller_JustBad": "Play Bad",
+    "Sandbox_IsThriller_JustBad_tooltip": "Plays Bad when MJ appears.",
+    "Sandbox_IsThriller_JustBillieJean": "Play Billie Jean",
+    "Sandbox_IsThriller_JustBillieJean_tooltip": "Plays Billie Jean when MJ appears.",
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM" :"Nobody Can Beat Me In My BGM",
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip" :"Changes the mod's operation mode. Instead of triggering the special zombie horde event, entering combat will simply play a random or selected MJ song and grant the player an extra buff lasting 15 in-game minutes."
 }

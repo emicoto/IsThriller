@@ -36,7 +36,7 @@ end
 function Util.getSV(varName)
     local sv = SandboxVars.IsThriller
     if sv and sv[varName] ~= nil then return sv[varName] end
-    if getSandboxOptions and getSandboxOptions():getOptionByName(varName) then
+    if getSandboxOptions():getOptionByName(varName) then
         return getSandboxOptions():getOptionByName(varName):getValue()
     end
     return IsThriller.config.sv[varName]
@@ -109,13 +109,19 @@ end
 
 ---@return number gameMinStamp get in game minutes time stamp
 function Util.getMin()
-    local time = getGameTime and getGameTime()
+    local time = getGameTime()
     return time and time:getMinutesStamp() or 0
 end
 
 function Util.getHour()
-    local time = getGameTime and getGameTime()
+    local time = getGameTime()
     return time and time:getWorldAgeHours() or 0
+end
+
+function Util.getDays()
+    local time = getGameTime()
+    local day = math.ceil((time and time:getWorldAgeHours() or 0.1) / 24)
+    return day
 end
 
 ---@return number realSecondStamp

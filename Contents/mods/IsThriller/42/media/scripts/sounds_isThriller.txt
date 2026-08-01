@@ -2,7 +2,7 @@ module Base
 {
     sound ThrillerSong
     {
-        category = Item,
+        category = Stage,
         is3D = false,
         loop = false,
         clip
@@ -13,7 +13,7 @@ module Base
     }
     sound BeatItSong
     {
-        category = Item,
+        category = Stage,
         is3D = false,
         loop = false,
         clip
@@ -24,12 +24,35 @@ module Base
     }
     sound SmoothCriminalSong
     {
-        category = Item,
+        category = Stage,
         is3D = false,
         loop = false,
         clip
         {
             file = media/sound/IsThriller/smoothCriminal.ogg,
+            volume = 1.0,
+        }
+    }
+    
+    sound BadSong
+    {
+        category = Stage,
+        is3D = false,
+        loop = false,
+        clip
+        {
+            file = media/sound/IsThriller/bad.ogg,
+            volume = 1.0,
+        }
+    }
+    sound BillieJeanSong
+    {
+        category = Stage,
+        is3D = false,
+        loop = false,
+        clip
+        {
+            file = media/sound/IsThriller/billieJean.ogg,
             volume = 1.0,
         }
     }

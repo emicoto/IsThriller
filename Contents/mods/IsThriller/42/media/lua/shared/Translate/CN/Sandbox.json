@@ -33,6 +33,9 @@
     "Sandbox_IsThriller_FinalDropSize": "礼物数量",
     "Sandbox_IsThriller_FinalDropSize_tooltip": "舞台按正常路线结束时，礼物盒里面掉落物的数量（随机的上限）。",
 
+    "Sandbox_IsThriller_DebutDay": "首秀日期",
+    "Sandbox_IsThriller_DebutDay_tooltip": "Thriller舞台最早可触发的世界天数（自世界创建起计，第1天即可触发）。设为0时，会为该存档在第1～7天中随机确定一天。仅影响Thriller舞台模式，不限制myBGM模式。默认1，最大60。",
+
     "Sandbox_IsThriller_MusicOptionsDivider": "──────── 曲目选择（可多选） ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "可以同时选择多首曲目；Thriller事件触发时，将从已选曲目中随机播放一首。此项仅用作分割线，本身没有效果。如果留空，则默认播放全曲。当装了曲目追加MOD时，也会自动加入战斗歌单。",
 
@@ -44,6 +47,12 @@
 
     "Sandbox_IsThriller_JustThriller": "播放Thriller",
     "Sandbox_IsThriller_JustThriller_tooltip": "MJ登场时播放Thriller。",
+
+    "Sandbox_IsThriller_JustBad": "播放Bad",
+    "Sandbox_IsThriller_JustBad_tooltip": "MJ登场时播放Bad。",
+
+    "Sandbox_IsThriller_JustBillieJean": "播放Billie Jean",
+    "Sandbox_IsThriller_JustBillieJean_tooltip": "MJ登场时播放Billie Jean。",
 
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM" :"在我的BGM中没有人能打败我",
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip" :"将模组运行模式改为触发战斗时，只是播放随机或选定的MJ歌曲，并获得持续15游戏分钟的额外增益。而不是触发特殊尸潮事件。"

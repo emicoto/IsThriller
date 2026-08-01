@@ -20,7 +20,12 @@
     "Sandbox_IsThriller_FinalRewardRate_tooltip": "Probabilité d'obtenir une boîte cadeau en terminant le niveau via la route normale.",
 
     "Sandbox_IsThriller_FinalDropSize": "Quantité de cadeaux",
-    "Sandbox_IsThriller_FinalDropSize_tooltip": "Nombre d'objets dans la boîte cadeau en terminant le niveau via la route normale (limite maximale aléatoire).",    "Sandbox_IsThriller_MusicOptionsDivider": "──────── Sélection de pistes ────────",
+    "Sandbox_IsThriller_FinalDropSize_tooltip": "Nombre d'objets dans la boîte cadeau en terminant le niveau via la route normale (limite maximale aléatoire).",
+
+    "Sandbox_IsThriller_DebutDay": "Jour de la première représentation",
+    "Sandbox_IsThriller_DebutDay_tooltip": "Le premier jour du monde où la scène Thriller peut se déclencher (compté depuis la création du monde ; le jour 1 est disponible immédiatement). Avec 0, un jour entre 1 et 7 est choisi au hasard pour cette sauvegarde. Affecte uniquement le mode scène Thriller ; le mode myBGM n'est pas retardé. Valeur par défaut : 1. Maximum : 60.",
+
+    "Sandbox_IsThriller_MusicOptionsDivider": "──────── Sélection de pistes ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "Plusieurs pistes peuvent être sélectionnées. Lors du déclenchement, une piste aléatoire sera jouée. Cette ligne sert de séparateur. Si vide, la chanson complète par défaut est jouée.",
     "Sandbox_IsThriller_JustBeatIt": "Jouer Beat It",
     "Sandbox_IsThriller_JustBeatIt_tooltip": "Joue Beat It quand MJ apparaît.",
@@ -28,6 +33,10 @@
     "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "Joue Smooth Criminal quand MJ apparaît.",
     "Sandbox_IsThriller_JustThriller": "Jouer Thriller",
     "Sandbox_IsThriller_JustThriller_tooltip": "Joue Thriller quand MJ apparaît.",
+    "Sandbox_IsThriller_JustBad": "Jouer Bad",
+    "Sandbox_IsThriller_JustBad_tooltip": "Joue Bad quand MJ apparaît.",
+    "Sandbox_IsThriller_JustBillieJean": "Jouer Billie Jean",
+    "Sandbox_IsThriller_JustBillieJean_tooltip": "Joue Billie Jean quand MJ apparaît.",
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM" :"Personne ne peut me battre dans ma BGM",
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip" :"Change le mode du mod. Au lieu d'invoquer une horde spéciale, le combat lance simplement une chanson et confère au joueur un bonus pendant 15 minutes en jeu."
 }

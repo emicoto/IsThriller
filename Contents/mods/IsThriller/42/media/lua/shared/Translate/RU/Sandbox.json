@@ -20,6 +20,9 @@
     "Sandbox_IsThriller_FinalDropSize": "Количество подарков",
     "Sandbox_IsThriller_FinalDropSize_tooltip": "Количество предметов в подарочной коробке при прохождении этапа по обычному маршруту (максимальный случайный предел).",   "Sandbox_IsThriller_MaxWave": "Макс. волн / Количество песен",
     "Sandbox_IsThriller_MaxWave_tooltip": "Сколько песен будет звучать за одно событие. Максимальное количество волн массовки во время вступления в два раза превышает количество песен. Настройте баланс.",
+
+    "Sandbox_IsThriller_DebutDay": "День дебютного выступления",
+    "Sandbox_IsThriller_DebutDay_tooltip": "Самый ранний день мира, когда может начаться сцена Thriller (отсчёт от создания мира; в день 1 событие доступно сразу). При значении 0 для этого сохранения случайно выбирается день от 1 до 7. Влияет только на режим сцены Thriller и не задерживает режим myBGM. По умолчанию: 1. Максимум: 60.",
     "Sandbox_IsThriller_MusicOptionsDivider": "──────── Выбор треков (Несколько) ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "Можно выбрать несколько треков; при событии случайный трек будет воспроизведен. Служит только разделителем. Если пусто, проигрывается полная песня по умолчанию.",
     "Sandbox_IsThriller_JustBeatIt": "Играть Beat It",
@@ -28,6 +31,10 @@
     "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "Воспроизводит Smooth Criminal при появлении MJ.",
     "Sandbox_IsThriller_JustThriller": "Играть Thriller",
     "Sandbox_IsThriller_JustThriller_tooltip": "Воспроизводит Thriller при появлении MJ.",
+    "Sandbox_IsThriller_JustBad": "Играть Bad",
+    "Sandbox_IsThriller_JustBad_tooltip": "Воспроизводит Bad при появлении MJ.",
+    "Sandbox_IsThriller_JustBillieJean": "Играть Billie Jean",
+    "Sandbox_IsThriller_JustBillieJean_tooltip": "Воспроизводит Billie Jean при появлении MJ.",
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM" :"Никто не победит меня под мой BGM",
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip" :"Меняет режим работы мода. Вместо вызова орды вступление в бой просто включит песню MJ и даст игроку бонус (бафф) на 15 игровых минут."
 }

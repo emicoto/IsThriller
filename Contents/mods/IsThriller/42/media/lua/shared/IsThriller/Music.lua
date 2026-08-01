@@ -34,7 +34,12 @@ local function lfuncMusic()
         if util.getSV("JustSmoothCriminal") then
             table.insert(songs, conf.songFlag.JustSmoothCriminal)
         end
-
+        if util.getSV("JustBad") then
+            table.insert(songs, conf.songFlag.JustBad)
+        end
+        if util.getSV("JustBillieJean") then
+            table.insert(songs, conf.songFlag.JustBillieJean)
+        end
         -- if has extra songs from other mod then put then all in song list
         songs = Music.loadSong(songs)
 

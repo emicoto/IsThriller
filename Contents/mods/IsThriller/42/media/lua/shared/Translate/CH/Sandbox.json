@@ -27,6 +27,9 @@
     "Sandbox_IsThriller_FinalDropSize": "禮物數量",
     "Sandbox_IsThriller_FinalDropSize_tooltip": "舞台按正常路線結束時，禮物盒內掉落物的數量（隨機上限）。",
 
+    "Sandbox_IsThriller_DebutDay": "首次演出日期",
+    "Sandbox_IsThriller_DebutDay_tooltip": "Thriller舞台最早可觸發的世界天數（自世界建立起計，第1天即可觸發）。設為0時，會為該存檔在第1～7天中隨機決定一天。僅影響Thriller舞台模式，不限制myBGM模式。預設1，最大60。",
+
     "Sandbox_IsThriller_MaxWave": "最大波次/歌曲數",
     "Sandbox_IsThriller_MaxWave_tooltip": "一場Thriller舞台事件會播放幾首歌。播滿該數量後，舞台進入尾聲淡出。前奏階段的群演最大刷新波次爲歌曲數兩倍，請根據需求來調整。",
 
@@ -41,6 +44,12 @@
 
     "Sandbox_IsThriller_JustThriller": "播放Thriller",
     "Sandbox_IsThriller_JustThriller_tooltip": "MJ登場時播放Thriller。",
+
+    "Sandbox_IsThriller_JustBad": "播放Bad",
+    "Sandbox_IsThriller_JustBad_tooltip": "MJ登場時播放Bad。",
+
+    "Sandbox_IsThriller_JustBillieJean": "播放Billie Jean",
+    "Sandbox_IsThriller_JustBillieJean_tooltip": "MJ登場時播放Billie Jean。",
 
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM" :"在我的BGM中沒有人能打敗我",
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip" :"將模組運行模式改爲觸发戰鬥時，隻是播放隨機或選定的MJ歌曲，並獲得持續15遊戲分鐘的額外增益。而不是觸发特殊屍潮事件。"

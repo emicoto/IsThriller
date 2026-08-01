@@ -20,7 +20,12 @@
     "Sandbox_IsThriller_FinalRewardRate_tooltip": "ステージを通常ルートでクリアした際、ギフトボックスがドロップする確率",
 
     "Sandbox_IsThriller_FinalDropSize": "ギフトドロップ数",
-    "Sandbox_IsThriller_FinalDropSize_tooltip": "ステージを通常ルートでクリアした際、ギフトボックスから獲得できるアイテムの数（ランダム上限）。",    "Sandbox_IsThriller_MusicOptionsDivider": "──────── 楽曲選択（複数選択可） ────────",
+    "Sandbox_IsThriller_FinalDropSize_tooltip": "ステージを通常ルートでクリアした際、ギフトボックスから獲得できるアイテムの数（ランダム上限）。",
+
+    "Sandbox_IsThriller_DebutDay": "初公演日",
+    "Sandbox_IsThriller_DebutDay_tooltip": "Thrillerステージが最初に発生可能になるワールド日数です（ワールド作成時から数え、1日目はすぐに発生可能）。0にすると、このセーブでは1～7日目からランダムに1日が選ばれます。Thrillerステージモードのみに影響し、myBGMモードは延期されません。デフォルト：1、最大：60。",
+
+    "Sandbox_IsThriller_MusicOptionsDivider": "──────── 楽曲選択（複数選択可） ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "複数の楽曲を同時に選択できます。Thrillerイベント発生時、選択した楽曲の中からランダムで1曲再生されます。この項目は区切り線としてのみ機能し、効果はありません。空白の場合、デフォルトでフルバージョンが再生されます。楽曲追加MODを導入している場合、それらも自動的に戦闘プレイリストに追加されます。",
     "Sandbox_IsThriller_JustBeatIt": "Beat Itを再生",
     "Sandbox_IsThriller_JustBeatIt_tooltip": "MJ登場時にBeat Itを再生します。",
@@ -28,6 +33,10 @@
     "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "MJ登場時にSmooth Criminalを再生します。",
     "Sandbox_IsThriller_JustThriller": "Thrillerを再生",
     "Sandbox_IsThriller_JustThriller_tooltip": "MJ登場時にThrillerを再生します。",
+    "Sandbox_IsThriller_JustBad": "Badを再生",
+    "Sandbox_IsThriller_JustBad_tooltip": "MJ登場時にBadを再生します。",
+    "Sandbox_IsThriller_JustBillieJean": "Billie Jeanを再生",
+    "Sandbox_IsThriller_JustBillieJean_tooltip": "MJ登場時にBillie Jeanを再生します。",
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM" :"俺のBGMの中で俺を倒せる奴はいない",
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip" :"MODの動作モードを変更します。特殊なゾンビ大群イベントを発生させる代わりに、戦闘時にランダムまたは選択したMJの楽曲を再生し、プレイヤーにゲーム内時間15分間持続する追加バフを付与します。"
 }

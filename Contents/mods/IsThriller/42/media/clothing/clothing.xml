@@ -57,14 +57,14 @@
         <m_items><!-- IsThriller_Hat_FedoraWhite -->
             <itemGUID>ddb083c2-7ac1-43e9-8b01-27f359219da6</itemGUID>
         </m_items>
-        <m_items><!-- Suit_JacketTINT -->
-            <itemGUID>e284f0ef-48aa-4357-982f-98bcf728a238</itemGUID>
+        <m_items><!-- Suit_JacketWhite -->
+            <itemGUID>55691903-3683-428c-a113-2562a78162cb</itemGUID>
         </m_items>
-        <m_items><!-- Shirt_FormalTINT -->
-            <itemGUID>d556b848-5a37-400c-9322-2504bff33433</itemGUID>
+        <m_items><!-- Shirt_FormalWhite -->
+            <itemGUID>ac7976de-2c73-44ea-9392-5d24ac1fb649</itemGUID>
         </m_items>
-        <m_items><!-- Trousers_WhiteTINT -->
-            <itemGUID>4601d062-d9ad-49b4-828a-cd0661ead6b6</itemGUID>
+        <m_items><!-- Trousers_White -->
+            <itemGUID>5e2d33f6-a879-474c-b3b8-0fce0fb50ba6</itemGUID>
         </m_items>
         <m_items><!-- Gloves_WhiteTINT -->
             <itemGUID>477b9515-823a-47e8-98c9-9dc51717f398</itemGUID>
@@ -167,6 +167,110 @@
         </m_items>
         <m_items><!-- Socks_Ankle_White -->
             <itemGUID>d1b5a93b-4d33-411f-8afc-bb8766a91f66</itemGUID>
+        </m_items>
+    </m_FemaleOutfits>
+
+    <!-- GPTNote: Bad 舞台套装；Tshirt_WhiteTINT 的黑色由 Outfit.lua 固定。 -->
+    <m_MaleOutfits>
+        <m_Name>BadStageSet</m_Name>
+        <m_Guid>92d0e7cd-e331-4faa-b0cf-6c6342bff275</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Jacket_Black -->
+            <itemGUID>9e094ca7-29b4-4c7d-ae70-597fa4c8a330</itemGUID>
+        </m_items>
+        <m_items><!-- Tshirt_WhiteTINT -->
+            <itemGUID>2256166c-64a6-4f81-8285-0779cab92fbd</itemGUID>
+        </m_items>
+        <m_items><!-- TrousersMesh_Leather -->
+            <itemGUID>eed5a753-df83-4667-bbd0-7d3403145631</itemGUID>
+        </m_items>
+        <m_items><!-- Belt -->
+            <itemGUID>86a018e3-8701-4f67-9751-afd478c81f3f</itemGUID>
+        </m_items>
+        <m_items><!-- Shoes_BlackBoots -->
+            <itemGUID>2717dfdb-49ef-401a-9715-c4487ce6abea</itemGUID>
+        </m_items>
+    </m_MaleOutfits>
+
+    <m_FemaleOutfits>
+        <m_Name>BadStageSet</m_Name>
+        <m_Guid>56cd40bc-78af-402c-b79d-bcc114545c45</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- Jacket_Black -->
+            <itemGUID>9e094ca7-29b4-4c7d-ae70-597fa4c8a330</itemGUID>
+        </m_items>
+        <m_items><!-- Tshirt_WhiteTINT -->
+            <itemGUID>2256166c-64a6-4f81-8285-0779cab92fbd</itemGUID>
+        </m_items>
+        <m_items><!-- TrousersMesh_Leather -->
+            <itemGUID>eed5a753-df83-4667-bbd0-7d3403145631</itemGUID>
+        </m_items>
+        <m_items><!-- Belt -->
+            <itemGUID>86a018e3-8701-4f67-9751-afd478c81f3f</itemGUID>
+        </m_items>
+        <m_items><!-- Shoes_BlackBoots -->
+            <itemGUID>2717dfdb-49ef-401a-9715-c4487ce6abea</itemGUID>
+        </m_items>
+    </m_FemaleOutfits>
+
+    <!-- GPTNote: Billie Jean 舞台套装；西装裤黑色与 T 恤纯白由 Outfit.lua 固定。 -->
+    <m_MaleOutfits>
+        <m_Name>BillieJeanStageSet</m_Name>
+        <m_Guid>cd84c231-3625-45db-acae-0bbce41a7222</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- WeddingJacket -->
+            <itemGUID>0e10adb3-6611-42bd-abe9-d860ee432cd6</itemGUID>
+        </m_items>
+        <!-- GPTNote: Billie Jean 礼服补齐黑色全领结。 -->
+        <m_items><!-- Tie_BowTieFull -->
+            <itemGUID>ab416002-d83f-486e-94a7-049a16eb641f</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Suit -->
+            <itemGUID>52acd769-424a-4cbb-b02a-441cb723b747</itemGUID>
+        </m_items>
+        <m_items><!-- Tshirt_WhiteTINT -->
+            <itemGUID>2256166c-64a6-4f81-8285-0779cab92fbd</itemGUID>
+        </m_items>
+        <m_items><!-- Shoes_Black -->
+            <itemGUID>593bea3d-c127-4574-ac1e-2197dc56e486</itemGUID>
+        </m_items>
+    </m_MaleOutfits>
+
+    <m_FemaleOutfits>
+        <m_Name>BillieJeanStageSet</m_Name>
+        <m_Guid>dc9c86eb-1334-44cd-b6cd-a7d9f7a18197</m_Guid>
+        <m_Top>false</m_Top>
+        <m_Pants>false</m_Pants>
+        <m_AllowTopTint>false</m_AllowTopTint>
+        <m_AllowPantsHue>false</m_AllowPantsHue>
+        <m_AllowPantsTint>false</m_AllowPantsTint>
+        <m_items><!-- WeddingJacket -->
+            <itemGUID>0e10adb3-6611-42bd-abe9-d860ee432cd6</itemGUID>
+        </m_items>
+        <!-- GPTNote: Billie Jean 礼服补齐黑色全领结。 -->
+        <m_items><!-- Tie_BowTieFull -->
+            <itemGUID>ab416002-d83f-486e-94a7-049a16eb641f</itemGUID>
+        </m_items>
+        <m_items><!-- Trousers_Suit -->
+            <itemGUID>52acd769-424a-4cbb-b02a-441cb723b747</itemGUID>
+        </m_items>
+        <m_items><!-- Tshirt_WhiteTINT -->
+            <itemGUID>2256166c-64a6-4f81-8285-0779cab92fbd</itemGUID>
+        </m_items>
+        <m_items><!-- Shoes_Black -->
+            <itemGUID>593bea3d-c127-4574-ac1e-2197dc56e486</itemGUID>
         </m_items>
     </m_FemaleOutfits>
 

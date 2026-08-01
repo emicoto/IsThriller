@@ -50,6 +50,16 @@ option IsThriller.EventCooldown
     translation = IsThriller_EventCooldown,
 }
 
+option IsThriller.DebutDay
+{
+    type = integer,
+    min = 0,
+    max = 60,
+    default = 1,
+    page = IsThriller,
+    translation = IsThriller_DebutDay,
+}
+
 option IsThriller.MaxDancer
 {
     type = integer,
@@ -122,12 +132,29 @@ option IsThriller.JustSmoothCriminal
     page = IsThriller,
     translation = IsThriller_JustSmoothCriminal,
 }
+
 option IsThriller.JustThriller
 {
     type = boolean,
     default = true,
     page = IsThriller,
     translation = IsThriller_JustThriller,
+}
+
+option IsThriller.JustBad
+{
+    type = boolean,
+    default = true,
+    page = IsThriller,
+    translation = IsThriller_JustBad,
+}
+
+option IsThriller.JustBillieJean
+{
+    type = boolean,
+    default = true,
+    page = IsThriller,
+    translation = IsThriller_JustBillieJean,
 }
 
 option IsThriller.NoBodyCanBeatMeInBGM

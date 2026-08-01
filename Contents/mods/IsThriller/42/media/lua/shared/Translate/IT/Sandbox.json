@@ -20,6 +20,9 @@
     "Sandbox_IsThriller_FinalDropSize": "Quantità di regali",
     "Sandbox_IsThriller_FinalDropSize_tooltip": "Il numero di oggetti all'interno della scatola regalo quando si completa il livello lungo il percorso normale (limite massimo casuale).",   "Sandbox_IsThriller_MaxWave": "Ondate Max / Numero Canzoni",
     "Sandbox_IsThriller_MaxWave_tooltip": "Quante canzoni verranno riprodotte prima della fine. Il numero max di ondate di comparse durante l'intro è il doppio delle canzoni. Bilancia questo valore con il limite di comparse.",
+
+    "Sandbox_IsThriller_DebutDay": "Giorno del debutto",
+    "Sandbox_IsThriller_DebutDay_tooltip": "Il primo giorno del mondo in cui può attivarsi lo spettacolo Thriller (conteggiato dalla creazione del mondo; il giorno 1 è subito disponibile). Con 0, per questo salvataggio viene scelto casualmente un giorno da 1 a 7. Influisce solo sulla modalità spettacolo Thriller; la modalità myBGM non viene ritardata. Predefinito: 1. Massimo: 60.",
     "Sandbox_IsThriller_MusicOptionsDivider": "──────── Selezione Tracce (Multipla) ────────",
     "Sandbox_IsThriller_MusicOptionsDivider_tooltip": "Selezione multipla consentita. Solo divisore visivo. Se vuoto, riproduce la canzone completa per impostazione predefinita.",
     "Sandbox_IsThriller_JustBeatIt": "Riproduci Beat It",
@@ -28,6 +31,10 @@
     "Sandbox_IsThriller_JustSmoothCriminal_tooltip": "Riproduce Smooth Criminal quando appare MJ.",
     "Sandbox_IsThriller_JustThriller": "Riproduci Thriller",
     "Sandbox_IsThriller_JustThriller_tooltip": "Riproduce Thriller quando appare MJ.",
+    "Sandbox_IsThriller_JustBad": "Riproduci Bad",
+    "Sandbox_IsThriller_JustBad_tooltip": "Riproduce Bad quando appare MJ.",
+    "Sandbox_IsThriller_JustBillieJean": "Riproduci Billie Jean",
+    "Sandbox_IsThriller_JustBillieJean_tooltip": "Riproduce Billie Jean quando appare MJ.",
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM" :"Nessuno può battermi nella mia BGM",
     "Sandbox_IsThriller_NoBodyCanBeatMeInBGM_tooltip" :"Cambia la modalità. Invece di innescare l'evento orda, il combattimento riproduce una canzone e garantisce al giocatore un buff per 15 minuti in-game."
 }

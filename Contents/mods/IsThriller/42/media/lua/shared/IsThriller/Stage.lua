@@ -199,6 +199,9 @@ function Stage.checkStart(mt, player)
     -- 如果处于幽灵模式或无法被选中的位置（如安全屋）则跳过检测
     if playIsSafe(player) then return false end
 
+    -- MJ 模式时，检测世界时间是否已经到了可触发事件的日期
+    if mt:isMJtime() and util.getDays() <=  (md.debutDay or 1) then return false end
+
     -- 两种模式都要求被包围; myBgm不掷骰, 只有thriller走EventChance概率
     local report = mt.report[pid]
     if not isZombieSurround(report, player) then return false end
@@ -397,7 +400,7 @@ function Stage.onTick(mt, player)
     -- if mj died before song limit, or at fading state, then the fan riot will happen.
     -- the stage will become dangerous.
     if mt.fanRiot then
-        if mt.isPlaying() and music.played >= util.getSV("MaxWave") and mt.phase >= util.getSV("MaxWave") then
+        if mt:isPlaying() and music.played >= util.getSV("MaxWave") and mt.phase >= util.getSV("MaxWave") then
             mt.spEnd = true
         else
             actor.fanRiot(player)

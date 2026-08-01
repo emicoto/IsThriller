@@ -11,6 +11,8 @@ local BAD_STATS = {
     "DISCOMFORT",       -- 不适
     "ANGER",            -- 愤怒
     "BOREDOM",          -- 无聊
+    "NICOTINE_WITHDRAWAL" -- 尼古丁戒断
+    
 }
 
 

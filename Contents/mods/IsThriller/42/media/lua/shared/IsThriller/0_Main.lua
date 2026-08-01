@@ -92,6 +92,15 @@ local function lfunthr()
 
         md.lastStage = md.lastStage or 0
         md.cooldown = md.cooldown or -1
+
+        local debutDay = IsThriller.util.getSV("DebutDay")
+        if not md.debutDay or debutDay ~= 0 then
+            if debutDay == 0 then
+                md.debutDay = ZombRand(1, 8)
+            else
+                md.debutDay = IsThriller.util.getSV("DebutDay")
+            end
+        end
     end
 end
 pcall(lfunthr)

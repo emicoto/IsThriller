@@ -24,7 +24,7 @@ module IsThriller {
 
     item battleAura
     {
-	    DisplayCategory = Aura,
+        DisplayCategory = Hidden,
         DisplayName = Battle Aura,
 		Icon = RabbitearsBlack,
 
@@ -55,6 +55,7 @@ module IsThriller {
         
         ConditionLowerChanceOneIn = 99999999,
         ConditionMax = 9999,
+        Hidden = true,
 
         Tags = base:caneat,
     }

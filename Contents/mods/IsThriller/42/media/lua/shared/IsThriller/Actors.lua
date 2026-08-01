@@ -52,18 +52,17 @@ end
 function Actor.getDancerID(zombie)
     if not zombie then return nil end
 
-    local md
-    pcall(function() md = zombie:getModData() end)
+    local md = zombie:getModData()
     if md and md.thrillerDancerID ~= nil then
         return md.thrillerDancerID
     end
 
     local id
     if (isClient and isClient()) or (isServer and isServer()) then
-        pcall(function() id = zombie:getOnlineID() end)
+        id = zombie:getOnlineID()
     end
     if id == nil or id < 0 then
-        pcall(function() id = zombie:getID() end)
+        id = zombie:getID()
     end
     return id
 end

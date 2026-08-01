@@ -1,25 +1,118 @@
--- 占位骨架
--- Claude Note: myBgm模式的玩家buff(恐慌清除/兴奋加速)待实装, 草稿见 ClaudeCode/IsThriller_ExcitedBuff, 方案见规划报告
--- 也包括myBgm模式的关键进程管理
+
 local PlayerBuff = {}
+
+PlayerBuff.BGM_AURA_ITEM = "IsThriller.battleAura"
+PlayerBuff.BGM_BUFF_MIN  = 15
+
+-- ClaudeNote: setWornItem/getWornItem在42.20要求ItemBodyLocation对象(非字符串), 复用Definitions已注册的全局
+local function getAuraLocation()
+    if ThrillerBodyLocations and ThrillerBodyLocations.Aura then
+        return ThrillerBodyLocations.Aura
+    end
+    if ItemBodyLocation and ResourceLocation then
+        local ok, loc = pcall(function()
+            return ItemBodyLocation.get(ResourceLocation.of("thriller:aura"))
+        end)
+        if ok then return loc end
+    end
+    return nil
+end
+
+
+--[[
+-- ===================================================
+      myBgm「兴奋」buff  (NoBodyCanBeatMeInBGM模式)
+-- ====================================================
+--]]
+
+function PlayerBuff.applyExcited(player)
+    if not player or player:isDead() then return end
+    local ut = IsThriller.util
+    local pdata = ut.getData(player)
+
+    local loc = getAuraLocation()
+    if loc and not player:getWornItem(loc) then
+        local item = player:getInventory():AddItem(PlayerBuff.BGM_AURA_ITEM)
+        if item then
+            player:setWornItem(loc, item)
+            player:updateSpeedModifiers()
+        end
+    end
+
+    ut.try("excited.panic", function()
+        player:getStats():set(CharacterStat.PANIC, 0)
+    end)
+
+    pdata.excitedStart = ut.getMin()   -- 重复触发只刷新起点
+
+    -- moodle情绪栏图标(装了MF才有), 无论有无MF都给HaloText飘字
+    if IsThriller.moodle and IsThriller.moodle.show then
+        ut.try("excited.moodle", function() IsThriller.moodle.show(player) end)
+    end
+    ut.try("excited.halo", function()
+        HaloTextHelper.addTextWithArrow(player, getText("IGUI_IsThriller_Excited"), true, HaloTextHelper.getColorGreen())
+    end)
+    ut.debugMsg("excited buff applied", ut.getPID(player))
+end
+
+function PlayerBuff.removeExcited(player)
+    if not player then return end
+    local ut = IsThriller.util
+    local pdata = ut.getData(player)
+    if not pdata.excitedStart then return end   -- 没上过就不动(不误碰管理员/别的隐形衣)
+
+    pdata.excitedStart = nil
+    local loc = getAuraLocation()
+    local worn = loc and player:getWornItem(loc)
+    if worn then
+        player:removeWornItem(worn)
+        player:getInventory():Remove(worn)
+        player:updateSpeedModifiers()
+    end
+
+    if IsThriller.moodle and IsThriller.moodle.hide then
+        ut.try("excited.moodleOff", function() IsThriller.moodle.hide(player) end)
+    end
+    ut.debugMsg("excited buff removed", ut.getPID(player))
+end
+
+
+--[[
+-- ===================================================
+      myBgm processing
+-- ====================================================
+--]]
+
+function PlayerBuff.doStart(st, player)
+    st.state = "playing"
+
+    -- 落盘状态, 保证中途存档/重进能被finishBgm正确收尾
+    local md = IsThriller.util.getModData()
+    if md then md.state = "playing" end
+
+    st.music.pick()
+    st.music.play(player)
+    if md then md.song = st.music.current end
+
+    PlayerBuff.applyExcited(player)
+end
 
 ---@param st table IsThriller main object
 ---@param player IsoPlayer
 function PlayerBuff.handle(st, player)
-    -- TODO: myBgm buff handle
+    if not player or player:isDead() then return end
+    local ut = IsThriller.util
+    local pdata = ut.getData(player)
+    if not pdata.excitedStart then return end
+
+    if ut.countMin(pdata.excitedStart) >= PlayerBuff.BGM_BUFF_MIN then
+        PlayerBuff.removeExcited(player)
+    end
 end
 
-
-function PlayerBuff.doStart(st, player)
-    st.state = "playing"
-    st.music.pick()
-    st.music.play(player)
-
-    -- TODO: get buff
-end
 
 function PlayerBuff.doEnd(st, player)
-    -- remove buff
+    PlayerBuff.removeExcited(player)
 end
 
 
@@ -28,9 +121,6 @@ end
       物品BUFF 状态机
 -- ====================================================
 --]]
-
-PlayerBuff.AURA_ITEM = "IsThriller.JuiceAura"
-PlayerBuff.AURA_SLOT = "IsThriller:Aura"
 
 local function conf(name)
     return IsThriller.config.get(name)
@@ -49,6 +139,7 @@ function PlayerBuff.applyJuice(player)
         stats:set(CharacterStat.STRESS, 0)
         stats:set(CharacterStat.FATIGUE, 0)
         stats:set(CharacterStat.DISCOMFORT, 0)
+        stats:set(CharacterStat.SICKNESS, 0)
         stats:set(CharacterStat.FOOD_SICKNESS, 0) -- 尸臭累积的病值也一并清掉
     end)
 
@@ -88,6 +179,7 @@ local function tickJuice(player, pd)
         local stats = player:getStats()
         stats:set(CharacterStat.STRESS, 0)
         stats:set(CharacterStat.DISCOMFORT, 0)
+        stats:set(CharacterStat.BOREDOM, 0)
     end)
 end
 
@@ -119,7 +211,7 @@ function PlayerBuff.breakStealth(player, reason)
     ut.try("stealth.off", function()
         player:setInvisible(false, true)
     end)
-    -- ClaudeNote: addText没有(player,text,color)三参重载(反编译确认), 用带箭头版
+    -- ClaudeNote: addText没有(player,text,color)三参重载, 用带箭头版
     ut.try("stealth.offHalo", function()
         HaloTextHelper.addTextWithArrow(player, reason == "attack" and "!" or "...", false, HaloTextHelper.getColorRed())
     end)
@@ -157,6 +249,8 @@ end
 function PlayerBuff.onDeathCleanup(player)
     if not player then return end
     PlayerBuff.breakStealth(player, "death")
+    PlayerBuff.removeExcited(player)
+
     local pd = IsThriller.util.getData(player)
     pd.juiceStart = nil
 end
@@ -172,6 +266,23 @@ function PlayerBuff.onCreateCleanup(playerNum, player)
         pd.stealthStart = nil
         ut.try("stealth.restoreOff", function() player:setInvisible(false, true) end)
     end
+
+
+    -- 读档残留清扫mod专属隐形衣, 仍在有效期则重算速度, 否则脱除删掉
+    ut.try("excited.restore", function()
+        local loc = getAuraLocation()
+        local worn = loc and player:getWornItem(loc)
+        if worn then
+            if pd.excitedStart and ut.countMin(pd.excitedStart) < PlayerBuff.BGM_BUFF_MIN then
+                player:updateSpeedModifiers()
+            else
+                pd.excitedStart = nil
+                player:removeWornItem(worn)
+                player:getInventory():Remove(worn)
+                player:updateSpeedModifiers()
+            end
+        end
+    end)
 end
 
 Events.EveryOneMinute.Add(PlayerBuff.onMinuteItemBuffs)
